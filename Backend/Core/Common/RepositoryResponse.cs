@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Core.Common
 {
-    internal class RepositoryResponse
+    public class RepositoryResponse<T>
     {
+        public T? Data { get; set; }
+
+        public int OperataionStatusCode { get; set; }
+
+        public string? Message { get; set; }
     }
 }
