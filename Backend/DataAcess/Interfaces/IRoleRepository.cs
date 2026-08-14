@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Core.Common;
+using Core.Entities;
 
 namespace DataAccess.Interfaces
 {
-    internal interface IRoleRepository
+    public interface IRoleRepository
     {
+        Task<RepositoryResponse<IEnumerable<Role>>> GetAllAsync();
+        Task<RepositoryResponse<Role>> GetByIdAsync(int id);
+        Task<RepositoryResponse<Role>> AddAsync(Role role);
+        Task<RepositoryResponse<Role>> UpdateAsync(int id, Role role);
     }
 }

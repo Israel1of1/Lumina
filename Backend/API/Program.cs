@@ -1,7 +1,12 @@
+using Business.Interfaces;
+using Business.Services;
+using DataAccess.Interfaces;
+using DataAccess.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+
 
 var builder = WebApplication.CreateBuilder(args);
 var JwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -20,6 +25,11 @@ builder.Services.AddCors(options =>
 
 
 // Add services to the container.
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+
+builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
+builder.Services.AddScoped<ISubjectService, SubjectService>();
 
 builder.Services.AddControllers();
 

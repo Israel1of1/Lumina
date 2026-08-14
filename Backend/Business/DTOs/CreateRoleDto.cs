@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Entities
+namespace Business.DTOs
 {
-    public class Role
+    public class CreateRoleDto
     {
-        public int Id { get; set; }
+        [Required(ErrorMessage = "El nombre del rol es requerido")]
+        [MaxLength(30)]
         public string Name { get; set; }
+
+        [MaxLength(200)]
         public string? Description { get; set; }
-        public bool IsActive { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
     }
 }

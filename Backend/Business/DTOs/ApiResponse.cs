@@ -4,14 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Common
+namespace Business.DTOs
 {
-    public class RepositoryResponse<T>
+    public class ApiResponse<T>
     {
         public T? Data { get; set; }
-
-        public int OperationStatusCode { get; set; }
-
-        public string? Message { get; set; }
+        public object? Meta { get; set; }
     }
 }
