@@ -1,4 +1,5 @@
-﻿using Core.Common;
+﻿using Core;
+using Core.Common;
 using Core.Entities;
 using DataAccess.Interfaces;
 using Microsoft.Data.SqlClient;
@@ -12,19 +13,20 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
-    public class LinkCodeRepository : ILinkCodeRepository
+    public class AuthRepository: IAuthRepository
     {
+
         private readonly string _connectionString;
 
-        public LinkCodeRepository(IConfiguration configuration)
+        public AuthRepository(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection")!;
         }
 
-        public async Task<RepositoryResponse<LinkCodeInfo>> CreateForTeacherAsync(int teacherId, int? issuedById, DateTime? expiresAt)
+        public async Task<RepositoryResponse<User>> GetByEmailAsync(string email)
         {
-            var linkCodeReturned = new LinkCodeInfo();
-            var response = new RepositoryResponse<LinkCodeInfo>();
+            var userReturned = new User();
+            var response = new RepositoryResponse<User>();
 
             try
             {
@@ -32,24 +34,31 @@ namespace DataAccess.Repositories
                 {
                     await connection.OpenAsync();
 
-                    SqlCommand cmd = new SqlCommand("USP_CreateTeacherLinkCode", connection);
+                    SqlCommand cmd = new SqlCommand("USP_GetUserByEmail", connection);
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@TeacherId", teacherId);
-                    cmd.Parameters.AddWithValue("@IssuedById", (object?)issuedById ?? DBNull.Value);
-                    cmd.Parameters.AddWithValue("@ExpiresAt", (object?)expiresAt ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Email", email);
                     cmd.Parameters.Add("@ReturnValue", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
 
                     using (var reader = await cmd.ExecuteReaderAsync())
                     {
                         if (await reader.ReadAsync())
                         {
-                            linkCodeReturned = MapLinkCodeInfo(reader);
+                            userReturned.Id = (int)reader["Id"];
+                            userReturned.Email = reader["Email"].ToString()!;
+                            userReturned.PasswordHash = reader["PasswordHash"].ToString()!;
+                            userReturned.IsActive = (bool)reader["IsActive"];
+                            userReturned.Roles = reader["Roles"] == DBNull.Value
+                                ? new List<string>()
+                                : reader["Roles"].ToString()!
+                                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                    .Select(r => r.Trim())
+                                    .ToList();
                         }
                     }
 
                     var returnedValue = Convert.ToInt32(cmd.Parameters["@ReturnValue"].Value);
 
-                    response.Data = linkCodeReturned;
+                    response.Data = userReturned;
                     response.OperationStatusCode = returnedValue;
 
                     return response;
@@ -64,7 +73,7 @@ namespace DataAccess.Repositories
             }
             catch (Exception ex)
             {
-                return new RepositoryResponse<LinkCodeInfo>
+                return new RepositoryResponse<User>
                 {
                     Data = null,
                     OperationStatusCode = -1,
@@ -73,7 +82,7 @@ namespace DataAccess.Repositories
             }
         }
 
-        public async Task<RepositoryResponse<LinkCodeInfo>> CreateForGuardianAsync(int guardianId, int? issuedById, DateTime? expiresAt)
+        public async Task<RepositoryResponse<LinkCodeInfo>> GetLinkCodeInfoAsync(string code)
         {
             var linkCodeReturned = new LinkCodeInfo();
             var response = new RepositoryResponse<LinkCodeInfo>();
@@ -84,67 +93,33 @@ namespace DataAccess.Repositories
                 {
                     await connection.OpenAsync();
 
-                    SqlCommand cmd = new SqlCommand("USP_CreateGuardianLinkCode", connection);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@GuardianId", guardianId);
-                    cmd.Parameters.AddWithValue("@IssuedById", (object?)issuedById ?? DBNull.Value);
-                    cmd.Parameters.AddWithValue("@ExpiresAt", (object?)expiresAt ?? DBNull.Value);
-                    cmd.Parameters.Add("@ReturnValue", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
-
-                    using (var reader = await cmd.ExecuteReaderAsync())
-                    {
-                        if (await reader.ReadAsync())
-                        {
-                            linkCodeReturned = MapLinkCodeInfo(reader);
-                        }
-                    }
-
-                    var returnedValue = Convert.ToInt32(cmd.Parameters["@ReturnValue"].Value);
-
-                    response.Data = linkCodeReturned;
-                    response.OperationStatusCode = returnedValue;
-
-                    return response;
-                }
-            }
-            catch (SqlException ex)
-            {
-                response.Data = null;
-                response.OperationStatusCode = ex.Number;
-                response.Message = ex.Message;
-                return response;
-            }
-            catch (Exception ex)
-            {
-                return new RepositoryResponse<LinkCodeInfo>
-                {
-                    Data = null,
-                    OperationStatusCode = -1,
-                    Message = ex.Message
-                };
-            }
-        }
-
-        public async Task<RepositoryResponse<bool>> RevokeAsync(string code)
-        {
-            var response = new RepositoryResponse<bool>();
-
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
-                {
-                    await connection.OpenAsync();
-
-                    SqlCommand cmd = new SqlCommand("USP_RevokeLinkCode", connection);
+                    SqlCommand cmd = new SqlCommand("USP_GetLinkCodeInfo", connection);
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Code", code);
                     cmd.Parameters.Add("@ReturnValue", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
 
-                    await cmd.ExecuteNonQueryAsync();
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            linkCodeReturned.Id = (int)reader["Id"];
+                            linkCodeReturned.Code = reader["Code"].ToString()!;
+                            linkCodeReturned.Purpose = reader["Purpose"].ToString()!;
+                            linkCodeReturned.Status = reader["Status"].ToString()!;
+                            linkCodeReturned.IssuedById = reader["IssuedById"] == DBNull.Value ? null : (int?)reader["IssuedById"];
+                            linkCodeReturned.ExpiresAt = reader["ExpiresAt"] == DBNull.Value ? null : (DateTime?)reader["ExpiresAt"];
+                            linkCodeReturned.UsedById = reader["UsedById"] == DBNull.Value ? null : (int?)reader["UsedById"];
+                            linkCodeReturned.UsedAt = reader["UsedAt"] == DBNull.Value ? null : (DateTime?)reader["UsedAt"];
+                            linkCodeReturned.CreatedAt = (DateTime)reader["CreatedAt"];
+                            linkCodeReturned.UpdateAt = reader["UpdateAt"] == DBNull.Value ? null : (DateTime?)reader["UpdateAt"];
+                            linkCodeReturned.TargetEntityType = reader["TargetEntityType"] == DBNull.Value ? null : reader["TargetEntityType"].ToString();
+                            linkCodeReturned.TargetEntityId = reader["TargetEntityId"] == DBNull.Value ? null : (int?)reader["TargetEntityId"];
+                        }
+                    }
 
                     var returnedValue = Convert.ToInt32(cmd.Parameters["@ReturnValue"].Value);
 
-                    response.Data = returnedValue == 0;
+                    response.Data = linkCodeReturned;
                     response.OperationStatusCode = returnedValue;
 
                     return response;
@@ -152,39 +127,80 @@ namespace DataAccess.Repositories
             }
             catch (SqlException ex)
             {
-                response.Data = false;
+                response.Data = null;
                 response.OperationStatusCode = ex.Number;
                 response.Message = ex.Message;
                 return response;
             }
             catch (Exception ex)
             {
-                return new RepositoryResponse<bool>
+                return new RepositoryResponse<LinkCodeInfo>
                 {
-                    Data = false,
+                    Data = null,
                     OperationStatusCode = -1,
                     Message = ex.Message
                 };
             }
         }
 
-        private static LinkCodeInfo MapLinkCodeInfo(SqlDataReader reader)
+        public async Task<RepositoryResponse<User>> RegisterWithLinkCodeAsync(string code, string email, string passwordHash)
         {
-            return new LinkCodeInfo
+            var userReturned = new User();
+            var response = new RepositoryResponse<User>();
+
+            try
             {
-                Id = (int)reader["Id"],
-                Code = reader["Code"].ToString()!,
-                Purpose = reader["Purpose"].ToString()!,
-                Status = reader["Status"].ToString()!,
-                IssuedById = reader["IssuedById"] == DBNull.Value ? null : (int?)reader["IssuedById"],
-                ExpiresAt = reader["ExpiresAt"] == DBNull.Value ? null : (DateTime?)reader["ExpiresAt"],
-                UsedById = reader["UsedById"] == DBNull.Value ? null : (int?)reader["UsedById"],
-                UsedAt = reader["UsedAt"] == DBNull.Value ? null : (DateTime?)reader["UsedAt"],
-                CreatedAt = (DateTime)reader["CreatedAt"],
-                UpdateAt = reader["UpdateAt"] == DBNull.Value ? null : (DateTime?)reader["UpdateAt"],
-                TargetEntityType = reader["TargetEntityType"] == DBNull.Value ? null : reader["TargetEntityType"].ToString(),
-                TargetEntityId = reader["TargetEntityId"] == DBNull.Value ? null : (int?)reader["TargetEntityId"]
-            };
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    SqlCommand cmd = new SqlCommand("USP_RegisterUserWithLinkCode", connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Code", code);
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.AddWithValue("@PasswordHash", passwordHash);
+                    cmd.Parameters.Add("@ReturnValue", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
+
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            userReturned.Id = (int)reader["Id"];
+                            userReturned.Email = reader["Email"].ToString()!;
+                            userReturned.IsActive = (bool)reader["IsActive"];
+                            userReturned.Roles = reader["Roles"] == DBNull.Value
+                                ? new List<string>()
+                                : reader["Roles"].ToString()!
+                                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                    .Select(r => r.Trim())
+                                    .ToList();
+                        }
+                    }
+
+                    var returnedValue = Convert.ToInt32(cmd.Parameters["@ReturnValue"].Value);
+
+                    response.Data = userReturned;
+                    response.OperationStatusCode = returnedValue;
+
+                    return response;
+                }
+            }
+            catch (SqlException ex)
+            {
+                response.Data = null;
+                response.OperationStatusCode = ex.Number;
+                response.Message = ex.Message;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return new RepositoryResponse<User>
+                {
+                    Data = null,
+                    OperationStatusCode = -1,
+                    Message = ex.Message
+                };
+            }
         }
     }
 }

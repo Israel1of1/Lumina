@@ -19,5 +19,8 @@ namespace Core.Entities
 
         public List<string> Roles { get; set; } = new List<string>();
 
+
+
+
     }
 }

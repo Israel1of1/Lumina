@@ -10,7 +10,11 @@ namespace Business.Interfaces
 {
     public interface IAuthService
     {
-        Task<ServiceResponse<LoginResponseDto>> LoginAsync(LoginRequestDto dto);
+     
+            Task<ServiceResponse<LoginResponseDto>> LoginAsync(LoginRequestDto loginRequest);
+            Task<ServiceResponse<LinkCodeInfoDto>> ValidateLinkCodeAsync(string code);
+            Task<ServiceResponse<LoginResponseDto>> RegisterWithLinkCodeAsync(RegisterUserDto request);
+        
 
     }
 }
