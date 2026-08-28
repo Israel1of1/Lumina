@@ -1,3 +1,4 @@
+using Backend.Business.Services;
 using Business.Interfaces;
 using Business.Services;
 using DataAccess.Interfaces;
@@ -25,6 +26,9 @@ builder.Services.AddCors(options =>
 
 
 // Add services to the container.
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 

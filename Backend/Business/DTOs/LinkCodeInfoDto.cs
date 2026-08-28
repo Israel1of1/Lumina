@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Business.DTOs
 {
-    public class LoginRequestDto
+    public class LinkCodeInfoDto
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
-
-        
+        public string Purpose { get; set; } = string.Empty;
+        public DateTime? ExpiresAt { get; set; }
     }
 }

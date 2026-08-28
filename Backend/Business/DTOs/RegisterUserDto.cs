@@ -9,6 +9,9 @@ namespace Business.DTOs
 {
     public class RegisterUserDto
     {
+        [Required]
+        public string Code { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "El correo electrónico es obligatorio")]
         [EmailAddress]
         public string Email { get; set; }
@@ -21,5 +24,12 @@ namespace Business.DTOs
 
         [Compare("Password", ErrorMessage = "Las contraseñas no coinciden")]
         public string ConfirmPassword { get; set; }
+    }
+}
+
+namespace Business
+{
+    public class RegisterRequestDto
+    {
     }
 }
