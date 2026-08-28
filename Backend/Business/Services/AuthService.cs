@@ -165,6 +165,8 @@ namespace Backend.Business.Services
                 {
                     Data = new LinkCodeInfoDto
                     {
+                        Code = linkCodeResult.Data.Code,
+                        Status = linkCodeResult.Data.Status,
                         Purpose = linkCodeResult.Data.Purpose,
                         ExpiresAt = linkCodeResult.Data.ExpiresAt
                     },

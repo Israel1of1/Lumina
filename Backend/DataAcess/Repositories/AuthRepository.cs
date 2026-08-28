@@ -102,10 +102,18 @@ namespace DataAccess.Repositories
                     {
                         if (await reader.ReadAsync())
                         {
+                            linkCodeReturned.Id = (int)reader["Id"];
                             linkCodeReturned.Code = reader["Code"].ToString()!;
                             linkCodeReturned.Purpose = reader["Purpose"].ToString()!;
                             linkCodeReturned.Status = reader["Status"].ToString()!;
+                            linkCodeReturned.IssuedById = reader["IssuedById"] == DBNull.Value ? null : (int?)reader["IssuedById"];
                             linkCodeReturned.ExpiresAt = reader["ExpiresAt"] == DBNull.Value ? null : (DateTime?)reader["ExpiresAt"];
+                            linkCodeReturned.UsedById = reader["UsedById"] == DBNull.Value ? null : (int?)reader["UsedById"];
+                            linkCodeReturned.UsedAt = reader["UsedAt"] == DBNull.Value ? null : (DateTime?)reader["UsedAt"];
+                            linkCodeReturned.CreatedAt = (DateTime)reader["CreatedAt"];
+                            linkCodeReturned.UpdateAt = reader["UpdateAt"] == DBNull.Value ? null : (DateTime?)reader["UpdateAt"];
+                            linkCodeReturned.TargetEntityType = reader["TargetEntityType"] == DBNull.Value ? null : reader["TargetEntityType"].ToString();
+                            linkCodeReturned.TargetEntityId = reader["TargetEntityId"] == DBNull.Value ? null : (int?)reader["TargetEntityId"];
                         }
                     }
 

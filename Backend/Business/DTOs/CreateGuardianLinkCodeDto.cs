@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Business.DTOs
 {
-    public class LinkCodeInfoDto
+    public class CreateGuardianLinkCodeDto
     {
-        public string Purpose { get; set; } = string.Empty;
+        public int GuardianId { get; set; }
         public DateTime? ExpiresAt { get; set; }
-        public string Code { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
     }
 }
