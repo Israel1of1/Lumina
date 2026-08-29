@@ -26,6 +26,12 @@ builder.Services.AddCors(options =>
 
 
 // Add services to the container.
+//builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
+//builder.Services.AddScoped<ITeacherService, TeacherService>();
+
+builder.Services.AddScoped<IGuardianRepository, GuardianRepository>();
+builder.Services.AddScoped<IGuardianService, GuardianService>();
+
 builder.Services.AddScoped<ILinkCodeRepository, LinkCodeRepository>();
 builder.Services.AddScoped<ILinkCodeService, LinkCodeService>(); 
 

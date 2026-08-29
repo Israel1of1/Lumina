@@ -18,11 +18,11 @@ namespace Core.Entities
         public string? Address {  get; set; }
         public string? City { get; set; }
         public string? Photo {  get; set; }
-        public string? RelationShip { get; set; }
+        public string? relationship { get; set; }
         public string EntityStatus { get; set; }
         public DateTime? DismissalDate { get; set; }
         public string? DismissalReason { get; set; }
-        public DateTime CreateAt { get; set; }
-        public DateTime? UpdateAt { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
     }
 }
