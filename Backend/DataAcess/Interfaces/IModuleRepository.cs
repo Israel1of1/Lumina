@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Core.Common;
+using Core.Entities;
 
 namespace DataAccess.Interfaces
 {
-    internal interface IModuleRepository
+    public interface IModuleRepository
     {
+        Task<RepositoryResponse<PagedResponse<IEnumerable<Module>>>> GetAllAsync(PaginationParams pagination);
+        Task<RepositoryResponse<Module>> GetByIdAsync(int id);
+        Task<RepositoryResponse<Module>> AddAsync(Module module);
+        Task<RepositoryResponse<Module>> UpdateAsync(int id, Module module);
     }
 }
