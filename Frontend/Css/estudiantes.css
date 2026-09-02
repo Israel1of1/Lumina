@@ -1,0 +1,48 @@
+.filtros-estudiantes {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filtros-estudiantes input {
+  min-width: 260px;
+  min-height: var(--touch-target-min);
+  padding: 12px 16px;
+  border: 2px solid var(--outline-variant);
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 15px;
+}
+
+.filtros-estudiantes select {
+  min-height: var(--touch-target-min);
+  padding: 12px 16px;
+  border: 2px solid var(--outline-variant);
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 15px;
+  background-color: #fff;
+}
+
+.filtros-estudiantes input:focus,
+.filtros-estudiantes select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.aviso-cupo {
+  font-size: 13px;
+  margin-top: 6px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+}
+
+.aviso-cupo.aviso-lleno {
+  background-color: var(--error-container);
+  color: var(--on-error-container);
+}
+
+.aviso-cupo.aviso-disponible {
+  background-color: var(--secondary-container);
+  color: var(--on-secondary-container);
+}

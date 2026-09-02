@@ -1,0 +1,80 @@
+.grupos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.tarjeta-grupo {
+  background-color: var(--surface-container-lowest);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tarjeta-grupo__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.tarjeta-grupo__nombre {
+  font-family: var(--font-headline);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+.tarjeta-grupo__nivel {
+  font-size: 13px;
+  color: var(--on-surface-variant);
+  margin-top: 2px;
+}
+
+.tarjeta-grupo__descripcion {
+  font-size: 14px;
+  color: var(--on-surface-variant);
+  flex-grow: 1;
+}
+
+.tarjeta-grupo__cupo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.barra-ocupacion {
+  height: 10px;
+  background-color: var(--surface-container-high);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.barra-ocupacion__relleno {
+  height: 100%;
+  background-color: var(--primary);
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease;
+}
+
+.barra-ocupacion__relleno.lleno { background-color: var(--error); }
+
+.tarjeta-grupo__acciones {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.lista-estudiantes-grupo__item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--surface-container-high);
+  font-size: 14px;
+}
+.lista-estudiantes-grupo__item:last-child { border-bottom: none; }

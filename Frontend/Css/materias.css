@@ -1,0 +1,72 @@
+.materias-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 16px;
+}
+
+.tarjeta-materia {
+  background-color: var(--surface-container-lowest);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 20px;
+  border-top: 6px solid var(--primary);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tarjeta-materia__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tarjeta-materia__icono {
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background-color: var(--surface-container-low);
+  flex-shrink: 0;
+}
+
+.tarjeta-materia__nombre {
+  font-family: var(--font-headline);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.tarjeta-materia__descripcion {
+  font-size: 14px;
+  color: var(--on-surface-variant);
+  flex-grow: 1;
+}
+
+.tarjeta-materia__acciones {
+  display: flex;
+  gap: 8px;
+}
+
+.selector-color {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.selector-color input[type="color"] {
+  width: 56px;
+  height: 44px;
+  padding: 4px;
+  border: 2px solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.selector-color span {
+  font-family: monospace;
+  font-size: 14px;
+  color: var(--on-surface-variant);
+}
