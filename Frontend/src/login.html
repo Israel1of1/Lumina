@@ -2,50 +2,77 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>login</title>
-<link rel="stylesheet" href="../styles/login.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lúmina | Iniciar sesión</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../Css/portal-tokens.css">
+  <link rel="stylesheet" href="../Css/login.css">
 </head>
 <body>
 
-  <div class="login-container">
+  <div class="pantalla-login">
 
-<img src="../Assets/luminalogo.png" alt="Logo LÚMINA" class="logo-img" id="logo">
+    <!-- Panel izquierdo: espacio reservado para tu ilustración -->
+    <div class="panel-ilustracion">
+           <img src="../img/ilustracion.png" alt="" class="ilustracion-mascota" />
+    </div>
 
-    <div class="login-card">
+    <!-- Panel derecho: formulario -->
+    <div class="panel-formulario">
+      <div class="panel-formulario__contenido">
 
-      <form class="login-form" id="loginForm">
+        <div class="marca-login">
+          <img src="../img/logo.png" alt="LÚMINA" class="marca-logo" onerror="this.style.display='none'" />
+          <h1>LÚMINA</h1>
+        </div>
+        <p class="eslogan-login">
+          <span class="eslogan-celeste">Aprende.</span>
+          <span class="eslogan-dorado">Comunica.</span>
+          <span class="eslogan-marino">Brilla.</span>
+        </p>
 
-        <div class="input-group">
-          <label for="email">Correo electrónico</label>
-          <div class="input-field">
-            <input type="email" id="email" name="email" placeholder="Ingresa tu correo" required>
+        <form id="form-login">
+          <div class="campo-login">
+            <label for="email">Email</label>
+            <div class="input-icono">
+              <input type="email" id="email" placeholder="tu@correo.com" required autocomplete="username" />
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            </div>
           </div>
-        </div>
 
-        <div class="input-group">
-          <label for="password">Contraseña</label>
-          <div class="input-field">
-            <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required>
+          <div class="campo-login">
+            <label for="password">Password</label>
+            <div class="input-icono">
+              <input type="password" id="password" placeholder="Tu contraseña" required autocomplete="current-password" />
+              <button type="button" id="btn-ver-password" class="btn-icono-ojo" aria-label="Mostrar contraseña">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
           </div>
-        </div>
 
-        <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+          <a href="#" class="enlace-olvido" id="enlace-olvido">¿Olvidaste tu contraseña?</a>
 
-        <button type="submit" class="btn-login">Iniciar Sesión</button>
+          <p id="mensaje-error" class="mensaje-error oculto"></p>
+          <p id="mensaje-info" class="mensaje-info oculto"></p>
 
-        <div class="divider">
-          <span>o</span>
-        </div>
+          <button type="submit" id="btn-login" class="boton-login">Iniciar sesión</button>
+        </form>
 
-        <p class="signup-text">¿No tienes cuenta? <a href="#" class="signup-link">Regístrate</a></p>
+        <div class="separador-o"><span>o</span></div>
 
-      </form>
+        <p class="enlace-volver-texto">
+          ¿Necesitas ayuda? <a href="inicio.html">Volver al inicio</a>
+        </p>
 
+      </div>
     </div>
 
   </div>
 
-  <script src=""></script>
+  <script src="../app/app.config.js"></script>
+  <script src="../core/api.services.js"></script>
+  <script src="../core/login.js"></script>
 </body>
 </html>

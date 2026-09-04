@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUMINA | Estudiantes</title>
+  <link rel="stylesheet" href="../Css/base.css" />
+  <link rel="stylesheet" href="../Css/docentes.css" />
+  <link rel="stylesheet" href="../Css/estudiantes.css" />
+</head>
+<body data-pagina="estudiantes">
+
+  <div class="app-layout">
+    <div id="sidebar-contenedor"></div>
+
+    <div class="app-layout__main">
+      <header class="topbar">
+        <div>
+          <h2>Estudiantes</h2>
+          <p class="texto-suave">Matrícula y ficha básica de cada estudiante</p>
+        </div>
+        <div id="topbar-usuario-contenedor"></div>
+      </header>
+
+      <main class="contenido">
+        <div class="encabezado-modulo">
+          <div class="filtros-estudiantes">
+            <input type="text" id="buscador-estudiantes" placeholder="Buscar por nombre o número único..." />
+            <select id="filtro-grupo">
+              <option value="">Todos los grupos</option>
+            </select>
+          </div>
+          <button class="btn btn-primario" id="btn-nuevo-estudiante">+ Nuevo estudiante</button>
+        </div>
+
+        <section class="panel">
+          <div id="tabla-estudiantes" class="cargando">Cargando...</div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- ===== Modal: Crear / Editar estudiante ===== -->
+  <div class="modal-fondo oculto" id="modal-estudiante">
+    <div class="modal modal-grande">
+      <h2 id="modal-estudiante-titulo">Nuevo estudiante</h2>
+      <form id="form-estudiante">
+        <input type="hidden" id="estudiante-id" />
+
+        <div class="grid-2">
+          <div class="campo">
+            <label for="estudiante-nombre">Nombre</label>
+            <input type="text" id="estudiante-nombre" required />
+          </div>
+          <div class="campo">
+            <label for="estudiante-apellido">Apellido</label>
+            <input type="text" id="estudiante-apellido" />
+          </div>
+          <div class="campo">
+            <label for="estudiante-grupo">Grupo</label>
+            <select id="estudiante-grupo" required></select>
+            <p id="aviso-cupo" class="aviso-cupo oculto"></p>
+          </div>
+          <div class="campo">
+            <label for="estudiante-numero">Número único</label>
+            <input type="text" id="estudiante-numero" placeholder="Ej. LUM-2026-001" />
+          </div>
+          <div class="campo">
+            <label for="estudiante-nacimiento">Fecha de nacimiento</label>
+            <input type="date" id="estudiante-nacimiento" />
+          </div>
+          <div class="campo">
+            <label for="estudiante-genero">Género</label>
+            <select id="estudiante-genero">
+              <option value="">— Sin especificar —</option>
+              <option value="M">Masculino</option>
+              <option value="F">Femenino</option>
+              <option value="OTRO">Otro</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="estudiante-lenguaje">Nivel de lenguaje</label>
+            <input type="text" id="estudiante-lenguaje" placeholder="Ej. No verbal, verbal limitado..." />
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="estudiante-clinico">Información clínica relevante</label>
+          <textarea id="estudiante-clinico" rows="2"></textarea>
+        </div>
+
+        <div class="campo">
+          <label for="estudiante-observaciones">Observaciones</label>
+          <textarea id="estudiante-observaciones" rows="2"></textarea>
+        </div>
+
+        <p id="estudiante-error" class="texto-error oculto"></p>
+
+        <div class="modal-acciones">
+          <button type="button" class="btn btn-secundario" onclick="cerrarModal('modal-estudiante')">Cancelar</button>
+          <button type="submit" class="btn btn-primario">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Modal: Ver detalle ===== -->
+  <div class="modal-fondo oculto" id="modal-detalle">
+    <div class="modal modal-grande">
+      <h2>Ficha del estudiante</h2>
+      <div id="detalle-contenido"></div>
+      <div class="modal-acciones">
+        <button type="button" class="btn btn-secundario" onclick="cerrarModal('modal-detalle')">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../app/app.config.js"></script>
+  <script src="../core/api.services.js"></script>
+  <script src="../app/app.routers.js"></script>
+  <script src="../app/app.js"></script>
+  <script src="../core/estudiantes.js"></script>
+</body>
+</html>

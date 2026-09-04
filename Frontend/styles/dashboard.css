@@ -1,0 +1,88 @@
+.app-layout__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.tarjetas-resumen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .dashboard-grid { grid-template-columns: 1fr; }
+}
+
+.panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.enlace-ver-mas {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* ===== Ocupación de grupos ===== */
+.grupo-ocupacion-item {
+  margin-bottom: 16px;
+}
+
+.grupo-ocupacion-item__header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.grupo-ocupacion-item__nombre {
+  font-weight: 700;
+}
+
+.barra-ocupacion {
+  height: 10px;
+  background-color: var(--surface-container-high);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.barra-ocupacion__relleno {
+  height: 100%;
+  background-color: var(--primary);
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease;
+}
+
+.barra-ocupacion__relleno.lleno {
+  background-color: var(--error);
+}
+
+/* ===== Lista de códigos ===== */
+.codigo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--surface-container-high);
+  font-size: 14px;
+}
+
+.codigo-item:last-child { border-bottom: none; }
+
+.codigo-item__code {
+  font-family: monospace;
+  font-weight: 700;
+  color: var(--primary);
+}
