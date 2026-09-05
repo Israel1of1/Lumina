@@ -4,17 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Entities
+namespace Business.DTOs
 {
-    public class ClassGroup
+    public class ClassGroupDto
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public string? GradeLevel { get; set; }
         public string? Description { get; set; }
         public bool IsActive { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public int StudentCount { get; set; } // cuantos estudiantes activos tiene (max 10, RN-01)
-
+        public int StudentCount { get; set; }
+        public int AvailableSlots => 10 - StudentCount;
     }
 }

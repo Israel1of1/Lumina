@@ -28,6 +28,12 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 //builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 //builder.Services.AddScoped<ITeacherService, TeacherService>();
+builder.Services.AddScoped<IClassGroupRepository, ClassGroupRepository>();
+builder.Services.AddScoped<IClassGroupService, ClassGroupService>();
+
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IStudentService, StudentService>();
+
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
 

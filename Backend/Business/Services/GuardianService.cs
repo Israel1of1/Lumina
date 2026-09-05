@@ -38,7 +38,7 @@ namespace Business.Services
                 Address = request.Address,
                 City = request.City,
                 Photo = request.Photo,
-                relationship = request.Relationship
+                RelationShip = request.Relationship
             };
 
             var repoResponse = await _guardianRepository.UpdateProfileAsync(userId, profile);
@@ -63,7 +63,7 @@ namespace Business.Services
                             Address = data.Address,
                             City = data.City,
                             Photo = data.Photo,
-                            Relationship = data.relationship,
+                            Relationship = data.RelationShip,
                             EntityStatus = data.EntityStatus
                         },
                         IsSuccess = true,
@@ -131,7 +131,7 @@ namespace Business.Services
                             NationalId = g.NationalId,
                             PersonalEmail = g.PersonalEmail,
                             Phone = g.Phone,
-                            Relationship = g.relationship,
+                            Relationship = g.RelationShip,
                             EntityStatus = g.EntityStatus
                         }).ToList(),
                         TotalRecords = totalRecords,

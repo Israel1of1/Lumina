@@ -34,7 +34,6 @@ namespace Backend.API.Controllers
                     Description = s.Description,
                     Color = s.Color,
                     Icon = s.Icon,
-                    CreatedAt = s.CreatedAt
                 });
 
                 var apiResponse = new ApiResponse<IEnumerable<SubjectDto>>
@@ -97,7 +96,6 @@ namespace Backend.API.Controllers
                     Description = serviceResponse.Data!.Description,
                     Color = serviceResponse.Data!.Color,
                     Icon = serviceResponse.Data!.Icon,
-                    CreatedAt = serviceResponse.Data!.CreatedAt
                 };
 
                 return Ok(subjectDto);
@@ -150,7 +148,6 @@ namespace Backend.API.Controllers
                     Description = serviceResponse.Data!.Description,
                     Color = serviceResponse.Data!.Color,
                     Icon = serviceResponse.Data!.Icon,
-                    CreatedAt = serviceResponse.Data!.CreatedAt
                 };
 
                 return Ok(subjectDto);
@@ -186,7 +183,6 @@ namespace Backend.API.Controllers
                     Description = serviceResponse.Data!.Description,
                     Color = serviceResponse.Data!.Color,
                     Icon = serviceResponse.Data!.Icon,
-                    CreatedAt = serviceResponse.Data!.CreatedAt
                 };
 
                 return CreatedAtAction(nameof(GetById), new { id = newSubjectDto.Id }, newSubjectDto);
@@ -225,7 +221,6 @@ namespace Backend.API.Controllers
                     Description = serviceResponse.Data!.Description,
                     Color = serviceResponse.Data!.Color,
                     Icon = serviceResponse.Data!.Icon,
-                    CreatedAt = serviceResponse.Data!.CreatedAt
                 };
                 return Ok(updatedSubjectDto);
             }
