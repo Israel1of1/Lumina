@@ -82,7 +82,7 @@ const AppRouter = {
   },
 
   // ===== Sidebar dinámico =====
-  renderSidebar(idActivo) {
+   renderSidebar(idActivo) {
     const contenedor = document.getElementById('sidebar-contenedor');
     if (!contenedor) return;
 
@@ -96,11 +96,19 @@ const AppRouter = {
       </a>
     `).join('');
 
+    const colapsado = localStorage.getItem('lumina_sidebar_colapsado') === 'true';
+
     contenedor.innerHTML = `
-      <aside class="sidebar">
-        <div class="smarca-logo">
-          <img src="../img/logo.png" alt="LUMINA" onerror="this.style.display='none'" />
-          LUMINA
+      <aside class="sidebar ${colapsado ? 'colapsado' : ''}" id="sidebar-elemento">
+        <button class="sidebar__toggle" id="btn-toggle-sidebar" aria-label="Colapsar u expandir menú">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m15 18-6-6 6-6"/>
+          </svg>
+        </button>
+
+        <div class="sidebar__marca">
+          <img src="../img/logo.png" alt="LUMINA" onerror="this.style.display='none'" style="height:32px" />
+          <span>LUMINA</span>
         </div>
 
         <div class="sidebar__seccion-titulo">Menú</div>
@@ -110,6 +118,17 @@ const AppRouter = {
         ${renderLinks(grupoGeneral)}
       </aside>
     `;
+
+    document.getElementById('btn-toggle-sidebar').addEventListener('click', () => this.alternarSidebar());
+  },
+
+  // ===== Alternar colapsado/expandido =====
+  alternarSidebar() {
+    const sidebar = document.getElementById('sidebar-elemento');
+    if (!sidebar) return;
+
+    const colapsado = sidebar.classList.toggle('colapsado');
+    localStorage.setItem('lumina_sidebar_colapsado', colapsado);
   },
 
   // ===== Barra superior: usuario + logout =====
