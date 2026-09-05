@@ -52,6 +52,10 @@ document.getElementById('enlace-olvido').addEventListener('click', (evento) => {
     // MODO TEMPORAL: entra directo sin validar
     // Borrar/comentar esta línea cuando actives la validación de arriba
     // ============================================
-    window.location.href = 'dashboard.html';
+   const email = document.getElementById('email').value.trim();
+
+window.location.href = email === 'docente@lumina.com'
+  ? 'inicio-docente.html'
+  : 'dashboard.html';
   });
 });

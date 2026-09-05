@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUMINA | Planes de clase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/docente-plan.css">
+</head>
+<body>
+  <div class="app-docente">
+    <aside class="menu-docente" id="menu-docente">
+      <div class="menu-docente__cabecera">
+        <strong class="menu-docente__logo">LUMINA</strong>
+        <button class="menu-docente__toggle" id="btn-menu" type="button">‹</button>
+      </div>
+
+      <p class="menu-docente__titulo">MENÚ</p>
+
+      <nav class="menu-docente__links">
+        <a class="menu-docente__link" href="../src/inicio-docente.html"><span>⌂</span><b>Inicio</b></a>
+        <a class="menu-docente__link" href="../src/docentes-grupos.html"><span>⊞</span><b>Mis Grupos y estudiantes</b></a>
+        <a class="menu-docente__link activo" href="../src/docente-plan.html"><span>▤</span><b>Planes de clase</b></a>
+        <a class="menu-docente__link" href="../src/docente-recursos.html"><span>▣</span><b>Recursos</b></a>
+
+      </nav>
+
+      <div class="menu-docente__linea"></div>
+
+      <p class="menu-docente__titulo">GENERAL</p>
+
+      <nav class="menu-docente__links">
+        
+        <a class="menu-docente__link" href="../src/dashboard.html"><span>↩</span><b>Volver al panel admin</b></a>
+
+        <button class="menu-docente__link menu-docente__cerrar" id="btn-cerrar-sesion" type="button">
+          <span>↪</span><b>Cerrar sesión</b>
+        </button>
+      </nav>
+    </aside>
+
+    <section class="contenido-docente">
+      <header class="topbar-docente">
+        <div></div>
+
+        <div class="usuario">
+          <span class="avatar">MP</span>
+
+          <span>
+            <strong>María Pérez</strong>
+            <small>Docente</small>
+          </span>
+        </div>
+      </header>
+
+      <main class="pagina-docente">
+        <header class="encabezado">
+          <div>
+            <h1>Mis Planes de clase</h1>
+            <p>Crea, gestiona y organiza tus planes de clase.</p>
+          </div>
+
+          <button class="btn-primario" id="btn-nuevo" type="button">
+            ＋ Nuevo plan
+          </button>
+        </header>
+
+        <section class="barra-herramientas">
+          <label class="buscador">
+            <span>⌕</span>
+            <input id="buscar-planes" type="search" placeholder="Buscar planes...">
+          </label>
+
+          <div class="filtros">
+            <button class="filtro activo" data-filter="todos" type="button">Todos</button>
+            <button class="filtro" data-filter="publicado" type="button">Publicados</button>
+            <button class="filtro" data-filter="borrador" type="button">Borradores</button>
+          </div>
+        </section>
+
+        <section class="lista-planes" id="lista-planes"></section>
+        <p class="sin-resultados" id="sin-resultados" hidden>No encontramos planes.</p>
+      </main>
+    </section>
+  </div>
+
+  <input id="input-portada" type="file" accept="image/*" hidden>
+  <input id="input-recursos" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,image/*,video/*" multiple hidden>
+
+  <dialog class="modal" id="modal-plan">
+    <article class="modal__contenido">
+      <button class="cerrar-modal" data-close type="button">×</button>
+      <div id="contenido-detalle"></div>
+    </article>
+  </dialog>
+
+  <dialog class="modal" id="modal-imagenes">
+    <article class="modal__contenido">
+      <button class="cerrar-modal" data-close type="button">×</button>
+      <h2>Portadas relacionadas</h2>
+      <p class="subtitulo">Ilustraciones infantiles para el tema del plan.</p>
+      <div class="galeria-portadas" id="resultados-imagenes"></div>
+    </article>
+  </dialog>
+
+  <dialog class="modal" id="modal-formulario">
+    <form class="modal__contenido formulario" id="form-plan">
+      <button class="cerrar-modal" type="button" data-close>×</button>
+
+      <h2>Crear nuevo plan</h2>
+      <p class="subtitulo">Completa los datos, agrega recursos y guarda o publica.</p>
+
+      <label>
+        Nombre del plan
+        <input name="titulo" id="titulo-plan" required placeholder="Ej. Vocabulario de frutas">
+      </label>
+
+      <div class="campos-dobles">
+        <label>
+          Nivel
+          <select name="nivel" required>
+            <option value="">Selecciona</option>
+            <option>Nivel 1</option>
+            <option>Nivel 2</option>
+            <option>Nivel 3</option>
+          </select>
+        </label>
+
+        <label>
+          Aula
+          <select name="aula" required>
+            <option value="">Selecciona</option>
+            <option>Aula 1</option>
+            <option>Aula 2</option>
+          </select>
+        </label>
+      </div>
+
+      <label>
+        Descripción
+        <textarea name="descripcion" required placeholder="¿Qué aprenderán los estudiantes?"></textarea>
+      </label>
+
+      <div class="campos-dobles">
+        <label>
+          Duración
+          <input name="duracion" required placeholder="Ej. 45 minutos">
+        </label>
+
+        <label>
+          Área o materia
+          <input name="materia" required placeholder="Ej. Lenguaje">
+        </label>
+      </div>
+
+      <label>
+        Objetivo de aprendizaje
+        <textarea name="objetivo" required></textarea>
+      </label>
+
+      <label>
+        Actividades
+        <textarea name="actividades" required placeholder="1. Inicio...&#10;2. Desarrollo...&#10;3. Cierre..."></textarea>
+      </label>
+
+      <label>
+        Materiales
+        <textarea name="materiales" required></textarea>
+      </label>
+
+      <label>
+        Evaluación
+        <textarea name="evaluacion" required></textarea>
+      </label>
+
+      <section class="adjuntos-nuevo">
+        <h3>Portada del plan</h3>
+
+        <div id="vista-portada-nueva" class="vista-portada">
+          Aún no seleccionaste una portada
+        </div>
+
+        <div class="botones-adjuntos">
+          <button class="btn-secundario" type="button" id="btn-buscar-portada">
+            Buscar portada por tema
+          </button>
+
+          <button class="btn-secundario" type="button" id="btn-subir-portada">
+            Subir portada
+          </button>
+        </div>
+      </section>
+
+      <section class="adjuntos-nuevo">
+        <h3>Recursos adjuntos</h3>
+
+        <button class="btn-secundario" type="button" id="btn-agregar-recursos">
+          ＋ Adjuntar documentos, imágenes o videos
+        </button>
+
+        <ul class="lista-recursos" id="lista-recursos-nuevos">
+          <li>No hay recursos adjuntos todavía.</li>
+        </ul>
+      </section>
+
+      <div class="acciones-form">
+        <button class="btn-secundario" type="submit" name="accion" value="borrador">
+          Guardar como borrador
+        </button>
+
+        <button class="btn-primario" type="submit" name="accion" value="publicado">
+          Publicar plan
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="../core/docente-plan.js"></script>
+</body>
+</html>

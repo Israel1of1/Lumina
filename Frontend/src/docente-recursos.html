@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LÚMINA | Recursos</title>
+  <link rel="stylesheet" href="../styles/docente-recursos.css">
+</head>
+
+<body>
+  <div class="app-docente">
+
+    <aside class="menu-docente" id="menu-docente">
+      <div class="menu-docente__cabecera">
+        <div class="menu-docente__logo">LÚMINA</div>
+        <button class="menu-docente__toggle" id="btn-menu" type="button">‹</button>
+      </div>
+
+      <div class="menu-docente__titulo">MENÚ</div>
+
+      <nav class="menu-docente__links">
+        <a class="menu-docente__link" href="../src/inicio-docente.html"><span class="menu-docente__icono">⌂</span><span class="menu-docente__texto">Inicio</span></a>
+        <a class="menu-docente__link" href="../src/docentes-grupos.html"><span class="menu-docente__icono">◇</span><span class="menu-docente__texto">Mis Grupos y Estudiantes</span></a>
+        <a class="menu-docente__link" href="../src/docente-plan.html"><span class="menu-docente__icono">▤</span><span class="menu-docente__texto">Planes de clase</span></a>
+        <a class="menu-docente__link activo" href="../src/docente-recursos.html"><span class="menu-docente__icono">▣</span><span class="menu-docente__texto">Recursos</span></a>
+      </nav>
+
+      <div class="menu-docente__linea"></div>
+
+      <div class="menu-docente__titulo">GENERAL</div>
+
+      <nav class="menu-docente__links">
+        <a class="menu-docente__link" href="../src/dashboard.html"><span class="menu-docente__icono">↩</span><span class="menu-docente__texto">Volver al panel admin</span></a>
+        <button class="menu-docente__link menu-docente__cerrar" id="btn-cerrar-sesion" type="button"><span class="menu-docente__icono">⇥</span><span class="menu-docente__texto">Cerrar sesión</span></button>
+      </nav>
+    </aside>
+
+    <div class="contenido-docente">
+      <header class="topbar-docente">
+        <div></div>
+
+        <div class="topbar-docente__usuario">
+          <span class="topbar-docente__notificacion">♧</span>
+          <div class="topbar-docente__avatar">MP</div>
+
+          <div class="topbar-docente__datos">
+            <strong>María Pérez</strong>
+            <span>Docente</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="pagina-docente">
+        <div class="encabezado-docente">
+          <div>
+            <h1>Recursos</h1>
+            <p>Explora recursos para apoyar el aprendizaje y la regulación emocional.</p>
+          </div>
+
+          <button class="boton-principal" id="btn-agregar-recurso" type="button">
+            ＋ Agregar recurso
+          </button>
+        </div>
+
+        <div class="herramientas-recursos">
+          <label class="buscador">
+            <span>⌕</span>
+            <input id="buscar-recurso" type="text" placeholder="Buscar recursos...">
+          </label>
+
+          <select id="filtro-categoria">
+            <option value="todos">Todas las categorías</option>
+            <option value="videos">Videos</option>
+            <option value="musica">Música relajante</option>
+            <option value="pecs">PECS</option>
+          </select>
+        </div>
+
+        <div class="tabs-recursos">
+          <button class="tab activo" data-categoria="todos">Todos</button>
+          <button class="tab" data-categoria="videos">▶ Videos</button>
+          <button class="tab" data-categoria="musica">♫ Música relajante</button>
+          <button class="tab" data-categoria="pecs">▣ PECS</button>
+        </div>
+
+        <p class="contador-recursos" id="contador-recursos"></p>
+
+        <section class="recursos-grid" id="contenedor-recursos"></section>
+      </main>
+    </div>
+  </div>
+
+  <dialog class="modal-recurso" id="modal-reproductor">
+    <div class="modal-recurso__cabecera">
+      <div>
+        <span class="etiqueta-recurso" id="tipo-reproductor"></span>
+        <h2 id="titulo-reproductor"></h2>
+      </div>
+
+      <button class="cerrar-modal" type="button" data-cerrar="modal-reproductor">×</button>
+    </div>
+
+    <div id="contenido-reproductor"></div>
+  </dialog>
+
+
+  <dialog class="modal-recurso modal-pecs" id="modal-pecs">
+    <div class="modal-recurso__cabecera">
+      <div>
+        <span class="etiqueta-recurso pecs">PECS</span>
+        <h2 id="titulo-pecs"></h2>
+      </div>
+
+      <button class="cerrar-modal" type="button" data-cerrar="modal-pecs">×</button>
+    </div>
+
+    <div class="pecs-progreso">
+      <span id="paso-actual">Paso 1 de 6</span>
+      <div class="barra-progreso">
+        <div id="progreso-pecs"></div>
+      </div>
+    </div>
+
+    <section class="paso-pecs">
+      <div class="imagen-paso" id="imagen-paso-pecs">🧼</div>
+
+      <div class="detalle-paso">
+        <span class="etiqueta-recurso pecs">PASO A PASO</span>
+        <h3 id="titulo-paso-pecs">Mojar las manos</h3>
+        <p id="texto-paso-pecs">Abre la llave y moja tus manos con agua.</p>
+
+        <button class="boton-audio-pecs" id="escuchar-paso" type="button">
+          🔊 Escuchar instrucción
+        </button>
+      </div>
+    </section>
+
+    <div class="navegacion-pecs">
+      <button class="boton-secundario" id="pecs-anterior" type="button">← Anterior</button>
+      <button class="boton-principal" id="pecs-siguiente" type="button">Siguiente →</button>
+    </div>
+
+    <div class="tablero-mini" id="contenido-pecs"></div>
+  </dialog>
+
+
+  <dialog class="modal-recurso modal-agregar" id="modal-agregar-recurso">
+    <form id="form-agregar-recurso">
+      <div class="modal-recurso__cabecera">
+        <h2>Agregar recurso</h2>
+        <button class="cerrar-modal" type="button" data-cerrar="modal-agregar-recurso">×</button>
+      </div>
+
+      <div class="formulario-recurso">
+        <label>
+          Tipo de recurso
+          <select name="categoria" id="tipo-nuevo-recurso" required>
+            <option value="videos">Video</option>
+            <option value="musica">Música relajante</option>
+            <option value="pecs">PECS</option>
+          </select>
+        </label>
+
+        <label>
+          Título
+          <input name="titulo" required placeholder="Ej. Respiración de calma">
+        </label>
+
+        <label class="campo-completo">
+          Descripción
+          <textarea name="descripcion" rows="3" placeholder="Describe el recurso..."></textarea>
+        </label>
+
+        <label class="campo-completo">
+          Enlace de YouTube o audio
+          <input name="enlace" required placeholder="Pega el enlace del video o audio">
+        </label>
+
+        <label class="campo-completo">
+          Emoji o icono
+          <input name="icono" value="🌈" maxlength="4">
+        </label>
+      </div>
+
+      <div class="modal-botones">
+        <button class="boton-secundario" type="button" data-cerrar="modal-agregar-recurso">Cancelar</button>
+        <button class="boton-principal" type="submit">Guardar recurso</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="../core/docente-recursos.js"></script>
+</body>
+</html>
