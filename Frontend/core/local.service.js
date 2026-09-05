@@ -31,12 +31,15 @@ function _generarSemilla() {
     { id: 2, name: 'TEACHER', description: 'Docente', isActive: true, createdAt: _hoy() },
     { id: 3, name: 'GUARDIAN', description: 'Tutor', isActive: true, createdAt: _hoy() }
   ];
+const users = [
+  { id: 1, email: 'institucion@lumina.com', passwordHash: 'Admin123!', nationalId: null, isActive: true, lastLoginAt: null, createdAt: _hoy() },
+  { id: 2, email: 'docente@lumina.com', passwordHash: 'Docente123!', nationalId: null, isActive: true, lastLoginAt: null, createdAt: _hoy() }
+];
 
-  const users = [
-    { id: 1, email: 'institucion@lumina.com', passwordHash: 'Admin123!', nationalId: null, isActive: true, lastLoginAt: null, createdAt: _hoy() }
-  ];
-
-  const userRoles = [{ id: 1, userId: 1, roleId: 1, assignedAt: _hoy() }];
+const userRoles = [
+  { id: 1, userId: 1, roleId: 1, assignedAt: _hoy() },
+  { id: 2, userId: 2, roleId: 2, assignedAt: _hoy() }
+];
 
   // ===== Materias (10) =====
   const nombresMaterias = [
@@ -176,46 +179,6 @@ function _inicializarDB() {
 }
 
 _inicializarDB();
-
-// ===== Usuario temporal para probar las vistas de tutor =====
-function crearTutorDePrueba() {
-  const db = _leerDB();
-
-  const tutorExiste = db.users.some(
-    usuario => usuario.email === 'tutor@lumina.com'
-  );
-
-  if (tutorExiste) return;
-
-  const rolTutor = db.roles.find(
-    rol => rol.name === 'GUARDIAN'
-  );
-
-  if (!rolTutor) return;
-
-  const nuevoTutor = {
-    id: _nuevoId(db.users),
-    email: 'tutor@lumina.com',
-    passwordHash: 'Tutor123!',
-    nationalId: null,
-    isActive: true,
-    lastLoginAt: null,
-    createdAt: _hoy()
-  };
-
-  db.users.push(nuevoTutor);
-
-  db.userRoles.push({
-    id: _nuevoId(db.userRoles),
-    userId: nuevoTutor.id,
-    roleId: rolTutor.id,
-    assignedAt: _hoy()
-  });
-
-  _guardarDB(db);
-}
-
-crearTutorDePrueba();
 
 // ============================================================
 // AuthService

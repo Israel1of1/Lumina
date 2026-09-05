@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>LÚMINA | Mis Grupos y Estudiantes</title>
+
+
+  <link rel="stylesheet" href="../styles/docente-grupos.css">
+</head>
+
+<body>
+  <div class="app-docente">
+
+
+    <aside class="menu-docente" id="menu-docente">
+      <div class="menu-docente__cabecera">
+        <div class="menu-docente__logo">LÚMINA</div>
+
+        <button
+          class="menu-docente__toggle"
+          id="btn-menu"
+          type="button"
+          title="Contraer menú"
+        >
+          ‹
+        </button>
+      </div>
+
+      <div class="menu-docente__titulo">MENÚ</div>
+
+      <nav class="menu-docente__links">
+        <a class="menu-docente__link" href="../src/inicio-docente.html">
+          <span class="menu-docente__icono">⌂</span>
+          <span class="menu-docente__texto">Inicio</span>
+        </a>
+
+     
+        <a class="menu-docente__link activo" href="../src/docentes-grupos.html">
+          <span class="menu-docente__icono">◇</span>
+          <span class="menu-docente__texto">Mis Grupos y Estudiantes</span>
+        </a>
+
+    
+
+        <a class="menu-docente__link" href="../src/docente-plan.html">
+          <span class="menu-docente__icono">▤</span>
+          <span class="menu-docente__texto">Planes de clase</span>
+        </a>
+
+        <a class="menu-docente__link" href="../src/docente-recursos.html">
+          <span class="menu-docente__icono">▣</span>
+          <span class="menu-docente__texto">Recursos</span>
+        </a>
+
+   
+      </nav>
+
+      <div class="menu-docente__linea"></div>
+
+      <div class="menu-docente__titulo">GENERAL</div>
+
+      <nav class="menu-docente__links">
+      
+
+        <a class="menu-docente__link" href="../src/dashboard.html">
+          <span class="menu-docente__icono">↩</span>
+          <span class="menu-docente__texto">Volver al panel admin</span>
+        </a>
+
+        <button
+          class="menu-docente__link menu-docente__cerrar"
+          id="btn-cerrar-sesion"
+          type="button"
+        >
+          <span class="menu-docente__icono">⇥</span>
+          <span class="menu-docente__texto">Cerrar sesión</span>
+        </button>
+      </nav>
+    </aside>
+
+    <div class="contenido-docente">
+      <header class="topbar-docente">
+        <div></div>
+
+        <div class="topbar-docente__usuario">
+          <span class="topbar-docente__notificacion">♧</span>
+
+          <div class="topbar-docente__avatar">MP</div>
+
+          <div class="topbar-docente__datos">
+            <strong>María Pérez</strong>
+            <span>Docente</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="pagina-docente">
+
+        <section class="vista activa" id="vista-grupos">
+          <div class="encabezado-docente">
+            <div>
+              <h1>Mis Grupos</h1>
+              <p>Organiza tus grupos y consulta a tus estudiantes.</p>
+            </div>
+
+            <button
+              class="boton-principal"
+              id="btn-agregar-grupo"
+              type="button"
+            >
+              ＋ Agregar grupo
+            </button>
+          </div>
+
+          <label class="buscador">
+            <span>⌕</span>
+
+            <input
+              id="buscar-grupo"
+              type="text"
+              placeholder="Buscar grupo..."
+            >
+          </label>
+
+          <div class="grupos-tarjetas" id="contenedor-grupos"></div>
+        </section>
+
+    
+        <section class="vista" id="vista-estudiantes">
+          <div class="encabezado-docente">
+            <div>
+              <button
+                class="boton-volver"
+                id="volver-grupos"
+                type="button"
+              >
+                ←
+              </button>
+
+              <h1 id="titulo-estudiantes">Estudiantes</h1>
+
+              <p id="subtitulo-estudiantes">
+                Gestiona la información de tus estudiantes.
+              </p>
+            </div>
+
+            <button
+              class="boton-principal"
+              id="btn-agregar-estudiante"
+              type="button"
+            >
+              ＋ Agregar estudiante
+            </button>
+          </div>
+
+          <label class="buscador">
+            <span>⌕</span>
+
+            <input
+              id="buscar-estudiante"
+              type="text"
+              placeholder="Buscar estudiante..."
+            >
+          </label>
+
+          <div class="estudiantes-tarjetas" id="contenedor-estudiantes"></div>
+        </section>
+
+        <!-- PERFIL -->
+        <section class="vista" id="vista-perfil"></section>
+      </main>
+    </div>
+  </div>
+
+  <!-- MODAL PARA GRUPO -->
+  <dialog class="modal-lumina" id="modal-grupo">
+    <form id="form-grupo">
+      <div class="modal-cabecera">
+        <h2 id="titulo-modal-grupo">Agregar grupo</h2>
+
+        <button
+          class="cerrar-modal"
+          type="button"
+          data-cerrar="modal-grupo"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="formulario">
+        <label>
+          Nombre del grupo
+          <input
+            name="nombre"
+            required
+            placeholder="Ejemplo: Grupo A"
+          >
+        </label>
+
+        <label>
+          Grado
+          <select name="grado">
+            <option>Preescolar</option>
+            <option>1.er grado</option>
+            <option>2.do grado</option>
+            <option>3.er grado</option>
+            <option>4.to grado</option>
+            <option>5.to grado</option>
+            <option>6.to grado</option>
+          </select>
+        </label>
+
+        <label>
+          Turno
+          <select name="turno">
+            <option>Mañana</option>
+            <option>Tarde</option>
+          </select>
+        </label>
+
+        <label class="campo-completo">
+          Descripción
+          <textarea
+            name="descripcion"
+            rows="4"
+            placeholder="Describe a este grupo..."
+          ></textarea>
+        </label>
+      </div>
+
+      <div class="modal-botones">
+        <button
+          class="boton-secundario"
+          type="button"
+          data-cerrar="modal-grupo"
+        >
+          Cancelar
+        </button>
+
+        <button class="boton-principal" type="submit">
+          Guardar grupo
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- MODAL PARA ESTUDIANTE -->
+  <dialog class="modal-lumina" id="modal-estudiante">
+    <form id="form-estudiante">
+      <div class="modal-cabecera">
+        <h2 id="titulo-modal-estudiante">Agregar estudiante</h2>
+
+        <button
+          class="cerrar-modal"
+          type="button"
+          data-cerrar="modal-estudiante"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="formulario">
+        <label>
+          Nombre completo
+          <input
+            name="nombre"
+            required
+            placeholder="Nombre del estudiante"
+          >
+        </label>
+
+        <label>
+          Edad
+          <input
+            name="edad"
+            required
+            type="number"
+            min="1"
+            max="20"
+          >
+        </label>
+
+        <label>
+          Grupo
+          <select name="grupo" id="select-grupo"></select>
+        </label>
+
+        <label>
+          Grado
+          <select name="grado">
+            <option>Preescolar</option>
+            <option>1.er grado</option>
+            <option>2.do grado</option>
+            <option>3.er grado</option>
+            <option>4.to grado</option>
+            <option>5.to grado</option>
+            <option>6.to grado</option>
+          </select>
+        </label>
+
+        <label>
+          Nivel de TEA
+          <select name="tea">
+            <option>No aplica</option>
+            <option>Nivel 1 · Requiere apoyo</option>
+            <option>Nivel 2 · Apoyo moderado</option>
+            <option>Nivel 3 · Apoyo significativo</option>
+          </select>
+        </label>
+
+        <label>
+          Juguete favorito
+          <input name="juguete" placeholder="Ej. Bloques">
+        </label>
+
+        <label>
+          Color favorito
+          <input name="color" placeholder="Ej. Azul">
+        </label>
+
+        <label>
+          Responsable
+          <input name="responsable" placeholder="Nombre del encargado">
+        </label>
+
+        <label class="campo-completo">
+          Foto del estudiante
+          <input name="foto" type="file" accept="image/*">
+        </label>
+
+        <label class="campo-completo">
+          Observaciones importantes
+          <textarea
+            name="observaciones"
+            rows="3"
+            placeholder="Gustos, necesidades o avances..."
+          ></textarea>
+        </label>
+      </div>
+
+      <div class="modal-botones">
+        <button
+          class="boton-secundario"
+          type="button"
+          data-cerrar="modal-estudiante"
+        >
+          Cancelar
+        </button>
+
+        <button class="boton-principal" type="submit">
+          Guardar estudiante
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  
+  <script src="../core/docente-grupos.js"></script>
+</body>
+</html>
