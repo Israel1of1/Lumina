@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUMINA | Seguimiento</title>
+
+  <link rel="stylesheet" href="../styles/base.css" />
+  <link rel="stylesheet" href="../styles/tutor-dashboard.css" />
+  <link rel="stylesheet" href="../styles/tutor-seguimiento.css" />
+</head>
+
+<body class="guardian-page guardian-followup-page">
+  <div class="guardian-layout">
+
+    <aside class="guardian-sidebar">
+      <div class="guardian-sidebar__brand-row">
+        <span class="guardian-sidebar__brand">LUMINA</span>
+      </div>
+
+      <p class="guardian-sidebar__label">MENÚ</p>
+
+      <nav class="guardian-menu">
+        <a class="guardian-menu__link" href="tutor-dashboard.html">
+          <span>▦</span>
+          Dashboard
+        </a>
+
+        <a class="guardian-menu__link" href="tutor-progreso.html">
+          <span>↗</span>
+          Progreso del niño
+        </a>
+
+        <a class="guardian-menu__link guardian-menu__link--active" href="tutor-seguimiento.html">
+          <span>✓</span>
+          Seguimiento
+        </a>
+
+     
+
+       <a class="guardian-menu__link" href="tutor-comunicacion.html" id="nav-pecs">
+  <span>◌</span>
+  Comunicación PECS
+</a>
+      </nav>
+
+      <p class="guardian-sidebar__label guardian-sidebar__label--general">
+        GENERAL
+      </p>
+
+      <nav class="guardian-menu">
+        <a class="guardian-menu__link" href="tutor-perfiltutor.html" id="nav-perfil-tutor">
+          <span>☻</span>
+          Perfil del tutor
+        </a>
+
+      <a class="guardian-menu__link" href="tutor-perfilniño.html">
+        <span>♙</span> Perfil del niño
+        </a>
+      </nav>
+    </aside>
+
+    <main class="guardian-main">
+      <header class="guardian-topbar">
+        <div>
+          <h1>Seguimiento</h1>
+          <p>Acompaña el proceso diario de Thiago Ramírez</p>
+        </div>
+
+        <div class="guardian-topbar__actions">
+          <div class="guardian-user-avatar">KM</div>
+
+          <div class="guardian-user-data">
+            <strong>Kelly Martinez</strong>
+            <span>Tutora</span>
+          </div>
+
+          <button class="guardian-logout" id="btn-cerrar-sesion">
+            Cerrar sesión
+          </button>
+        </div>
+      </header>
+
+      <section class="guardian-content">
+        <section class="followup-welcome">
+          <div>
+            <p class="guardian-overline">SEGUIMIENTO DIARIO</p>
+            <h2>Así va el día de Thiago</h2>
+            <p>Revisa sus actividades, avances y observaciones recientes.</p>
+          </div>
+
+          <button class="guardian-primary-button" id="btn-ver-calendario">
+            Ver calendario
+          </button>
+        </section>
+
+        <section class="followup-summary">
+          <article class="followup-student-card">
+            <div class="followup-student-card__avatar">TR</div>
+
+            <div>
+              <p class="guardian-overline">ESTUDIANTE</p>
+              <h2>Thiago Ramírez</h2>
+              <p>Grupo A · Mañana · Ciclo 2026</p>
+            </div>
+
+            <div class="followup-student-card__status">
+              <span>Estado de hoy</span>
+              <strong>Activo</strong>
+            </div>
+          </article>
+
+          <article class="followup-attendance-card">
+            <p class="guardian-overline">ASISTENCIA</p>
+            <strong>92%</strong>
+            <span>11 de 12 sesiones este mes</span>
+            <div class="followup-attendance-card__bar">
+              <i style="width: 92%"></i>
+            </div>
+          </article>
+        </section>
+
+        <section class="followup-grid">
+          <article class="guardian-panel followup-timeline-panel">
+            <div class="guardian-panel__header">
+              <div>
+                <p class="guardian-overline">REGISTRO DE HOY</p>
+                <h2>Actividades y avances</h2>
+              </div>
+
+              <span class="followup-date-label">Viernes, 4 de septiembre</span>
+            </div>
+
+            <div class="followup-timeline">
+              <div class="followup-timeline__item followup-timeline__item--done">
+                <span class="followup-timeline__hour">08:30</span>
+                <i></i>
+
+                <div>
+                  <strong>Ingreso a sesión</strong>
+                  <p>Thiago inició su jornada con buena disposición.</p>
+                </div>
+
+                <em>Completado</em>
+              </div>
+
+              <div class="followup-timeline__item followup-timeline__item--done">
+                <span class="followup-timeline__hour">09:00</span>
+                <i></i>
+
+                <div>
+                  <strong>Matemática básica</strong>
+                  <p>Reconocimiento de números con apoyo visual.</p>
+                </div>
+
+                <em>Completado</em>
+              </div>
+
+              <div class="followup-timeline__item followup-timeline__item--current">
+                <span class="followup-timeline__hour">10:30</span>
+                <i></i>
+
+                <div>
+                  <strong>Comunicación funcional</strong>
+                  <p>Actividad de asociación entre imágenes y palabras.</p>
+                </div>
+
+                <em>En curso</em>
+              </div>
+
+              <div class="followup-timeline__item">
+                <span class="followup-timeline__hour">12:00</span>
+                <i></i>
+
+                <div>
+                  <strong>Actividad en casa</strong>
+                  <p>Clasificación de objetos por color y tamaño.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="guardian-panel followup-week-panel">
+            <div class="guardian-panel__header">
+              <div>
+                <p class="guardian-overline">SEMANA ACTUAL</p>
+                <h2>Asistencia semanal</h2>
+              </div>
+            </div>
+
+            <div class="followup-week-days">
+              <div class="followup-day followup-day--done">
+                <span>Lun</span>
+                <strong>✓</strong>
+              </div>
+
+              <div class="followup-day followup-day--done">
+                <span>Mar</span>
+                <strong>✓</strong>
+              </div>
+
+              <div class="followup-day followup-day--done">
+                <span>Mié</span>
+                <strong>✓</strong>
+              </div>
+
+              <div class="followup-day followup-day--done">
+                <span>Jue</span>
+                <strong>✓</strong>
+              </div>
+
+              <div class="followup-day followup-day--today">
+                <span>Vie</span>
+                <strong>✓</strong>
+              </div>
+            </div>
+
+            <div class="followup-week-message">
+              <span>★</span>
+              <p>Thiago ha mantenido una asistencia excelente esta semana.</p>
+            </div>
+
+            <button class="guardian-outline-button" id="btn-ver-asistencia">
+              Ver historial de asistencia
+            </button>
+          </article>
+        </section>
+
+        <section class="followup-bottom-grid">
+          <article class="guardian-panel">
+            <div class="guardian-panel__header">
+              <div>
+                <p class="guardian-overline">OBSERVACIONES RECIENTES</p>
+                <h2>Notas de acompañamiento</h2>
+              </div>
+
+              <button class="guardian-link-button" id="btn-ver-observaciones">
+                Ver todas →
+              </button>
+            </div>
+
+            <div class="followup-observation-list">
+              <article class="followup-observation">
+                <div class="followup-observation__icon followup-observation__icon--blue">◌</div>
+
+                <div>
+                  <strong>Participación y comunicación</strong>
+                  <p>
+                    Thiago utilizó apoyos visuales para solicitar materiales
+                    durante la actividad.
+                  </p>
+                  <span>Hoy · 10:15</span>
+                </div>
+              </article>
+
+              <article class="followup-observation">
+                <div class="followup-observation__icon followup-observation__icon--gold">★</div>
+
+                <div>
+                  <strong>Logro destacado</strong>
+                  <p>
+                    Identificó de manera autónoma los números del 1 al 10.
+                  </p>
+                  <span>Hoy · 09:40</span>
+                </div>
+              </article>
+            </div>
+          </article>
+
+          <article class="guardian-panel followup-home-panel">
+            <div class="guardian-panel__header">
+              <div>
+                <p class="guardian-overline">ACTIVIDAD PARA CASA</p>
+                <h2>Para continuar aprendiendo</h2>
+              </div>
+            </div>
+
+            <div class="followup-home-card">
+              <div class="followup-home-card__icon">▱</div>
+
+              <div>
+                <strong>Clasificación de objetos</strong>
+                <p>Practica con objetos de diferentes colores y tamaños.</p>
+              </div>
+            </div>
+
+            <button class="guardian-outline-button" id="btn-ver-actividad-casa">
+              Ver actividad
+            </button>
+          </article>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div class="guardian-toast" id="guardian-toast"></div>
+
+  <script src="../app/app.config.js"></script>
+  <script src="../core/local.service.js"></script>
+  <script src="../app/app.routers.js"></script>
+  <script src="../core/tutor-seguimiento.js"></script>
+</body>
+</html>

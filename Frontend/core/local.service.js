@@ -177,6 +177,46 @@ function _inicializarDB() {
 
 _inicializarDB();
 
+// ===== Usuario temporal para probar las vistas de tutor =====
+function crearTutorDePrueba() {
+  const db = _leerDB();
+
+  const tutorExiste = db.users.some(
+    usuario => usuario.email === 'tutor@lumina.com'
+  );
+
+  if (tutorExiste) return;
+
+  const rolTutor = db.roles.find(
+    rol => rol.name === 'GUARDIAN'
+  );
+
+  if (!rolTutor) return;
+
+  const nuevoTutor = {
+    id: _nuevoId(db.users),
+    email: 'tutor@lumina.com',
+    passwordHash: 'Tutor123!',
+    nationalId: null,
+    isActive: true,
+    lastLoginAt: null,
+    createdAt: _hoy()
+  };
+
+  db.users.push(nuevoTutor);
+
+  db.userRoles.push({
+    id: _nuevoId(db.userRoles),
+    userId: nuevoTutor.id,
+    roleId: rolTutor.id,
+    assignedAt: _hoy()
+  });
+
+  _guardarDB(db);
+}
+
+crearTutorDePrueba();
+
 // ============================================================
 // AuthService
 // ============================================================

@@ -1,0 +1,355 @@
+/* PERFIL DEL NIÑO - MISMO ESTILO DEL PERFIL DEL TUTOR */
+
+.guardian-child-profile-page .guardian-sidebar {
+  overflow-y: hidden !important;
+}
+
+.child-profile-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 4px 25px;
+}
+
+.child-profile-heading h2 {
+  margin: 0;
+  color: #10213a;
+  font-size: 27px;
+}
+
+.child-profile-heading > div > p:last-child {
+  margin: 7px 0 0;
+  color: #68758a;
+  font-size: 15px;
+}
+
+.child-profile-layout {
+  display: grid;
+  grid-template-columns: 0.8fr 1.6fr;
+  gap: 22px;
+  margin-bottom: 22px;
+}
+
+.child-profile-summary {
+  text-align: center;
+}
+
+.child-profile-summary__avatar {
+  display: grid;
+  width: 86px;
+  height: 86px;
+  margin: 5px auto 16px;
+  place-items: center;
+  border: 5px solid #f1f6ff;
+  border-radius: 50%;
+  color: #073b82;
+  background: #dce8fa;
+  font-size: 27px;
+  font-weight: 700;
+}
+
+.child-profile-summary h2 {
+  margin: 0;
+  color: #10213a;
+  font-size: 21px;
+}
+
+.child-profile-summary__group {
+  margin: 5px 0 20px;
+  color: #68758a;
+  font-size: 12px;
+}
+
+.child-profile-summary__details {
+  display: grid;
+  gap: 10px;
+  padding: 16px 0;
+  border-top: 1px solid #e8edf4;
+  border-bottom: 1px solid #e8edf4;
+  text-align: left;
+}
+
+.child-profile-summary__details p {
+  display: flex;
+  gap: 9px;
+  margin: 0;
+  color: #536178;
+  font-size: 11px;
+}
+
+.child-profile-summary__details span {
+  width: 18px;
+  color: #073b82;
+  text-align: center;
+  font-size: 14px;
+}
+
+.child-profile-summary__status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 12px;
+  border-radius: 11px;
+  background: #f6faff;
+  text-align: left;
+}
+
+.child-profile-summary__status > span {
+  display: grid;
+  width: 31px;
+  height: 31px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 9px;
+  color: #073b82;
+  background: #dce8fa;
+  font-size: 15px;
+}
+
+.child-profile-summary__status strong,
+.child-profile-summary__status small {
+  display: block;
+}
+
+.child-profile-summary__status strong {
+  color: #10213a;
+  font-size: 12px;
+}
+
+.child-profile-summary__status small {
+  margin-top: 2px;
+  color: #68758a;
+  font-size: 10px;
+}
+
+.child-profile-form-card {
+  padding: 26px;
+}
+
+.child-profile-form {
+  display: grid;
+  gap: 17px;
+  margin-top: 22px;
+}
+
+.child-profile-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.child-profile-field label {
+  display: block;
+  margin-bottom: 7px;
+  color: #536178;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.child-profile-field input,
+.child-profile-field select,
+.child-profile-field textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #d5dde8;
+  border-radius: 8px;
+  outline: none;
+  color: #10213a;
+  background: #ffffff;
+  font-family: var(--font-body);
+  font-size: 13px;
+}
+
+.child-profile-field textarea {
+  min-height: 105px;
+  resize: vertical;
+}
+
+.child-profile-field input:disabled,
+.child-profile-field select:disabled,
+.child-profile-field textarea:disabled {
+  color: #68758a;
+  background: #f7f9fc;
+  cursor: not-allowed;
+}
+
+.child-profile-field input:focus,
+.child-profile-field select:focus,
+.child-profile-field textarea:focus {
+  border-color: #073b82;
+  box-shadow: 0 0 0 3px rgba(7, 59, 130, 0.1);
+}
+
+.child-profile-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.child-profile-cancel-button {
+  padding: 12px 17px;
+  border: 1px solid #cbd6e3;
+  border-radius: 10px;
+  color: #536178;
+  background: #ffffff;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.child-profile-bottom-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 22px;
+}
+
+.child-profile-bottom-grid > .guardian-panel {
+  padding: 26px;
+}
+
+.child-preference-list {
+  display: grid;
+}
+
+.child-preference {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 17px 0;
+  border-bottom: 1px solid #e8edf4;
+}
+
+.child-preference:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.child-preference__icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 9px;
+  font-size: 15px;
+}
+
+.child-preference__icon--blue {
+  color: #073b82;
+  background: #dce8fa;
+}
+
+.child-preference__icon--gold {
+  color: #9c6d0f;
+  background: #fff0c9;
+}
+
+.child-preference__icon--purple {
+  color: #6650ab;
+  background: #eee8fb;
+}
+
+.child-preference strong {
+  display: block;
+  color: #10213a;
+  font-size: 13px;
+}
+
+.child-preference p {
+  margin: 4px 0 0;
+  color: #68758a;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.child-profile-emergency {
+  display: flex;
+  min-height: 190px;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.child-profile-emergency h2 {
+  margin: 0;
+  color: #10213a;
+  font-size: 20px;
+}
+
+.child-profile-emergency > div > p:last-child {
+  margin: 8px 0 0;
+  color: #68758a;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.child-profile-emergency__phone {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #536178;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.child-profile-emergency__phone span {
+  color: #073b82;
+  font-size: 17px;
+}
+
+@media (max-width: 1200px) {
+  .child-profile-layout,
+  .child-profile-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .child-profile-summary {
+    max-width: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .child-profile-heading {
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .child-profile-heading h2 {
+    font-size: 23px;
+  }
+}
+
+@media (max-width: 480px) {
+  .child-profile-heading {
+    display: block;
+  }
+
+  .child-profile-heading .guardian-primary-button {
+    margin-top: 15px;
+  }
+
+  .child-profile-form__row {
+    grid-template-columns: 1fr;
+  }
+
+  .child-profile-summary__details {
+    text-align: left;
+  }
+
+  .child-profile-bottom-grid {
+    gap: 16px;
+  }
+}
+.child-profile-summary__avatar {
+  overflow: hidden;
+  padding: 0;
+}
+
+.child-profile-summary__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
