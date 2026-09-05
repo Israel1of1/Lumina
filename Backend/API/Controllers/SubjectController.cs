@@ -19,7 +19,7 @@ namespace Backend.API.Controllers
             _subjectService = subjectService;
         }
 
-        [Authorize(Roles = "INSTITUTION, TEACHER")]
+        [Authorize(Roles = "INSTITUCION, TEACHER")]
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] PaginationParams pagination)
         {
@@ -70,7 +70,7 @@ namespace Backend.API.Controllers
             }
         }
 
-        [Authorize(Roles = "INSTITUTION, TEACHER")]
+        [Authorize(Roles = "INSTITUCION, TEACHER")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -123,7 +123,7 @@ namespace Backend.API.Controllers
             }
         }
 
-        [Authorize(Roles = "INSTITUTION, TEACHER")]
+        [Authorize(Roles = "INSTITUCION, TEACHER")]
         [HttpGet("byname/{name}")]
         public async Task<IActionResult> GetByName(string name)
         {
@@ -168,7 +168,7 @@ namespace Backend.API.Controllers
             }
         }
 
-        [Authorize(Roles = "INSTITUTION")]
+        [Authorize(Roles = "INSTITUCION")]
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateSubjectDto subjectDto)
         {
