@@ -17,12 +17,14 @@ const APP_CONFIG = {
     WELCOME: 'inicio.html',
     LOGIN: 'login.html',
     DASHBOARD: 'dashboard.html',
+    TUTOR_DASHBOARD: 'tutor-dashboard.html',
     TEACHERS: 'docentes.html',
     STUDENTS: 'estudiantes.html',
     GROUPS: 'grupos.html',
     SUBJECTS: 'materias.html',
     GROUP_SUBJECTS: 'asignaciones.html',
     LINK_CODES: 'codigos.html'
+    
   },
 
   // Reglas de negocio (RN-01 del documento de contexto)

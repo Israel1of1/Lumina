@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUMINA | Perfil del niño</title>
+
+  <link rel="stylesheet" href="../styles/base.css" />
+  <link rel="stylesheet" href="../styles/tutor-dashboard.css" />
+  <link rel="stylesheet" href="../styles/tutor-perfilniño.css" />
+</head>
+
+<body class="guardian-page guardian-child-profile-page">
+  <div class="guardian-layout">
+
+    <aside class="guardian-sidebar">
+      <div class="guardian-sidebar__brand-row">
+        <span class="guardian-sidebar__brand">LUMINA</span>
+
+        <button
+          class="guardian-sidebar__collapse"
+          id="btn-colapsar-menu"
+          aria-label="Colapsar menú"
+        >
+          ‹
+        </button>
+      </div>
+
+      <p class="guardian-sidebar__label">MENÚ</p>
+
+      <nav class="guardian-menu">
+        <a class="guardian-menu__link" href="tutor-dashboard.html">
+          <span>▦</span> Dashboard
+        </a>
+
+        <a class="guardian-menu__link" href="tutor-progreso.html">
+          <span>↗</span> Progreso del niño
+        </a>
+
+        <a class="guardian-menu__link" href="tutor-seguimiento.html">
+          <span>✓</span> Seguimiento
+        </a>
+
+      <a class="guardian-menu__link" href="tutor-comunicacion.html" id="nav-pecs">
+  <span>◌</span>
+  Comunicación PECS
+</a>
+
+      <p class="guardian-sidebar__label guardian-sidebar__label--general">
+        GENERAL
+      </p>
+
+      <nav class="guardian-menu">
+        <a class="guardian-menu__link" href="tutor-perfiltutor.html" id="nav-perfil-tutor">
+          <span>☻</span>
+          Perfil del tutor
+        </a>
+
+        <a
+  class="guardian-menu__link guardian-menu__link--active"
+  href="tutor-perfilniño.html"
+>
+  <span>♙</span>
+  Perfil del niño
+</a>
+      </nav>
+    </aside>
+
+    <main class="guardian-main">
+      <header class="guardian-topbar">
+        <div>
+          <h1>Perfil del niño</h1>
+          <p>Información y preferencias de Thiago Ramírez</p>
+        </div>
+
+        <div class="guardian-topbar__actions">
+          <div class="guardian-user-avatar">KM</div>
+
+          <div class="guardian-user-data">
+            <strong>Kelly Martinez</strong>
+            <span>Tutora</span>
+          </div>
+
+          <button class="guardian-logout" id="btn-cerrar-sesion">
+            Cerrar sesión
+          </button>
+        </div>
+      </header>
+
+      <section class="guardian-content">
+        <section class="child-profile-heading">
+          <div>
+            <p class="guardian-overline">MI HIJO</p>
+            <h2>Perfil de Thiago</h2>
+            <p>Actualiza sus datos y configura sus preferencias de apoyo.</p>
+          </div>
+
+          <button
+            class="guardian-primary-button"
+            id="btn-editar-perfil-nino"
+            type="button"
+          >
+            Editar perfil
+          </button>
+        </section>
+
+        <section class="child-profile-layout">
+          <article class="guardian-panel child-profile-summary">
+           <div class="child-profile-summary__avatar">
+  <img src="../img/perfil.avif" alt="Foto de Thiago Ramírez" />
+</div>
+
+            <h2>Thiago Ramírez</h2>
+            <p class="child-profile-summary__group">Grupo A · Mañana</p>
+
+            <div class="child-profile-summary__details">
+              <p>
+                <span>♙</span>
+                8 años
+              </p>
+
+              <p>
+                <span>◷</span>
+                Nació el 15 de marzo de 2018
+              </p>
+
+              <p>
+                <span>◌</span>
+                Autismo Nivel 02
+              </p>
+            </div>
+
+            <div class="child-profile-summary__status">
+              <span>✓</span>
+
+              <div>
+                <strong>Perfil actualizado</strong>
+                <small>Última actualización: hoy</small>
+              </div>
+            </div>
+          </article>
+
+          <article class="guardian-panel child-profile-form-card">
+            <div class="guardian-panel__header">
+              <div>
+                <p class="guardian-overline">INFORMACIÓN GENERAL</p>
+                <h2>Datos de Thiago</h2>
+              </div>
+            </div>
+
+            <form id="form-perfil-nino" class="child-profile-form">
+              <div class="child-profile-form__row">
+                <div class="child-profile-field">
+                  <label for="nino-nombre">Nombre</label>
+                  <input id="nino-nombre" type="text" value="Thiago" disabled />
+                </div>
+
+                <div class="child-profile-field">
+                  <label for="nino-apellido">Apellido</label>
+                  <input id="nino-apellido" type="text" value="Ramírez" disabled />
+                </div>
+              </div>
+
+              <div class="child-profile-form__row">
+                <div class="child-profile-field">
+                  <label for="nino-fecha-nacimiento">Fecha de nacimiento</label>
+                  <input
+                    id="nino-fecha-nacimiento"
+                    type="date"
+                    value="2018-03-15"
+                    disabled
+                  />
+                </div>
+
+                <div class="child-profile-field">
+                  <label for="nino-grupo">Grupo asignado</label>
+                  <input
+                    id="nino-grupo"
+                    type="text"
+                    value="Grupo A · Mañana"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <div class="child-profile-field">
+                <label for="nino-nivel-comunicacion">Nivel de comunicación</label>
+                <select id="nino-nivel-comunicacion" disabled>
+                  <option>No verbal</option>
+                  <option>Verbal limitado</option>
+                  <option selected>Verbal funcional</option>
+                </select>
+              </div>
+
+              <div class="child-profile-field">
+                <label for="nino-observaciones">Observaciones importantes</label>
+                <textarea id="nino-observaciones" rows="4" disabled>Thiago responde positivamente a apoyos visuales, instrucciones breves y actividades estructuradas.</textarea>
+              </div>
+
+              <div class="child-profile-form__actions">
+                <button
+                  class="child-profile-cancel-button"
+                  id="btn-cancelar-perfil-nino"
+                  type="button"
+                  hidden
+                >
+                  Cancelar
+                </button>
+
+                <button
+                  class="guardian-primary-button"
+                  id="btn-guardar-perfil-nino"
+                  type="submit"
+                  hidden
+                >
+                  Guardar cambios
+                </button>
+              </div>
+            </form>
+          </article>
+        </section>
+
+        <section class="child-profile-bottom-grid">
+          <article class="guardian-panel">
+            <div class="guardian-panel__header">
+              <div>
+                <p class="guardian-overline">PREFERENCIAS SENSORIALES</p>
+                <h2>Apoyos que le ayudan</h2>
+              </div>
+            </div>
+
+            <div class="child-preference-list">
+              <div class="child-preference">
+                <span class="child-preference__icon child-preference__icon--blue">◉</span>
+
+                <div>
+                  <strong>Apoyos visuales</strong>
+                  <p>Usa imágenes y secuencias para facilitar la comprensión.</p>
+                </div>
+              </div>
+
+              <div class="child-preference">
+                <span class="child-preference__icon child-preference__icon--gold">♫</span>
+
+                <div>
+                  <strong>Ambiente tranquilo</strong>
+                  <p>Prefiere actividades con poco ruido y distracciones.</p>
+                </div>
+              </div>
+
+              <div class="child-preference">
+                <span class="child-preference__icon child-preference__icon--purple">✓</span>
+
+                <div>
+                  <strong>Rutinas claras</strong>
+                  <p>Responde mejor a actividades con pasos definidos.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="guardian-panel child-profile-emergency">
+            <div>
+              <p class="guardian-overline">CONTACTO DE EMERGENCIA</p>
+              <h2>Kelly Martinez</h2>
+              <p>Madre y tutora principal de Thiago.</p>
+            </div>
+
+            <div class="child-profile-emergency__phone">
+              <span>☎</span>
+              +505 8888-1234
+            </div>
+
+            <button class="guardian-outline-button" id="btn-editar-contacto">
+              Editar contacto
+            </button>
+          </article>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div class="guardian-toast" id="guardian-toast"></div>
+
+  <script src="../app/app.config.js"></script>
+  <script src="../core/local.service.js"></script>
+  <script src="../app/app.routers.js"></script>
+  <script src="../core/tutor-perfilniño.js"></script>
+</body>
+</html>
