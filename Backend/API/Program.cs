@@ -1,3 +1,4 @@
+using Backend.Business.Services;
 using Business.Interfaces;
 using Business.Services;
 using DataAccess.Interfaces;
@@ -25,11 +26,34 @@ builder.Services.AddCors(options =>
 
 
 // Add services to the container.
+//builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
+//builder.Services.AddScoped<ITeacherService, TeacherService>();
+builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
+builder.Services.AddScoped<ITeacherService, TeacherService>();
+
+builder.Services.AddScoped<IGuardianRepository, GuardianRepository>();
+builder.Services.AddScoped<IGuardianService, GuardianService>();
+
+builder.Services.AddScoped<ILinkCodeRepository, LinkCodeRepository>();
+builder.Services.AddScoped<ILinkCodeService, LinkCodeService>(); 
+
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 
 builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
 builder.Services.AddScoped<ISubjectService, SubjectService>();
+
+builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
+builder.Services.AddScoped<IModuleService, ModuleService>();
+
+builder.Services.AddScoped<ILessonRepository, LessonRepository>();
+builder.Services.AddScoped<ILessonService, LessonService>();
+
+builder.Services.AddScoped<ILessonStepRepository, LessonStepRepository>();
+builder.Services.AddScoped<ILessonStepService, LessonStepService>();
 
 builder.Services.AddControllers();
 

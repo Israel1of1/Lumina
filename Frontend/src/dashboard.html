@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUMINA | Dashboard</title>
+  <link rel="stylesheet" href="../styles/base.css" />
+  <link rel="stylesheet" href="../styles/dashboard.css" />
+</head>
+<body data-pagina="dashboard">
+
+  <div class="app-layout">
+    <div id="sidebar-contenedor"></div>
+
+    <div class="app-layout__main">
+      <header class="topbar">
+        <div>
+          <h2>Dashboard</h2>
+          <p class="texto-suave">Resumen general de la institución</p>
+        </div>
+        <div id="topbar-usuario-contenedor"></div>
+      </header>
+
+      <main class="contenido">
+        <section class="tarjetas-resumen">
+          <div class="tarjeta-stat">
+            <div class="tarjeta-stat__valor" id="stat-docentes">—</div>
+            <div class="tarjeta-stat__etiqueta">Docentes activos</div>
+          </div>
+          <div class="tarjeta-stat">
+            <div class="tarjeta-stat__valor" id="stat-estudiantes">—</div>
+            <div class="tarjeta-stat__etiqueta">Estudiantes matriculados</div>
+          </div>
+          <div class="tarjeta-stat">
+            <div class="tarjeta-stat__valor" id="stat-grupos">—</div>
+            <div class="tarjeta-stat__etiqueta">Grupos activos</div>
+          </div>
+          <div class="tarjeta-stat">
+            <div class="tarjeta-stat__valor" id="stat-materias">—</div>
+            <div class="tarjeta-stat__etiqueta">Materias registradas</div>
+          </div>
+          <div class="tarjeta-stat">
+            <div class="tarjeta-stat__valor" id="stat-codigos-pendientes">—</div>
+            <div class="tarjeta-stat__etiqueta">Códigos pendientes de canjear</div>
+          </div>
+        </section>
+
+        <div class="dashboard-grid">
+          <section class="panel">
+            <div class="panel__header">
+              <h2>Ocupación de grupos</h2>
+              <span class="texto-suave">Cupo máximo: 10 estudiantes</span>
+            </div>
+            <div id="lista-ocupacion-grupos" class="cargando">Cargando...</div>
+          </section>
+
+          <section class="panel">
+            <div class="panel__header">
+              <h2>Últimos códigos generados</h2>
+              <a class="enlace-ver-mas" href="codigos.html">Ver todos</a>
+            </div>
+            <div id="lista-ultimos-codigos" class="cargando">Cargando...</div>
+          </section>
+        </div>
+
+        <section class="panel">
+          <div class="panel__header">
+            <h2>Docentes recientes</h2>
+            <a class="enlace-ver-mas" href="docentes.html">Ver todos</a>
+          </div>
+          <div id="tabla-docentes-recientes" class="cargando">Cargando...</div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="../app/app.config.js"></script>
+  <script src="../core/local.service.js"></script>t>
+  <script src="../app/app.routers.js"></script>
+  <script src="../app/app.js"></script>
+  <script src="../core/dashboard.js"></script>
+</body>
+</html>

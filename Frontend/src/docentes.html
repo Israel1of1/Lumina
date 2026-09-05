@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUMINA | Docentes</title>
+  <link rel="stylesheet" href="../styles/base.css" />
+  <link rel="stylesheet" href="../styles/docentes.css" />
+</head>
+<body data-pagina="docentes">
+
+  <div class="app-layout">
+    <div id="sidebar-contenedor"></div>
+
+    <div class="app-layout__main">
+      <header class="topbar">
+        <div>
+          <h2>Docentes</h2>
+          <p class="texto-suave">Altas, bajas y ficha de cada docente</p>
+        </div>
+        <div id="topbar-usuario-contenedor"></div>
+      </header>
+
+      <main class="contenido">
+        <div class="encabezado-modulo">
+          <div class="buscador">
+            <input type="text" id="buscador-docentes" placeholder="Buscar por nombre o cédula..." />
+          </div>
+          <button class="btn btn-primario" id="btn-nuevo-docente">+ Nuevo docente</button>
+        </div>
+
+        <section class="panel">
+          <div id="tabla-docentes" class="cargando">Cargando...</div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- ===== Modal: Crear / Editar docente ===== -->
+  <div class="modal-fondo oculto" id="modal-docente">
+    <div class="modal modal-grande">
+      <h2 id="modal-docente-titulo">Nuevo docente</h2>
+      <form id="form-docente">
+        <input type="hidden" id="docente-id" />
+
+        <div class="grid-2">
+          <div class="campo">
+            <label for="docente-nombre">Nombre</label>
+            <input type="text" id="docente-nombre" required />
+          </div>
+          <div class="campo">
+            <label for="docente-apellido">Apellido</label>
+            <input type="text" id="docente-apellido" required />
+          </div>
+          <div class="campo">
+            <label for="docente-cedula">Cédula</label>
+            <input type="text" id="docente-cedula" />
+          </div>
+          <div class="campo">
+            <label for="docente-especialidad">Especialidad</label>
+            <input type="text" id="docente-especialidad" placeholder="Ej. Educación especial" />
+          </div>
+          <div class="campo">
+            <label for="docente-titulo">Título académico</label>
+            <input type="text" id="docente-titulo" />
+          </div>
+          <div class="campo">
+            <label for="docente-correo">Correo personal</label>
+            <input type="email" id="docente-correo" />
+          </div>
+          <div class="campo">
+            <label for="docente-telefono">Teléfono</label>
+            <input type="text" id="docente-telefono" />
+          </div>
+          <div class="campo">
+            <label for="docente-ciudad">Ciudad</label>
+            <input type="text" id="docente-ciudad" />
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="docente-direccion">Dirección</label>
+          <textarea id="docente-direccion" rows="2"></textarea>
+        </div>
+
+        <p class="nota-modal">La cuenta de acceso (correo institucional + contraseña) se activa después, cuando el docente canjea un código de vinculación desde el módulo <strong>Códigos</strong>.</p>
+
+        <p id="docente-error" class="texto-error oculto"></p>
+
+        <div class="modal-acciones">
+          <button type="button" class="btn btn-secundario" onclick="cerrarModal('modal-docente')">Cancelar</button>
+          <button type="submit" class="btn btn-primario">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Modal: Ver detalle ===== -->
+  <div class="modal-fondo oculto" id="modal-detalle">
+    <div class="modal modal-grande">
+      <h2>Ficha del docente</h2>
+      <div id="detalle-contenido"></div>
+      <div class="modal-acciones">
+        <button type="button" class="btn btn-secundario" onclick="cerrarModal('modal-detalle')">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Modal: Cambiar estado ===== -->
+  <div class="modal-fondo oculto" id="modal-estado">
+    <div class="modal">
+      <h2>Cambiar estado</h2>
+      <form id="form-estado">
+        <input type="hidden" id="estado-id" />
+        <div class="campo">
+          <label for="estado-valor">Nuevo estado</label>
+          <select id="estado-valor" required>
+            <option value="ACTIVE">Activo</option>
+            <option value="ON_LEAVE">De permiso</option>
+            <option value="INACTIVE">Inactivo (baja)</option>
+          </select>
+        </div>
+        <div class="campo oculto" id="campo-motivo-baja">
+          <label for="estado-motivo">Motivo de la baja</label>
+          <textarea id="estado-motivo" rows="3"></textarea>
+        </div>
+        <p id="estado-error" class="texto-error oculto"></p>
+        <div class="modal-acciones">
+          <button type="button" class="btn btn-secundario" onclick="cerrarModal('modal-estado')">Cancelar</button>
+          <button type="submit" class="btn btn-primario">Confirmar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../app/app.config.js"></script>
+  <script src="../core/local.service.js"></script>t>
+  <script src="../app/app.routers.js"></script>
+  <script src="../app/app.js"></script>
+  <script src="../core/docentes.js"></script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUMINA | Asignaciones</title>
+  <link rel="stylesheet" href="../styles/base.css" />
+  <link rel="stylesheet" href="../styles/docentes.css" />
+  <link rel="stylesheet" href="../styles/asignaciones.css" />
+</head>
+<body data-pagina="asignaciones">
+
+  <div class="app-layout">
+    <div id="sidebar-contenedor"></div>
+
+    <div class="app-layout__main">
+      <header class="topbar">
+        <div>
+          <h2>Asignaciones</h2>
+          <p class="texto-suave">Materia + docente asignados a cada grupo</p>
+        </div>
+        <div id="topbar-usuario-contenedor"></div>
+      </header>
+
+      <main class="contenido">
+        <div class="encabezado-modulo">
+          <select id="filtro-grupo-asignacion">
+            <option value="">Todos los grupos</option>
+          </select>
+          <button class="btn btn-primario" id="btn-nueva-asignacion">+ Nueva asignación</button>
+        </div>
+
+        <section class="panel">
+          <div id="tabla-asignaciones" class="cargando">Cargando...</div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- ===== Modal: Nueva asignación ===== -->
+  <div class="modal-fondo oculto" id="modal-asignacion">
+    <div class="modal">
+      <h2>Nueva asignación</h2>
+      <form id="form-asignacion">
+        <div class="campo">
+          <label for="asig-grupo">Grupo</label>
+          <select id="asig-grupo" required></select>
+        </div>
+        <div class="campo">
+          <label for="asig-materia">Materia</label>
+          <select id="asig-materia" required></select>
+        </div>
+        <div class="campo">
+          <label for="asig-docente">Docente</label>
+          <select id="asig-docente" required></select>
+        </div>
+        <div class="campo">
+          <label for="asig-fecha">Fecha de asignación</label>
+          <input type="date" id="asig-fecha" />
+        </div>
+        <p id="asignacion-error" class="texto-error oculto"></p>
+        <div class="modal-acciones">
+          <button type="button" class="btn btn-secundario" onclick="cerrarModal('modal-asignacion')">Cancelar</button>
+          <button type="submit" class="btn btn-primario">Asignar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Modal: Finalizar asignación ===== -->
+  <div class="modal-fondo oculto" id="modal-finalizar">
+    <div class="modal">
+      <h2>Finalizar asignación</h2>
+      <form id="form-finalizar">
+        <input type="hidden" id="finalizar-id" />
+        <p class="nota-modal" id="finalizar-resumen"></p>
+        <div class="campo">
+          <label for="finalizar-fecha">Fecha de finalización</label>
+          <input type="date" id="finalizar-fecha" required />
+        </div>
+        <p id="finalizar-error" class="texto-error oculto"></p>
+        <div class="modal-acciones">
+          <button type="button" class="btn btn-secundario" onclick="cerrarModal('modal-finalizar')">Cancelar</button>
+          <button type="submit" class="btn btn-primario">Confirmar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../app/app.config.js"></script>
+  <script src="../core/local.service.js"></script>t>
+  <script src="../app/app.routers.js"></script>
+  <script src="../app/app.js"></script>
+  <script src="../core/asignaciones.js"></script>
+</body>
+</html>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Entities
 {
-    public class LinkCode
+    public class LinkCodeInfo
     {
         public int Id { get; set; }
         public string Code { get; set; }
@@ -18,6 +18,12 @@ namespace Core.Entities
         public DateTime? UsedAt { get;set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdateAt { get; set; }
+
+        // Extensión necesaria para saber qué registro (Teacher/Guardian/Student) activa el código.
+        public string? TargetEntityType { get; set; } // TEACHER | GUARDIAN | STUDENT
+        public int? TargetEntityId { get; set; }
+
+
 
     }
 }
