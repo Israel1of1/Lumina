@@ -282,5 +282,61 @@ namespace Backend.Business.Services
                 };
             }
         }
+        public async Task<ServiceResponse<bool>> ChangePasswordAsync(int userId, ChangePasswordDto request)
+        {
+            try
+            {
+                var userResponse = await _authRepository.GetByIdAsync(userId);
+                if (userResponse.OperationStatusCode == 5060 || userResponse.Data == null)
+                {
+                    return new ServiceResponse<bool> { Data = false, IsSuccess = false, MessageCodes = MessageCodes.NotFound, Message = "Usuario no encontrado." };
+                }
+                var user = userResponse.Data;
+
+                var isCurrentValid = BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.PasswordHash);
+                if (!isCurrentValid)
+                {
+                    return new ServiceResponse<bool>
+                    {
+                        Data = false,
+                        IsSuccess = false,
+                        MessageCodes = MessageCodes.Unauthorized,
+                        Message = "La contraseña actual no es correcta."
+                    };
+                }
+
+                var newHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+                var repoResponse = await _authRepository.UpdatePasswordAsync(userId, newHash);
+
+                if (repoResponse.OperationStatusCode != 0)
+                {
+                    return new ServiceResponse<bool>
+                    {
+                        Data = false,
+                        IsSuccess = false,
+                        MessageCodes = MessageCodes.ErrorDataBase,
+                        Message = "No se pudo actualizar la contraseña."
+                    };
+                }
+
+                return new ServiceResponse<bool>
+                {
+                    Data = true,
+                    IsSuccess = true,
+                    MessageCodes = MessageCodes.Success,
+                    Message = "Contraseña actualizada correctamente."
+                };
+            }
+            catch (Exception)
+            {
+                return new ServiceResponse<bool>
+                {
+                    Data = false,
+                    IsSuccess = false,
+                    MessageCodes = MessageCodes.ErrorDataBase,
+                    Message = "Ocurrio algo inesperado."
+                };
+            }
+        }
     }
 }

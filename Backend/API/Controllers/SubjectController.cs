@@ -19,7 +19,7 @@ namespace Backend.API.Controllers
             _subjectService = subjectService;
         }
 
-        [Authorize(Roles = "INSTITUTION, TEACHER")]
+        [Authorize(Roles = "INSTITUCION, TEACHER")]
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] PaginationParams pagination)
         {
@@ -34,7 +34,6 @@ namespace Backend.API.Controllers
                     Description = s.Description,
                     Color = s.Color,
                     Icon = s.Icon,
-                    CreatedAt = s.CreatedAt
                 });
 
                 var apiResponse = new ApiResponse<IEnumerable<SubjectDto>>
@@ -71,7 +70,7 @@ namespace Backend.API.Controllers
             }
         }
 
-        [Authorize(Roles = "INSTITUTION, TEACHER")]
+        [Authorize(Roles = "INSTITUCION, TEACHER")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -97,7 +96,6 @@ namespace Backend.API.Controllers
                     Description = serviceResponse.Data!.Description,
                     Color = serviceResponse.Data!.Color,
                     Icon = serviceResponse.Data!.Icon,
-                    CreatedAt = serviceResponse.Data!.CreatedAt
                 };
 
                 return Ok(subjectDto);
@@ -125,7 +123,7 @@ namespace Backend.API.Controllers
             }
         }
 
-        [Authorize(Roles = "INSTITUTION, TEACHER")]
+        [Authorize(Roles = "INSTITUCION, TEACHER")]
         [HttpGet("byname/{name}")]
         public async Task<IActionResult> GetByName(string name)
         {
@@ -150,7 +148,6 @@ namespace Backend.API.Controllers
                     Description = serviceResponse.Data!.Description,
                     Color = serviceResponse.Data!.Color,
                     Icon = serviceResponse.Data!.Icon,
-                    CreatedAt = serviceResponse.Data!.CreatedAt
                 };
 
                 return Ok(subjectDto);
@@ -171,7 +168,7 @@ namespace Backend.API.Controllers
             }
         }
 
-        [Authorize(Roles = "INSTITUTION")]
+        [Authorize(Roles = "INSTITUCION")]
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateSubjectDto subjectDto)
         {
@@ -186,7 +183,6 @@ namespace Backend.API.Controllers
                     Description = serviceResponse.Data!.Description,
                     Color = serviceResponse.Data!.Color,
                     Icon = serviceResponse.Data!.Icon,
-                    CreatedAt = serviceResponse.Data!.CreatedAt
                 };
 
                 return CreatedAtAction(nameof(GetById), new { id = newSubjectDto.Id }, newSubjectDto);
@@ -225,7 +221,6 @@ namespace Backend.API.Controllers
                     Description = serviceResponse.Data!.Description,
                     Color = serviceResponse.Data!.Color,
                     Icon = serviceResponse.Data!.Icon,
-                    CreatedAt = serviceResponse.Data!.CreatedAt
                 };
                 return Ok(updatedSubjectDto);
             }

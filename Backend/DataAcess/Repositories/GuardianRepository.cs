@@ -94,7 +94,7 @@ namespace DataAccess.Repositories
                     cmd.Parameters.AddWithValue("@Address", (object?)profile.Address ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@City", (object?)profile.City ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@Photo", (object?)profile.Photo ?? DBNull.Value);
-                    cmd.Parameters.AddWithValue("@Relationship", (object?)profile.relationship ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Relationship", (object?)profile.RelationShip ?? DBNull.Value);
                     cmd.Parameters.Add("@ReturnValue", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
 
                     using (var reader = await cmd.ExecuteReaderAsync())
@@ -145,10 +145,10 @@ namespace DataAccess.Repositories
                 Address = reader["Address"] == DBNull.Value ? null : reader["Address"].ToString(),
                 City = reader["City"] == DBNull.Value ? null : reader["City"].ToString(),
                 Photo = reader["Photo"] == DBNull.Value ? null : reader["Photo"].ToString(),
-                relationship = reader["Relationship"] == DBNull.Value ? null : reader["Relationship"].ToString(),
+                RelationShip = reader["Relationship"] == DBNull.Value ? null : reader["Relationship"].ToString(),
                 EntityStatus = reader["EntityStatus"].ToString()!,
-                CreatedAt = (DateTime)reader["CreatedAt"],
-                UpdatedAt = reader["UpdatedAt"] == DBNull.Value ? null : (DateTime?)reader["UpdatedAt"]
+                CreateAt = (DateTime)reader["CreatedAt"],
+                UpdateAt = reader["UpdatedAt"] == DBNull.Value ? null : (DateTime?)reader["UpdatedAt"]
             };
         }
 
@@ -185,10 +185,10 @@ namespace DataAccess.Repositories
                                 NationalId = reader["NationalId"] == DBNull.Value ? null : reader["NationalId"].ToString(),
                                 PersonalEmail = reader["PersonalEmail"] == DBNull.Value ? null : reader["PersonalEmail"].ToString(),
                                 Phone = reader["Phone"] == DBNull.Value ? null : reader["Phone"].ToString(),
-                                relationship = reader["Relationship"] == DBNull.Value ? null : reader["Relationship"].ToString(),
+                                RelationShip = reader["Relationship"] == DBNull.Value ? null : reader["Relationship"].ToString(),
                                 EntityStatus = reader["EntityStatus"].ToString()!,
-                                CreatedAt = (DateTime)reader["CreatedAt"],
-                                UpdatedAt = reader["UpdatedAt"] == DBNull.Value ? null : (DateTime?)reader["UpdatedAt"]
+                                CreateAt = (DateTime)reader["CreatedAt"],
+                                UpdateAt = reader["UpdatedAt"] == DBNull.Value ? null : (DateTime?)reader["UpdatedAt"]
                             });
                         }
 

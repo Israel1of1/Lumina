@@ -2,7 +2,9 @@
 using Business.DTOs;
 using Business.Interfaces;
 using Core.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 
 namespace Backend.Api.Controllers
@@ -50,6 +52,28 @@ namespace Backend.Api.Controllers
                 MessageCodes.Unauthorized => Unauthorized(result),
                 MessageCodes.NotFound => NotFound(result),
                 MessageCodes.Conflict => Conflict(result),
+                _ => StatusCode(500, result)
+            };
+        }
+        [HttpPost("change-password")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { message = "Datos invalidos." });
+
+            var subject = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub");
+            var userId = int.Parse(subject!);
+
+            var result = await _authService.ChangePasswordAsync(userId, request);
+
+            if (result.IsSuccess)
+                return Ok(result);
+
+            return result.MessageCodes switch
+            {
+                MessageCodes.Unauthorized => Unauthorized(result),
+                MessageCodes.NotFound => NotFound(result),
                 _ => StatusCode(500, result)
             };
         }
