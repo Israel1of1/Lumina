@@ -202,5 +202,93 @@ namespace DataAccess.Repositories
                 };
             }
         }
+        public async Task<RepositoryResponse<bool>> UpdatePasswordAsync(int userId, string newPasswordHash)
+        {
+            var response = new RepositoryResponse<bool>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    SqlCommand cmd = new SqlCommand("USP_UpdateUserPassword", connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+                    cmd.Parameters.AddWithValue("@NewPasswordHash", newPasswordHash);
+                    cmd.Parameters.Add("@ReturnValue", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
+
+                    await cmd.ExecuteNonQueryAsync();
+
+                    var returnedValue = Convert.ToInt32(cmd.Parameters["@ReturnValue"].Value);
+
+                    response.Data = returnedValue == 0;
+                    response.OperationStatusCode = returnedValue;
+                    return response;
+                }
+            }
+            catch (SqlException ex)
+            {
+                response.Data = false;
+                response.OperationStatusCode = ex.Number;
+                response.Message = ex.Message;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return new RepositoryResponse<bool> { Data = false, OperationStatusCode = -1, Message = ex.Message };
+            }
+        }
+        public async Task<RepositoryResponse<User>> GetByIdAsync(int userId)
+        {
+            var userReturned = new User();
+            var response = new RepositoryResponse<User>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    SqlCommand cmd = new SqlCommand("USP_GetUserById", connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Id", userId);
+                    cmd.Parameters.Add("@ReturnValue", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
+
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            userReturned.Id = (int)reader["Id"];
+                            userReturned.Email = reader["Email"].ToString()!;
+                            userReturned.PasswordHash = reader["PasswordHash"].ToString()!;
+                            userReturned.IsActive = (bool)reader["IsActive"];
+                            userReturned.Roles = reader["Roles"] == DBNull.Value
+                                ? new List<string>()
+                                : reader["Roles"].ToString()!
+                                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                    .Select(r => r.Trim())
+                                    .ToList();
+                        }
+                    }
+
+                    var returnedValue = Convert.ToInt32(cmd.Parameters["@ReturnValue"].Value);
+                    response.Data = userReturned;
+                    response.OperationStatusCode = returnedValue;
+                    return response;
+                }
+            }
+            catch (SqlException ex)
+            {
+                response.Data = null;
+                response.OperationStatusCode = ex.Number;
+                response.Message = ex.Message;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return new RepositoryResponse<User> { Data = null, OperationStatusCode = -1, Message = ex.Message };
+            }
+        }
     }
 }

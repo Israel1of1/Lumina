@@ -9,6 +9,6 @@ namespace Business.DTOs
         public string? Description { get; set; }
         public string? Color { get; set; }
         public string? Icon { get; set; }
-        public DateTime CreatedAt { get; set; }
+     
     }
 }

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LÚMINA | Portal docente</title>
+  <link rel="stylesheet" href="../styles/docente-portal.css" />
+</head>
+
+<body>
+  <div class="app-docente">
+
+    <aside class="menu-docente" id="menu-docente">
+      <div class="menu-docente__cabecera">
+        <div class="menu-docente__logo">LÚMINA</div>
+
+        <button
+          class="menu-docente__toggle"
+          id="btn-menu"
+          type="button"
+          title="Contraer menú"
+        >
+          ‹
+        </button>
+      </div>
+
+      <div class="menu-docente__titulo">MENÚ</div>
+
+      <nav class="menu-docente__links">
+        <a class="menu-docente__link activo" href="../src/inicio-docente.html">
+          <span class="menu-docente__icono">▦</span>
+          <span class="menu-docente__texto">Inicio</span>
+        </a>
+
+        <a class="menu-docente__link" href="../src/docentes-grupos.html">
+          <span class="menu-docente__icono">◈</span>
+          <span class="menu-docente__texto">Mis Grupos y Estudiantes</span>
+        </a>
+
+    
+        <a class="menu-docente__link" href="../src/docente-plan.html">
+          <span class="menu-docente__icono">▤</span>
+          <span class="menu-docente__texto">Planes de clase</span>
+        </a>
+
+        <a class="menu-docente__link" href="../src/docente-recursos.html">
+          <span class="menu-docente__icono">▣</span>
+          <span class="menu-docente__texto">Recursos</span>
+        </a>
+
+    
+      </nav>
+
+      <div class="menu-docente__linea"></div>
+
+      <div class="menu-docente__titulo">GENERAL</div>
+
+      <nav class="menu-docente__links">
+      
+
+        <a class="menu-docente__link" href="../src/dashboard.html">
+          <span class="menu-docente__icono">↩</span>
+          <span class="menu-docente__texto">Volver al panel admin</span>
+        </a>
+
+        <button class="menu-docente__link menu-docente__cerrar" id="btn-cerrar-sesion">
+          <span class="menu-docente__icono">↪</span>
+          <span class="menu-docente__texto">Cerrar sesión</span>
+        </button>
+      </nav>
+    </aside>
+
+    <div class="contenido-docente">
+      <header class="topbar-docente">
+        <div></div>
+
+        <div class="topbar-docente__usuario">
+          <span class="topbar-docente__notificacion">♧</span>
+
+          <div class="topbar-docente__avatar">MP</div>
+
+          <div class="topbar-docente__datos">
+            <strong>María Pérez</strong>
+            <span>Docente</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="pagina-docente">
+        <section class="encabezado-docente">
+          <div>
+            <h1>Inicio</h1>
+            <p>Resumen de tu aula y actividades.</p>
+          </div>
+
+          <span class="aula-docente">Docente · Aula 1</span>
+        </section>
+
+        <section class="resumen-docente">
+          <article class="tarjeta-resumen">
+            <div class="tarjeta-resumen__icono azul">♧</div>
+            <div>
+              <strong>24</strong>
+              <span>Estudiantes</span>
+            </div>
+          </article>
+
+          <article class="tarjeta-resumen">
+            <div class="tarjeta-resumen__icono verde">▤</div>
+            <div>
+              <strong>4</strong>
+              <span>Planes activos</span>
+            </div>
+          </article>
+
+          <article class="tarjeta-resumen">
+            <div class="tarjeta-resumen__icono amarillo">▣</div>
+            <div>
+              <strong>12</strong>
+              <span>Recursos guardados</span>
+            </div>
+          </article>
+        </section>
+
+        <section class="panel-docente">
+          <div class="panel-docente__cabecera">
+            <div>
+              <h2>Mis grupos</h2>
+              <p>Grupos asignados para este período.</p>
+            </div>
+
+            <a href="docente-grupos.html">Ver grupos →</a>
+          </div>
+
+          <div class="lista-grupos">
+            <article class="grupo-docente">
+              <div class="grupo-docente__icono azul">A</div>
+
+              <div>
+                <h3>Grupo A · Mañana</h3>
+                <p>8 estudiantes · Nivel inicial</p>
+              </div>
+
+              <a href="docente-estudiantes.html">Ver estudiantes</a>
+            </article>
+
+            <article class="grupo-docente">
+              <div class="grupo-docente__icono verde">B</div>
+
+              <div>
+                <h3>Grupo B · Mañana</h3>
+                <p>7 estudiantes · Nivel inicial</p>
+              </div>
+
+              <a href="docente-estudiantes.html">Ver estudiantes</a>
+            </article>
+
+            <article class="grupo-docente">
+              <div class="grupo-docente__icono amarillo">C</div>
+
+              <div>
+                <h3>Grupo C · Tarde</h3>
+                <p>9 estudiantes · Nivel 1</p>
+              </div>
+
+              <a href="docente-estudiantes.html">Ver estudiantes</a>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel-docente">
+          <div class="panel-docente__cabecera">
+            <div>
+              <h2>Planes recientes</h2>
+              <p>Continúa trabajando en tus planes de clase.</p>
+            </div>
+
+            <a href="docente-planes.html">Ver todos →</a>
+          </div>
+
+          <div class="planes-docente">
+            <article class="plan-docente">
+              <div>
+                <h3>Manejo de turnos</h3>
+                <p>Nivel 3 · Aula 1</p>
+              </div>
+
+              <span class="estado-publicado">Publicado</span>
+            </article>
+
+            <article class="plan-docente">
+              <div>
+                <h3>Coordinación motora</h3>
+                <p>Nivel 1 · Aula 1</p>
+              </div>
+
+              <span class="estado-publicado">Publicado</span>
+            </article>
+
+            <article class="plan-docente">
+              <div>
+                <h3>Vocabulario de frutas</h3>
+                <p>Nivel 2 · Aula 1</p>
+              </div>
+
+              <span class="estado-borrador">Borrador</span>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const menu = document.getElementById('menu-docente');
+    const botonMenu = document.getElementById('btn-menu');
+
+    botonMenu.addEventListener('click', () => {
+      menu.classList.toggle('colapsado');
+      botonMenu.textContent = menu.classList.contains('colapsado') ? '›' : '‹';
+    });
+
+    document.getElementById('btn-cerrar-sesion').addEventListener('click', () => {
+      sessionStorage.clear();
+      window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>

@@ -17,5 +17,7 @@ namespace Core.Entities
         public DateTime? AssignedAt { get; set; }
         public DateTime? EndDate { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string? EntityFirstName { get; set; }
+        public string? EntityLastName { get; set; }
     }
 }

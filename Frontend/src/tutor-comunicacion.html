@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUMINA | Comunicación PECS</title>
+
+  <link rel="stylesheet" href="../styles/base.css" />
+  <link rel="stylesheet" href="../styles/tutor-dashboard.css" />
+  <link rel="stylesheet" href="../styles/tutor-comunicacion.css" />
+</head>
+
+<body class="guardian-page guardian-pecs-page">
+  <div class="guardian-layout">
+
+    <aside class="guardian-sidebar">
+      <div class="guardian-sidebar__brand-row">
+        <span class="guardian-sidebar__brand">LUMINA</span>
+
+        <button
+          class="guardian-sidebar__collapse"
+          id="btn-colapsar-menu"
+          aria-label="Colapsar menú"
+        >
+          ‹
+        </button>
+      </div>
+
+      <p class="guardian-sidebar__label">MENÚ</p>
+
+      <nav class="guardian-menu">
+        <a class="guardian-menu__link" href="tutor-dashboard.html">
+          <span>▦</span>
+          Dashboard
+        </a>
+
+        <a class="guardian-menu__link" href="tutor-progreso.html">
+          <span>↗</span>
+          Progreso del niño
+        </a>
+
+        <a class="guardian-menu__link" href="tutor-seguimiento.html">
+          <span>✓</span>
+          Seguimiento
+        </a>
+
+      
+
+      <a class="guardian-menu__link guardian-menu__link--active" href="tutor-comunicacion.html" id="nav-pecs">
+  <span>◌</span>
+  Comunicación PECS
+</a>
+      </nav>
+
+      <p class="guardian-sidebar__label guardian-sidebar__label--general">
+        GENERAL
+      </p>
+
+      <nav class="guardian-menu">
+        <a class="guardian-menu__link" href="tutor-perfiltutor.html" id="nav-perfil-tutor">
+          <span>☻</span>
+          Perfil del tutor
+        </a>
+
+        <a class="guardian-menu__link" href="tutor-perfilniño.html">
+        <span>♙</span> Perfil del niño
+        </a>
+      </nav>
+    </aside>
+
+    <main class="guardian-main">
+      <header class="guardian-topbar">
+        <div>
+          <h1>Comunicación PECS</h1>
+          <p>Apoya la comunicación visual de Thiago Ramírez</p>
+        </div>
+
+        <div class="guardian-topbar__actions">
+          <div class="guardian-user-avatar">KM</div>
+
+          <div class="guardian-user-data">
+            <strong>Kelly Martinez</strong>
+            <span>Tutora</span>
+          </div>
+
+          <button class="guardian-logout" id="btn-cerrar-sesion">
+            Cerrar sesión
+          </button>
+        </div>
+      </header>
+
+      <section class="guardian-content">
+        <section class="pecs-welcome">
+          <div>
+            <p class="guardian-overline">TABLERO DE COMUNICACIÓN</p>
+            <h2>¿Qué quiere comunicar Thiago?</h2>
+            <p>Selecciona una tarjeta para formar una frase visual.</p>
+          </div>
+
+          <button class="guardian-primary-button" id="btn-limpiar-frase">
+            Limpiar frase
+          </button>
+        </section>
+
+        <section class="pecs-child-card">
+          <div class="pecs-child-card__avatar">TR</div>
+
+          <div>
+            <p class="guardian-overline">ESTUDIANTE</p>
+            <h2>Thiago Ramírez</h2>
+            <p>Tablero personalizado · Comunicación funcional</p>
+          </div>
+
+          <div class="pecs-child-card__tip">
+            <span>i</span>
+            <p>Presiona las tarjetas en el orden en que Thiago desea expresarse.</p>
+          </div>
+        </section>
+
+        <section class="guardian-panel pecs-sentence-panel">
+          <div class="guardian-panel__header">
+            <div>
+              <p class="guardian-overline">FRASE ACTUAL</p>
+              <h2>Thiago quiere decir</h2>
+            </div>
+
+            <button class="guardian-link-button" id="btn-reproducir">
+              ▶ Reproducir
+            </button>
+          </div>
+
+          <div class="pecs-sentence" id="pecs-frase">
+            <span class="pecs-sentence__empty">
+              Selecciona tarjetas para formar una frase.
+            </span>
+          </div>
+        </section>
+
+        <section class="pecs-board-grid">
+          <article class="guardian-panel pecs-categories-panel">
+            <div class="guardian-panel__header">
+              <div>
+                <p class="guardian-overline">CATEGORÍAS</p>
+                <h2>Tablero visual</h2>
+              </div>
+            </div>
+
+            <div class="pecs-category-tabs">
+              <button class="pecs-category-tab pecs-category-tab--active" data-category="necesidades">
+                Necesidades
+              </button>
+
+              <button class="pecs-category-tab" data-category="acciones">
+                Acciones
+              </button>
+
+              <button class="pecs-category-tab" data-category="emociones">
+                Emociones
+              </button>
+
+              <button class="pecs-category-tab" data-category="lugares">
+                Lugares
+              </button>
+            </div>
+
+            <div class="pecs-cards" id="pecs-tarjetas">
+              <button class="pecs-card" data-word="Yo quiero">
+                <span class="pecs-card__image pecs-card__image--blue">
+                  <img src="../img/niño.avif" alt="Yo quiero" />
+                </span>
+                <strong>Yo quiero</strong>
+              </button>
+
+              <button class="pecs-card" data-word="Agua">
+                <span class="pecs-card__image pecs-card__image--blue">
+                  <img src="../img/agua.jpg" alt="Agua" />
+                </span>
+                <strong>Agua</strong>
+              </button>
+
+              <button class="pecs-card" data-word="Comer">
+                <span class="pecs-card__image pecs-card__image--gold">
+                  <img src="../img/comidas.jpg" alt="Comer" />
+                </span>
+                <strong>Comer</strong>
+              </button>
+
+              <button class="pecs-card" data-word="Jugar">
+                <span class="pecs-card__image pecs-card__image--pink">
+                  <img src="../img/jugar.jpg" alt="Jugar" />
+                </span>
+                <strong>Jugar</strong>
+              </button>
+
+              <button class="pecs-card" data-word="Descansar">
+                <span class="pecs-card__image pecs-card__image--purple">
+                  <img src="../img/Descansar (2).jpg" alt="Descansar" />
+                </span>
+                <strong>Descansar</strong>
+              </button>
+
+              <button class="pecs-card" data-word="Ayuda">
+                <span class="pecs-card__image pecs-card__image--gold">
+                  <img src="../img/ayuda.jpg" alt="Ayuda" />
+                </span>
+                <strong>Ayuda</strong>
+              </button>
+            </div>
+          </article>
+
+          <article class="guardian-panel pecs-history-panel">
+            <div class="guardian-panel__header">
+              <div>
+                <p class="guardian-overline">USO RECIENTE</p>
+                <h2>Frases frecuentes</h2>
+              </div>
+            </div>
+
+            <div class="pecs-history">
+              <button class="pecs-history__item" data-phrase="Yo quiero agua">
+                <span>◒</span>
+                <p>
+                  <strong>Yo quiero agua</strong>
+                  <small>Usada hoy · 3 veces</small>
+                </p>
+              </button>
+
+              <button class="pecs-history__item" data-phrase="Quiero jugar">
+                <span>★</span>
+                <p>
+                  <strong>Quiero jugar</strong>
+                  <small>Usada ayer · 2 veces</small>
+                </p>
+              </button>
+
+              <button class="pecs-history__item" data-phrase="Necesito ayuda">
+                <span>?</span>
+                <p>
+                  <strong>Necesito ayuda</strong>
+                  <small>Usada esta semana</small>
+                </p>
+              </button>
+            </div>
+
+            <button class="guardian-outline-button" id="btn-ver-historial">
+              Ver historial de comunicación
+            </button>
+          </article>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div class="guardian-toast" id="guardian-toast"></div>
+
+  <script src="../app/app.config.js"></script>
+  <script src="../core/local.service.js"></script>
+  <script src="../app/app.routers.js"></script>
+  <script src="../core/tutor-pecs.js"></script>
+</body>
+</html>

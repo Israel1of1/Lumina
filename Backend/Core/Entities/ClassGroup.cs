@@ -14,5 +14,7 @@ namespace Core.Entities
         public string? Description { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
+        public int StudentCount { get; set; } // cuantos estudiantes activos tiene (max 10, RN-01)
+
     }
 }

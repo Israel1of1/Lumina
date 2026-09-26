@@ -16,6 +16,10 @@ namespace Core.Entities
         public DateTime? AssignmentDate { get; set; }
         public DateTime? EndDate { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string SubjectName { get; set; } = string.Empty;
+        public string? TeacherFirstName { get; set; }
+        public string? TeacherLastName { get; set; }
+        public string? GroupName { get; set; }
     }
 }
 

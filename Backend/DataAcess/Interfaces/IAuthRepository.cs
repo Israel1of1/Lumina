@@ -15,5 +15,7 @@ namespace DataAccess.Interfaces
         Task<RepositoryResponse<User>> GetByEmailAsync(string email);
         Task<RepositoryResponse<LinkCodeInfo>> GetLinkCodeInfoAsync(string code);
         Task<RepositoryResponse<User>> RegisterWithLinkCodeAsync(string code, string email, string passwordHash);
+        Task<RepositoryResponse<bool>> UpdatePasswordAsync(int userId, string newPasswordHash);
+        Task<RepositoryResponse<User>> GetByIdAsync(int userId);
     }
 }

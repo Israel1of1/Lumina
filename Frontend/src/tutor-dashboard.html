@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUMINA | Dashboard del tutor</title>
+
+  <link rel="stylesheet" href="../styles/base.css" />
+  <link rel="stylesheet" href="../styles/tutor-dashboard.css" />
+</head>
+
+<body class="guardian-page">
+  <div class="guardian-layout">
+
+    <aside class="guardian-sidebar">
+      <div class="guardian-sidebar__brand-row">
+        <span class="guardian-sidebar__brand">LUMINA</span>
+
+        <button
+          class="guardian-sidebar__collapse"
+          id="btn-colapsar-menu"
+          aria-label="Colapsar menú"
+        >
+          ‹
+        </button>
+      </div>
+
+      <p class="guardian-sidebar__label">MENÚ</p>
+
+      
+      <a class="guardian-menu__link guardian-menu__link--active" href="tutor-dashboard.html">
+  <span>▦</span>
+  Dashboard
+</a>
+
+<a class="guardian-menu__link" href="tutor-progreso.html" id="nav-progreso">
+  <span>↗</span>
+  Progreso del niño
+</a>
+
+        <a class="guardian-menu__link" href="tutor-seguimiento.html" id="nav-seguimiento">
+          <span>✓</span>
+          Seguimiento
+        </a>
+
+        
+
+        <a class="guardian-menu__link" href="tutor-comunicacion.html" id="nav-pecs">
+             <span>◌</span>
+            Comunicación PECS
+        </a>
+      </nav>
+
+      <p class="guardian-sidebar__label guardian-sidebar__label--general">
+        GENERAL
+      </p>
+
+      <nav class="guardian-menu">
+        <a class="guardian-menu__link" href="tutor-perfiltutor.html" id="nav-perfil-tutor">
+          <span>☻</span>
+          Perfil del tutor
+        </a>
+
+        <a class="guardian-menu__link" href="tutor-perfilniño.html">
+        <span>♙</span> Perfil del niño
+        </a>
+      </nav>
+    </aside>
+
+    <main class="guardian-main">
+      <header class="guardian-topbar">
+        <div>
+          <h1>Dashboard</h1>
+          <p>Resumen del progreso de tu hijo</p>
+        </div>
+
+        <div class="guardian-topbar__actions">
+          
+
+          <div class="guardian-user-avatar">KM</div>
+
+          <div class="guardian-user-data">
+            <strong>Kelly Martinez</strong>
+            <span>Tutora</span>
+          </div>
+
+          <button class="guardian-logout" id="btn-cerrar-sesion">
+            Cerrar sesión
+          </button>
+        </div>
+      </header>
+
+      <section class="guardian-content">
+        <section class="guardian-welcome">
+          <div>
+            <p class="guardian-overline">VIERNES, 4 DE SEPTIEMBRE</p>
+            <h2>¡Hola, Señora Kelly! 👋</h2>
+            <p>Lista para conocer el avance y las actividades de Thiago para hoy?</p>
+          </div>
+
+          <button class="guardian-primary-button" id="btn-ver-progreso">
+            Ver progreso completo
+          </button>
+        </section>
+
+        <section class="guardian-summary-cards">
+          <article class="guardian-summary-card">
+            <div class="guardian-summary-card__icon guardian-summary-card__icon--blue">
+              ↗
+            </div>
+
+            <div>
+              <strong>78%</strong>
+              <span>Progreso general</span>
+              <small class="guardian-positive">↗ 6% este mes</small>
+            </div>
+          </article>
+
+          <article class="guardian-summary-card">
+            <div class="guardian-summary-card__icon guardian-summary-card__icon--gold">
+              ✓
+            </div>
+
+            <div>
+              <strong>18</strong>
+              <span>Actividades completadas</span>
+              <small>4 actividades pendientes</small>
+            </div>
+          </article>
+
+          <article class="guardian-summary-card">
+            <div class="guardian-summary-card__icon guardian-summary-card__icon--pink">
+              ◷
+            </div>
+
+            <div>
+              <strong>92%</strong>
+              <span>Asistencia del mes</span>
+              <small class="guardian-positive">11 de 12 sesiones</small>
+            </div>
+          </article>
+
+          <article class="guardian-summary-card">
+            <div class="guardian-summary-card__icon guardian-summary-card__icon--purple">
+              ★
+            </div>
+
+            <div>
+              <strong>3</strong>
+              <span>Logros recientes</span>
+              <small>Este mes</small>
+            </div>
+          </article>
+        </section>
+
+        <section class="guardian-dashboard-grid">
+          <article class="guardian-panel guardian-progress-panel">
+            <div class="guardian-panel__header">
+              <div>
+                <p class="guardian-overline">PROGRESO DEL NIÑO</p>
+                <h2>Avance de Thiago Ramírez</h2>
+              </div>
+
+              <button class="guardian-link-button" id="btn-reporte-progreso">
+                Ver detalle →
+              </button>
+            </div>
+
+            <div class="guardian-progress-summary">
+              <div class="guardian-child-avatar">MR</div>
+
+              <div>
+                <strong>Thiago Ramírez</strong>
+                <p>Grupo A · Mañana</p>
+              </div>
+
+              <span class="guardian-progress-badge">+6% este mes</span>
+            </div>
+
+            <div class="guardian-skills-list">
+              <div class="guardian-skill">
+                <div class="guardian-skill__top">
+                  <span>Comunicación funcional</span>
+                  <strong>84%</strong>
+                </div>
+
+                <div class="guardian-progress-bar">
+                  <i style="width: 84%"></i>
+                </div>
+              </div>
+
+              <div class="guardian-skill">
+                <div class="guardian-skill__top">
+                  <span>Habilidades sociales</span>
+                  <strong>76%</strong>
+                </div>
+
+                <div class="guardian-progress-bar">
+                  <i style="width: 76%"></i>
+                </div>
+              </div>
+
+              <div class="guardian-skill">
+                <div class="guardian-skill__top">
+                  <span>Matemática básica</span>
+                  <strong>72%</strong>
+                </div>
+
+                <div class="guardian-progress-bar">
+                  <i style="width: 72%"></i>
+                </div>
+              </div>
+
+              <div class="guardian-skill">
+                <div class="guardian-skill__top">
+                  <span>Motricidad fina</span>
+                  <strong>80%</strong>
+                </div>
+
+                <div class="guardian-progress-bar">
+                  <i style="width: 80%"></i>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="guardian-panel guardian-chart-panel">
+            <div class="guardian-panel__header">
+              <div>
+                <p class="guardian-overline">VISTA GENERAL</p>
+                <h2>Progreso actual</h2>
+              </div>
+
+              <button class="guardian-dots-button" id="btn-opciones-grafico">
+                •••
+              </button>
+            </div>
+
+            <div class="guardian-chart-content">
+              <div class="guardian-donut">
+                <div>
+                  <strong>78%</strong>
+                  <span>avance</span>
+                </div>
+              </div>
+
+              <div class="guardian-chart-legend">
+                <p>
+                  <i class="guardian-dot guardian-dot--blue"></i>
+                  Completado
+                  <strong>78%</strong>
+                </p>
+
+                <p>
+                  <i class="guardian-dot guardian-dot--gold"></i>
+                  En progreso
+                  <strong>14%</strong>
+                </p>
+
+                <p>
+                  <i class="guardian-dot guardian-dot--gray"></i>
+                  Pendiente
+                  <strong>8%</strong>
+                </p>
+              </div>
+            </div>
+
+            <button class="guardian-outline-button" id="btn-ver-reporte">
+              Ver reporte de progreso
+            </button>
+          </article>
+        </section>
+
+        <section class="guardian-bottom-grid">
+          <article class="guardian-panel">
+            <div class="guardian-panel__header">
+              <div>
+                <p class="guardian-overline">PRÓXIMA ACTIVIDAD</p>
+                <h2>Agenda de Thiago</h2>
+              </div>
+
+              <button class="guardian-link-button" id="btn-calendario">
+                Ver calendario →
+              </button>
+            </div>
+
+            <div class="guardian-next-activity">
+              <div class="guardian-date-card">
+                <strong>04</strong>
+                <span>SEP</span>
+              </div>
+
+              <div class="guardian-activity-data">
+                <span class="guardian-activity-tag">09:00 – 10:30</span>
+                <h3>Matemática básica</h3>
+                <p>Reconocimiento de números · Aula virtual 2</p>
+              </div>
+
+              <button class="guardian-activity-button" id="btn-ver-actividad">
+                Ver actividad →
+              </button>
+            </div>
+          </article>
+
+          <article class="guardian-panel">
+            <div class="guardian-panel__header">
+              <div>
+                <p class="guardian-overline">LOGROS RECIENTES</p>
+                <h2>Últimos avances</h2>
+              </div>
+            </div>
+
+            <div class="guardian-achievement-list">
+              <div class="guardian-achievement">
+                <div class="guardian-achievement__icon guardian-achievement__icon--gold">★</div>
+                <p>
+                  Mateo completó <strong>“Clasificación de objetos”</strong>
+                  <span>Hoy · Hace 18 minutos</span>
+                </p>
+              </div>
+
+              <div class="guardian-achievement">
+                <div class="guardian-achievement__icon guardian-achievement__icon--blue">✓</div>
+                <p>
+                  Alcanzó un nuevo nivel en <strong>Comunicación funcional</strong>
+                  <span>Ayer · 16:40</span>
+                </p>
+              </div>
+
+              <div class="guardian-achievement">
+                <div class="guardian-achievement__icon guardian-achievement__icon--pink">♥</div>
+                <p>
+                  Registró asistencia en su sesión de hoy
+                  <span>Hoy · 09:02</span>
+                </p>
+              </div>
+            </div>
+          </article>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div class="guardian-toast" id="guardian-toast"></div>
+
+  <script src="../app/app.config.js"></script>
+  <script src="../core/local.service.js"></script>
+  <script src="../app/app.routers.js"></script>
+  <script src="../core/tutor-dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUMINA | Perfil del tutor</title>
+
+  <link rel="stylesheet" href="../styles/base.css" />
+  <link rel="stylesheet" href="../styles/tutor-dashboard.css" />
+  <link rel="stylesheet" href="../styles/tutor-perfiltutor.css" />
+</head>
+
+<body class="guardian-page guardian-profile-page">
+  <div class="guardian-layout">
+
+    <aside class="guardian-sidebar">
+      <div class="guardian-sidebar__brand-row">
+        <span class="guardian-sidebar__brand">LUMINA</span>
+
+        <button
+          class="guardian-sidebar__collapse"
+          id="btn-colapsar-menu"
+          aria-label="Colapsar menú"
+        >
+          ‹
+        </button>
+      </div>
+
+      <p class="guardian-sidebar__label">MENÚ</p>
+
+      <nav class="guardian-menu">
+        <a class="guardian-menu__link" href="tutor-dashboard.html">
+          <span>▦</span> Dashboard
+        </a>
+
+        <a class="guardian-menu__link" href="tutor-progreso.html">
+          <span>↗</span>
+          Progreso del niño
+        </a>
+
+        <a class="guardian-menu__link" href="tutor-seguimiento.html">
+          <span>✓</span> Seguimiento
+        </a>
+
+
+         <a class="guardian-menu__link" href="tutor-comunicacion.html" id="nav-pecs">
+  <span>◌</span>
+  Comunicación PECS
+</a>
+
+      <p class="guardian-sidebar__label guardian-sidebar__label--general">
+        GENERAL
+      </p>
+
+      <nav class="guardian-menu">
+        <a class="guardian-menu__link guardian-menu__link--active" href="tutor-perfil.html">
+          <span>☻</span> Perfil del tutor
+        </a>
+
+        <a class="guardian-menu__link" href="tutor-perfilniño.html">
+        <span>♙</span> Perfil del niño
+        </a>
+      </nav>
+    </aside>
+
+    <main class="guardian-main">
+      <header class="guardian-topbar">
+        <div>
+          <h1>Perfil del tutor</h1>
+          <p>Administra tu información y preferencias de cuenta</p>
+        </div>
+
+        <div class="guardian-topbar__actions">
+          <div class="guardian-user-avatar">KM</div>
+
+          <div class="guardian-user-data">
+            <strong>Kelly Martinez</strong>
+            <span>Tutora</span>
+          </div>
+
+          <button class="guardian-logout" id="btn-cerrar-sesion">
+            Cerrar sesión
+          </button>
+        </div>
+      </header>
+
+      <section class="guardian-content">
+        <section class="profile-heading">
+          <div>
+            <p class="guardian-overline">MI CUENTA</p>
+            <h2>Información personal</h2>
+            <p>Actualiza los datos que usas para acompañar a Thiago.</p>
+          </div>
+
+          <button class="guardian-primary-button" id="btn-editar-perfil">
+            Editar perfil
+          </button>
+        </section>
+
+        <section class="profile-layout">
+          <article class="guardian-panel profile-summary-card">
+            <div class="profile-summary-card__avatar">KM</div>
+
+            <h2>Kelly Martinez</h2>
+            <p class="profile-summary-card__role">Tutora de Thiago Ramírez</p>
+
+            <div class="profile-summary-card__details">
+              <p>
+                <span>✉</span>
+                kelly.martinez@correo.com
+              </p>
+
+              <p>
+                <span>☎</span>
+                +505 8888-1234
+              </p>
+
+              <p>
+                <span>⌂</span>
+                Managua, Nicaragua
+              </p>
+            </div>
+
+            <div class="profile-summary-card__linked">
+              <span>♙</span>
+
+              <div>
+                <strong>Thiago Ramírez</strong>
+                <small>Niño vinculado a tu cuenta</small>
+              </div>
+            </div>
+          </article>
+
+          <article class="guardian-panel profile-form-card">
+            <div class="guardian-panel__header">
+              <div>
+                <p class="guardian-overline">DATOS PERSONALES</p>
+                <h2>Tu información</h2>
+              </div>
+            </div>
+
+            <form id="form-perfil-tutor" class="profile-form">
+              <div class="profile-form__row">
+                <div class="profile-field">
+                  <label for="perfil-nombre">Nombre</label>
+                  <input id="perfil-nombre" type="text" value="Kelly" disabled />
+                </div>
+
+                <div class="profile-field">
+                  <label for="perfil-apellido">Apellido</label>
+                  <input id="perfil-apellido" type="text" value="Martinez" disabled />
+                </div>
+              </div>
+
+              <div class="profile-field">
+                <label for="perfil-correo">Correo electrónico</label>
+                <input
+                  id="perfil-correo"
+                  type="email"
+                  value="kelly.martinez@correo.com"
+                  disabled
+                />
+              </div>
+
+              <div class="profile-form__row">
+                <div class="profile-field">
+                  <label for="perfil-telefono">Teléfono</label>
+                  <input
+                    id="perfil-telefono"
+                    type="tel"
+                    value="+505 8888-1234"
+                    disabled
+                  />
+                </div>
+
+                <div class="profile-field">
+                  <label for="perfil-ciudad">Ciudad</label>
+                  <input
+                    id="perfil-ciudad"
+                    type="text"
+                    value="Managua"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <div class="profile-field">
+                <label for="perfil-relacion">Relación con Thiago</label>
+                <select id="perfil-relacion" disabled>
+                  <option selected>Madre</option>
+                  <option>Padre</option>
+                  <option>Tutor legal</option>
+                  <option>Otro familiar</option>
+                </select>
+              </div>
+
+              <div class="profile-form__actions">
+                <button
+                  class="profile-cancel-button"
+                  id="btn-cancelar-edicion"
+                  type="button"
+                  hidden
+                >
+                  Cancelar
+                </button>
+
+                <button
+                  class="guardian-primary-button"
+                  id="btn-guardar-perfil"
+                  type="submit"
+                  hidden
+                >
+                  Guardar cambios
+                </button>
+              </div>
+            </form>
+          </article>
+        </section>
+
+        <section class="profile-bottom-grid">
+          <article class="guardian-panel">
+            <div class="guardian-panel__header">
+              <div>
+                <p class="guardian-overline">PREFERENCIAS</p>
+                <h2>Notificaciones</h2>
+              </div>
+            </div>
+
+            <div class="profile-preference">
+              <div>
+                <strong>Resumen semanal</strong>
+                <p>Recibe un reporte semanal sobre el avance de Thiago.</p>
+              </div>
+
+              <label class="profile-switch">
+                <input type="checkbox" checked />
+                <span></span>
+              </label>
+            </div>
+
+            <div class="profile-preference">
+              <div>
+                <strong>Recordatorios de actividades</strong>
+                <p>Recibe avisos sobre tareas y actividades para casa.</p>
+              </div>
+
+              <label class="profile-switch">
+                <input type="checkbox" checked />
+                <span></span>
+              </label>
+            </div>
+          </article>
+
+          <article class="guardian-panel profile-security-card">
+            <div>
+              <p class="guardian-overline">SEGURIDAD</p>
+              <h2>Contraseña y acceso</h2>
+              <p>Protege tu cuenta actualizando tu contraseña periódicamente.</p>
+            </div>
+
+            <button class="guardian-outline-button" id="btn-cambiar-password">
+              Cambiar contraseña
+            </button>
+          </article>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div class="guardian-toast" id="guardian-toast"></div>
+
+  <script src="../app/app.config.js"></script>
+  <script src="../core/local.service.js"></script>
+  <script src="../app/app.routers.js"></script>
+  <script src="../core/tutor-perfiltutor.js"></script>
+</body>
+</html>
