@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Entities
+namespace Business.DTOs
 {
-    public class RoutineDetail
+    public class CreateRoutineDetailDto
     {
-        public int Id { get; set; }
+        [Required]
         public int RoutineId { get; set; }
+
         public TimeSpan? TimeOfDay { get; set; }
         public string? Activity { get; set; }
         public string? Description { get; set; }
         public int? DurationMinutes { get; set; }
-
-
     }
 }

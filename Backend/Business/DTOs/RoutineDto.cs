@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Entities
+namespace Business.DTOs
 {
-    public class Routine
+    public class RoutineDto
     {
         public int Id { get; set; }
         public int StudentId { get; set; }
@@ -15,8 +15,5 @@ namespace Core.Entities
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public string? Status { get; set; }
-        public int? CreatedByUserId { get; set; }
-        public DateTime CreatedAt { get; set; }
-
     }
 }
