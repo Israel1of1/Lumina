@@ -76,6 +76,17 @@ builder.Services.AddScoped<ILessonService, LessonService>();
 builder.Services.AddScoped<ILessonStepRepository, LessonStepRepository>();
 builder.Services.AddScoped<ILessonStepService, LessonStepService>();
 
+builder.Services.AddScoped<IStudentInterestRepository, StudentInterestRepository>();
+builder.Services.AddScoped<IStudentInterestService, StudentInterestService>();
+
+builder.Services.AddScoped<IStudentHabitRepository, StudentHabitRepository>();
+builder.Services.AddScoped<IStudentHabitService, StudentHabitService>();
+
+builder.Services.AddScoped<IHabitComplianceRepository, HabitComplianceRepository>();
+builder.Services.AddScoped<IHabitComplianceService, HabitComplianceService>();
+
+builder.Services.AddScoped<IStudentProgressRepository, StudentProgressRepository>();
+builder.Services.AddScoped<IStudentProgressService, StudentProgressService>();
 
 builder.Services.AddControllers();
 
