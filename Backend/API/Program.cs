@@ -28,6 +28,18 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 //builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 //builder.Services.AddScoped<ITeacherService, TeacherService>();
+
+builder.Services.AddScoped<IAccessControlRepository, AccessControlRepository>();
+
+builder.Services.AddScoped<IRoutineRepository, RoutineRepository>();
+builder.Services.AddScoped<IRoutineService, RoutineService>();
+
+builder.Services.AddScoped<IRoutineDetailRepository, RoutineDetailRepository>();
+builder.Services.AddScoped<IRoutineDetailService, RoutineDetailService>();
+
+builder.Services.AddScoped<IRoutineLogRepository, RoutineLogRepository>();
+builder.Services.AddScoped<IRoutineLogService, RoutineLogService>();
+
 builder.Services.AddScoped<IKeywordRepository, KeywordRepository>();
 builder.Services.AddScoped<IKeywordService, KeywordService>();
 
