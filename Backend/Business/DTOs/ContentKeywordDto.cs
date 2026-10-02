@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Entities
+namespace Business.DTOs
 {
-    public class ContentKeyWord
+    public class ContentKeywordDto
     {
         public int Id { get; set; }
         public int ContentId { get; set; }
         public int KeywordId { get; set; }
-        public string? KeywordName { get; set; }
+        public string KeywordName { get; set; } = string.Empty;
     }
 }

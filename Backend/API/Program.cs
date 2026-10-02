@@ -28,6 +28,15 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 //builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 //builder.Services.AddScoped<ITeacherService, TeacherService>();
+builder.Services.AddScoped<IKeywordRepository, KeywordRepository>();
+builder.Services.AddScoped<IKeywordService, KeywordService>();
+
+builder.Services.AddScoped<ILearningContentRepository, LearningContentRepository>();
+builder.Services.AddScoped<ILearningContentService, LearningContentService>();
+
+builder.Services.AddScoped<IContentKeywordRepository, ContentKeywordRepository>();
+builder.Services.AddScoped<IContentKeywordService, ContentKeywordService>();
+
 builder.Services.AddScoped<IGroupSubjectRepository, GroupSubjectRepository>();
 builder.Services.AddScoped<IGroupSubjectService, GroupSubjectService>();
 
@@ -42,7 +51,7 @@ builder.Services.AddScoped<IStudentService, StudentService>();
 
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
-
+  
 builder.Services.AddScoped<IGuardianRepository, GuardianRepository>();
 builder.Services.AddScoped<IGuardianService, GuardianService>();
 
