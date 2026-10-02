@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Interfaces
 {
-    internal interface IStudentInterestRepository
+    public interface IStudentInterestRepository
     {
     }
 }

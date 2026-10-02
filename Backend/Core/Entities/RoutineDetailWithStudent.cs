@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Core.Entities
 {
-    internal class RoutineDetailWithStudent
+    public class RoutineDetailWithStudent : RoutineDetail
     {
+        public int StudentId { get; set; }
     }
 }
