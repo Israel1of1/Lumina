@@ -36,7 +36,7 @@ namespace API.Controllers
             return MapResponse(result);
         }
 
-        /// <summary>Lista todos los tutores. Uso institucional.</summary>
+        //Lista todos los tutores 
         [HttpGet]
         [Authorize(Roles = "INSTITUCION")]
         public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? status = null)
@@ -45,7 +45,7 @@ namespace API.Controllers
             return MapResponse(result);
         }
 
-        /// <summary>Da de baja a un tutor (cierra tambien su acceso al login). Uso institucional.</summary>
+        // de baja a un tutor cierra tambien su acceso al login  
         [HttpPatch("{id:int}/deactivate")]
         [Authorize(Roles = "INSTITUCION")]
         public async Task<IActionResult> Deactivate(int id, [FromBody] DeactivateRequestDto request)

@@ -11,7 +11,6 @@ namespace Business.DTOs
     {
         [Required]
         public int RoutineId { get; set; }
-
         public TimeSpan? TimeOfDay { get; set; }
         public string? Activity { get; set; }
         public string? Description { get; set; }
