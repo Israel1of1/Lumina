@@ -2,6 +2,7 @@
 using Business.Interfaces;
 using Core.Common;
 using Core.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.API.Controllers
@@ -17,7 +18,7 @@ namespace Backend.API.Controllers
             _lessonService = lessonService;
         }
 
-        //[Authorize(Roles = "INSTITUTION, TEACHER")]
+        [Authorize(Roles = "INSTITUTION, DOCENTE")]
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] PaginationParams pagination)
         {
@@ -70,7 +71,7 @@ namespace Backend.API.Controllers
             }
         }
 
-        //[Authorize(Roles = "INSTITUTION, TEACHER")]
+        [Authorize(Roles = "INSTITUTION, DOCENTE")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -125,7 +126,7 @@ namespace Backend.API.Controllers
             }
         }
 
-        //[Authorize(Roles = "INSTITUTION, TEACHER")]
+        [Authorize(Roles = "INSTITUTION, DOCENTE")]
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateLessonDto lessonDto)
         {
@@ -165,7 +166,7 @@ namespace Backend.API.Controllers
             }
         }
 
-        //[Authorize(Roles = "INSTITUTION, TEACHER")]
+        [Authorize(Roles = "INSTITUTION, DOCENTE")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateLessonDto lessonDto)
         {

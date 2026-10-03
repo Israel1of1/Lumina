@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace Business.DTOs
 {
-    // Matricula digital minima; el resto lo completa el Tutor despues (fuera de este alcance).
     public class CreateStudentDto
     {
         [Required]

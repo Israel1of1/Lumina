@@ -67,7 +67,7 @@ namespace Business.Services
         {
             var repoResponse = await _contentRepository.GetByIdAsync(id);
 
-            // Quien no puede ver inactivos (Tutor) recibe "no encontrado", sin revelar que existe
+            // Quien no puede ver inactivos como Tutor recibe no encontrado, sin revelar que existe
             if (repoResponse.OperationStatusCode == 0 && !includeInactive && !repoResponse.Data!.IsActive)
                 return Fail<LearningContentDto>(MessageCodes.NotFound, "No se encontro el contenido indicado.");
 
