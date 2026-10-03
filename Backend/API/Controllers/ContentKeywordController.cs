@@ -22,7 +22,7 @@ namespace API.Controllers
         public async Task<IActionResult> GetByContent(int contentId)
             => MapResponse(await _contentKeywordService.GetByContentAsync(contentId));
 
-        /// <summary>Asocia una palabra clave al contenido (por keywordId, o por name: se crea si no existe).</summary>
+        // Asocia una palabra clave al contenido por keywordId o por name se crea si no existe 
         [HttpPost]
         [Authorize(Roles = "INSTITUCION,DOCENTE")]
         public async Task<IActionResult> Add(int contentId, [FromBody] AddContentKeywordDto request)

@@ -29,6 +29,9 @@ builder.Services.AddCors(options =>
 //builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 //builder.Services.AddScoped<ITeacherService, TeacherService>();
 
+builder.Services.AddScoped<IPecsBoardRepository, PecsBoardRepository>();
+builder.Services.AddScoped<IPecsBoardService, PecsBoardService>();
+
 builder.Services.AddScoped<IAccessControlRepository, AccessControlRepository>();
 
 builder.Services.AddScoped<IRoutineRepository, RoutineRepository>();

@@ -28,7 +28,6 @@ namespace API.Controllers
             return MapResponse(result);
         }
 
-        /// <summary>Estudiantes activos vinculados al docente autenticado.</summary>
         [HttpGet("my-students")]
         [Authorize(Roles = "DOCENTE")]
         public async Task<IActionResult> GetMyStudentsAsTeacher([FromServices] Business.Interfaces.ITeacherService teacherService)
@@ -41,7 +40,6 @@ namespace API.Controllers
             return MapResponse(result);
         }
 
-        /// <summary>Estudiantes activos vinculados al tutor autenticado.</summary>
         [HttpGet("my-wards")]
         [Authorize(Roles = "TUTOR")]
         public async Task<IActionResult> GetMyStudentsAsGuardian([FromServices] Business.Interfaces.IGuardianService guardianService)
