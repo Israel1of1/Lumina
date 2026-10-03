@@ -32,6 +32,9 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IPecsBoardRepository, PecsBoardRepository>();
 builder.Services.AddScoped<IPecsBoardService, PecsBoardService>();
 
+builder.Services.AddScoped<IPecsCardRepository, PecsCardRepository>();
+builder.Services.AddScoped<IPecsCardService, PecsCardService>();
+
 builder.Services.AddScoped<IAccessControlRepository, AccessControlRepository>();
 
 builder.Services.AddScoped<IRoutineRepository, RoutineRepository>();

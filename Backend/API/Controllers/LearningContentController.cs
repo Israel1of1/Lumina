@@ -21,13 +21,12 @@ namespace API.Controllers
             _contentService = contentService;
         }
 
-        // El Tutor solo consulta contenido activo; Docente e Institucion pueden ver tambien los inactivos
+        // El Tutor solo consulta contenido activ Docente e Institucion pueden ver tambien los inactivos
         private bool CanSeeInactive => User.IsInRole("INSTITUCION") || User.IsInRole("DOCENTE");
 
-        /// <summary>
-        /// Base de Conocimientos: lista y busca contenido.
-        /// Filtros opcionales: lessonId, subjectId, type, level, search (titulo/descripcion/palabras clave), isActive.
-        /// </summary>
+        // Base de Conocimientos es decir lista y busca contenido filtros opcionales:
+        // lessonId, subjectId, type, level, search (titulo/descripcion/palabras clave), isActive.
+        
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] LearningContentFilterDto filter)
         {

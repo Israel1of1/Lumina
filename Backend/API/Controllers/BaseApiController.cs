@@ -8,7 +8,6 @@ namespace API.Controllers
     [ApiController]
     public class BaseApiController : ControllerBase
     {
-        // Traduce el resultado del Service a un codigo HTTP semantico
         protected IActionResult MapResponse<T>(ServiceResponse<T> result)
         {
             if (result.IsSuccess)
