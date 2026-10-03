@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Business.DTOs
 {
-    internal class PecsBoardDto
+    public class PecsBoardDto
     {
+        public int Id { get; set; }
+        public int StudentId { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
     }
 }
