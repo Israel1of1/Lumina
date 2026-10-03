@@ -28,6 +28,30 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 //builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 //builder.Services.AddScoped<ITeacherService, TeacherService>();
+
+builder.Services.AddScoped<IPecsBoardRepository, PecsBoardRepository>();
+builder.Services.AddScoped<IPecsBoardService, PecsBoardService>();
+
+builder.Services.AddScoped<IAccessControlRepository, AccessControlRepository>();
+
+builder.Services.AddScoped<IRoutineRepository, RoutineRepository>();
+builder.Services.AddScoped<IRoutineService, RoutineService>();
+
+builder.Services.AddScoped<IRoutineDetailRepository, RoutineDetailRepository>();
+builder.Services.AddScoped<IRoutineDetailService, RoutineDetailService>();
+
+builder.Services.AddScoped<IRoutineLogRepository, RoutineLogRepository>();
+builder.Services.AddScoped<IRoutineLogService, RoutineLogService>();
+
+builder.Services.AddScoped<IKeywordRepository, KeywordRepository>();
+builder.Services.AddScoped<IKeywordService, KeywordService>();
+
+builder.Services.AddScoped<ILearningContentRepository, LearningContentRepository>();
+builder.Services.AddScoped<ILearningContentService, LearningContentService>();
+
+builder.Services.AddScoped<IContentKeywordRepository, ContentKeywordRepository>();
+builder.Services.AddScoped<IContentKeywordService, ContentKeywordService>();
+
 builder.Services.AddScoped<IGroupSubjectRepository, GroupSubjectRepository>();
 builder.Services.AddScoped<IGroupSubjectService, GroupSubjectService>();
 
@@ -42,7 +66,7 @@ builder.Services.AddScoped<IStudentService, StudentService>();
 
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
-
+  
 builder.Services.AddScoped<IGuardianRepository, GuardianRepository>();
 builder.Services.AddScoped<IGuardianService, GuardianService>();
 
@@ -66,6 +90,18 @@ builder.Services.AddScoped<ILessonService, LessonService>();
 
 builder.Services.AddScoped<ILessonStepRepository, LessonStepRepository>();
 builder.Services.AddScoped<ILessonStepService, LessonStepService>();
+
+builder.Services.AddScoped<IStudentInterestRepository, StudentInterestRepository>();
+builder.Services.AddScoped<IStudentInterestService, StudentInterestService>();
+
+builder.Services.AddScoped<IStudentHabitRepository, StudentHabitRepository>();
+builder.Services.AddScoped<IStudentHabitService, StudentHabitService>();
+
+builder.Services.AddScoped<IHabitComplianceRepository, HabitComplianceRepository>();
+builder.Services.AddScoped<IHabitComplianceService, HabitComplianceService>();
+
+builder.Services.AddScoped<IStudentProgressRepository, StudentProgressRepository>();
+builder.Services.AddScoped<IStudentProgressService, StudentProgressService>();
 
 builder.Services.AddControllers();
 

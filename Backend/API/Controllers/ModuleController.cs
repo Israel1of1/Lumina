@@ -19,7 +19,7 @@ namespace Backend.API.Controllers
             _moduleService = moduleService;
         }
 
-        //[Authorize(Roles = "INSTITUTION, TEACHER")]
+        [Authorize(Roles = "INSTITUTION, DOCENTE")]
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] PaginationParams pagination)
         {
@@ -71,7 +71,7 @@ namespace Backend.API.Controllers
             }
         }
 
-        //[Authorize(Roles = "INSTITUTION, TEACHER")]
+        [Authorize(Roles = "INSTITUTION, DOCENTE")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -125,7 +125,7 @@ namespace Backend.API.Controllers
             }
         }
 
-        //[Authorize(Roles = "INSTITUTION, TEACHER")]
+        [Authorize(Roles = "INSTITUTION, DOCENTE")]
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateModuleDto moduleDto)
         {
@@ -164,7 +164,7 @@ namespace Backend.API.Controllers
             }
         }
 
-        //[Authorize(Roles = "INSTITUTION, TEACHER")]
+        [Authorize(Roles = "INSTITUTION, DOCENTE")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateModuleDto moduleDto)
         {
