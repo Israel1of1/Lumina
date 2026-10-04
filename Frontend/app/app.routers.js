@@ -1,9 +1,9 @@
-// ============================================================
+
 // Router / navegación — LUMINA Panel de Administración
 // Maneja: sesión, protección de rutas, y el sidebar dinámico.
-// ============================================================
 
-// ===== Definición del menú lateral =====
+
+// Definición del menú lateral 
 const MENU_ITEMS = [
   { id: 'dashboard',     label: 'Dashboard',     href: APP_CONFIG.ROUTES.DASHBOARD,      seccion: 'MENU',    icono: 'grid' },
   { id: 'docentes',      label: 'Docentes',      href: APP_CONFIG.ROUTES.TEACHERS,       seccion: 'MENU',    icono: 'user' },
@@ -14,7 +14,7 @@ const MENU_ITEMS = [
   { id: 'codigos',       label: 'Códigos',       href: APP_CONFIG.ROUTES.LINK_CODES,     seccion: 'GENERAL', icono: 'key' }
 ];
 
-// ===== Set de íconos SVG simples (esquinas redondeadas, sin librerías) =====
+//  Set de íconos SVG simples (esquinas redondeadas, sin librerías) 
 const ICON_SVGS = {
   grid:   '<svg class="sidebar__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>',
   user:   '<svg class="sidebar__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>',
@@ -25,22 +25,22 @@ const ICON_SVGS = {
   key:    '<svg class="sidebar__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="m10.5 12.5 8-8"/><path d="M16 7h3v3"/></svg>'
 };
 
-// ============================================================
+
 // AppRouter — sesión + protección de rutas + render del sidebar
-// ============================================================
+
 const AppRouter = {
-  // ===== Sesión =====
+  // Sesión
   guardarSesion(token, usuario) {
-    sessionStorage.setItem(APP_CONFIG.STORAGE_KEYS.TOKEN, token);
-    sessionStorage.setItem(APP_CONFIG.STORAGE_KEYS.USER, JSON.stringify(usuario));
+    localStorage.setItem(APP_CONFIG.STORAGE_KEYS.TOKEN, token);
+    localStorage.setItem(APP_CONFIG.STORAGE_KEYS.USER, JSON.stringify(usuario));
   },
 
   getToken() {
-    return sessionStorage.getItem(APP_CONFIG.STORAGE_KEYS.TOKEN);
+    return localStorage.getItem(APP_CONFIG.STORAGE_KEYS.TOKEN);
   },
 
   getUsuario() {
-    const raw = sessionStorage.getItem(APP_CONFIG.STORAGE_KEYS.USER);
+    const raw = localStorage.getItem(APP_CONFIG.STORAGE_KEYS.USER);
     return raw ? JSON.parse(raw) : null;
   },
 
@@ -81,7 +81,7 @@ const AppRouter = {
     AuthService.logout();
   },
 
-  // ===== Sidebar dinámico =====
+  //  Sidebar dinámico 
    renderSidebar(idActivo) {
     const contenedor = document.getElementById('sidebar-contenedor');
     if (!contenedor) return;
@@ -122,7 +122,7 @@ const AppRouter = {
     document.getElementById('btn-toggle-sidebar').addEventListener('click', () => this.alternarSidebar());
   },
 
-  // ===== Alternar colapsado/expandido =====
+  //  Alternar colapsado/expandido
   alternarSidebar() {
     const sidebar = document.getElementById('sidebar-elemento');
     if (!sidebar) return;
@@ -131,7 +131,7 @@ const AppRouter = {
     localStorage.setItem('lumina_sidebar_colapsado', colapsado);
   },
 
-  // ===== Barra superior: usuario + logout =====
+  //  Barra superior: usuario + logout
   renderTopbarUsuario() {
     const contenedor = document.getElementById('topbar-usuario-contenedor');
     if (!contenedor) return;
