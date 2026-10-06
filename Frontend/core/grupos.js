@@ -45,8 +45,7 @@ function renderGrupos(lista) {
   }
 
   contenedor.innerHTML = lista.map(g => {
-    const cantidad = contarEstudiantesActivos(g.id);
-    const porcentaje = Math.min((cantidad / APP_CONFIG.MAX_STUDENTS_PER_GROUP) * 100, 100);
+    const cantidad = g.studentCount;    const porcentaje = Math.min((cantidad / APP_CONFIG.MAX_STUDENTS_PER_GROUP) * 100, 100);
     const lleno = cantidad >= APP_CONFIG.MAX_STUDENTS_PER_GROUP;
 
     return `

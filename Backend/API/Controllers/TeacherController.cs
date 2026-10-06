@@ -21,7 +21,7 @@ namespace API.Controllers
         }
 
         [HttpGet("me")]
-        [Authorize(Roles = "DOCENTE")]
+        [Authorize(Roles = "TEACHER")]
         public async Task<IActionResult> GetMyProfile()
         {
             var result = await _teacherService.GetMyProfileAsync(GetCurrentUserId());
@@ -31,7 +31,7 @@ namespace API.Controllers
   
 
         [HttpGet]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "INSTITUTION")]
         public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? status = null)
         {
             var result = await _teacherService.GetAllAsync(pageNumber, pageSize, status);
@@ -39,7 +39,7 @@ namespace API.Controllers
         }
 
         [HttpPut("me")]
-        [Authorize(Roles = "DOCENTE")]
+        [Authorize(Roles = "TEACHER")]
         public async Task<IActionResult> UpdateTeacherProfile([FromBody] UpdateTeacherProfileDto request)
         {
             var result = await _teacherService.UpdateMyProfileAsync(GetCurrentUserId(), request);
@@ -47,10 +47,18 @@ namespace API.Controllers
         }
 
         [HttpPatch("me")]
-        [Authorize(Roles = "DOCENTE")]
+        [Authorize(Roles = "TEACHER")]
         public async Task<IActionResult> PatchMyProfile([FromBody] PatchTeacherProfileDto request)
         {
             var result = await _teacherService.PatchMyProfileAsync(GetCurrentUserId(), request);
+            return MapResponse(result);
+        }
+
+        [HttpPatch("{id}/deactivate")]
+        [Authorize(Roles = "INSTITUTION")]
+        public async Task<IActionResult> Deactivate(int id, [FromBody] DeactivateTeacherDto request)
+        {
+            var result = await _teacherService.DeactivateAsync(id, request.Reason);
             return MapResponse(result);
         }
 

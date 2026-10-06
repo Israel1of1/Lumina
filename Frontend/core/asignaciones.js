@@ -164,7 +164,7 @@ async function guardarFinalizacion(evento) {
   const endDate = document.getElementById('finalizar-fecha').value;
 
   try {
-    await GroupSubjectService.end(id, endDate);
+    await GroupSubjectService.end(id);
     cerrarModal('modal-finalizar');
     await cargarDatos();
   } catch (error) {

@@ -24,12 +24,12 @@ namespace API.Controllers
 
         // Asocia una palabra clave al contenido por keywordId o por name se crea si no existe 
         [HttpPost]
-        [Authorize(Roles = "INSTITUCION,DOCENTE")]
+        [Authorize(Roles = "INSTITUTION,TEACHER")]
         public async Task<IActionResult> Add(int contentId, [FromBody] AddContentKeywordDto request)
             => MapResponse(await _contentKeywordService.AddAsync(contentId, request));
 
         [HttpDelete("{keywordId:int}")]
-        [Authorize(Roles = "INSTITUCION,DOCENTE")]
+        [Authorize(Roles = "INSTITUTION,TEACHER")]
         public async Task<IActionResult> Remove(int contentId, int keywordId)
             => MapResponse(await _contentKeywordService.RemoveAsync(contentId, keywordId));
     }
