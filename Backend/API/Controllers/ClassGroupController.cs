@@ -20,7 +20,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "INSTITUTION")]
         public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] bool? isActive = null)
         {
             var result = await _classGroupService.GetAllAsync(pageNumber, pageSize, isActive);
@@ -35,7 +35,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "INSTITUTION")]
         public async Task<IActionResult> Create([FromBody] CreateClassGroupDto request)
         {
             var result = await _classGroupService.CreateAsync(request);
@@ -43,7 +43,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id:int}")]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "INSTITUTION")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateClassGroupDto request)
         {
             var result = await _classGroupService.UpdateAsync(id, request);
@@ -51,7 +51,7 @@ namespace API.Controllers
         }
 
         [HttpPatch("{id:int}/active")]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "INSTITUTION")]
         public async Task<IActionResult> SetActive(int id, [FromBody] SetActiveDto request)
         {
             var result = await _classGroupService.SetActiveAsync(id, request.IsActive);

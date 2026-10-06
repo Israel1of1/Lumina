@@ -241,7 +241,7 @@ function abrirDetalle(id) {
       <dt>Nivel de lenguaje</dt><dd>${e.languageLevel || '—'}</dd>
       <dt>Información clínica</dt><dd>${e.clinicalInfo || '—'}</dd>
       <dt>Observaciones</dt><dd>${e.observations || '—'}</dd>
-      <dt>Cuenta de acceso</dt><dd>${e.userId ? 'Vinculada' : 'Pendiente de canjear código'}</dd>
+      <dt>Cuenta de acceso</dt><dd>${e.hasAccount ? 'Vinculada' : 'Pendiente de canjear código'}</dd>
       <dt>Estado</dt><dd><span class="badge ${e.isActive ? 'badge-activo' : 'badge-inactivo'}">${e.isActive ? 'Activo' : 'Inactivo'}</span></dd>
     </dl>
   `;

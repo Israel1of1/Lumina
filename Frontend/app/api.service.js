@@ -63,3 +63,126 @@ const SubjectService = {
   }
 
 };
+
+
+function ordenarPorIdDesc(lista) {
+  return [...lista].sort((a, b) => b.id - a.id);
+}
+
+// ClassGroupService — conecta la pantalla de Grupos con el Backend.
+
+
+const ClassGroupService = {
+  async getAll() {
+    const respuesta = await apiClient('/class-groups?pageNumber=1&pageSize=1000');
+    return ordenarPorIdDesc(respuesta.data.items);
+  },
+  async getById(id) {
+    const respuesta = await apiClient(`/class-groups/${id}`);
+    return respuesta.data;
+  },
+  async create(datos) {
+    const respuesta = await apiClient('/class-groups', { method: 'POST', body: datos });
+    return respuesta.data;
+  },
+  async update(id, datos) {
+    const respuesta = await apiClient(`/class-groups/${id}`, { method: 'PUT', body: datos });
+    return respuesta.data;
+  },
+  async setActive(id, activar) {
+    const respuesta = await apiClient(`/class-groups/${id}/active`, {
+      method: 'PATCH',
+      body: { isActive: activar }
+    });
+    return respuesta.data;
+  }
+};
+
+
+
+
+//TEACHER SERVICE conecta la pantalla de Docentes con el Backend.
+const TeacherService = {
+  async getAll() {
+    const respuesta = await apiClient('/teachers?pageNumber=1&pageSize=1000');
+    return ordenarPorIdDesc(respuesta.data.items);
+  },
+  async deactivate(id, motivo) {
+    const respuesta = await apiClient(`/teachers/${id}/deactivate`, {
+      method: 'PATCH',
+      body: { reason: motivo }
+    });
+    return respuesta.data;
+  }
+};
+
+
+
+// STUDENT SERVICE conecta la pantalla de Estudiantes con el Backend.
+
+const StudentService = {
+
+  async getAll() {
+    const grupos = await ClassGroupService.getAll();
+    const porGrupo = await Promise.all(
+      grupos.map(g =>
+        apiClient(`/students/by-group/${g.id}?pageNumber=1&pageSize=1000&onlyActive=false`)
+      )
+    );
+    const todos = porGrupo.flatMap(respuesta => respuesta.data.items);
+    return ordenarPorIdDesc(todos);
+  },
+
+  async getById(id) {
+    const respuesta = await apiClient(`/students/${id}`);
+    return respuesta.data;
+  },
+
+  async create(datos) {
+    const respuesta = await apiClient('/students', { method: 'POST', body: datos });
+    return respuesta.data;
+  },
+
+  async update(id, datos) {
+    const respuesta = await apiClient(`/students/${id}`, { method: 'PUT', body: datos });
+    return respuesta.data;
+  },
+
+  async setActive(id, activar) {
+    const respuesta = await apiClient(`/students/${id}/active`, {
+      method: 'PATCH',
+      body: { isActive: activar }
+    });
+    return respuesta.data;
+  }
+
+};
+
+
+
+// GROUP SUBJECT SERVICE conecta la pantalla de Grupos con el Backend.
+
+const GroupSubjectService = {
+
+  async getAll() {
+    const grupos = await ClassGroupService.getAll();
+    const porGrupo = await Promise.all(
+      grupos.map(g => apiClient(`/group-subjects/by-group/${g.id}`))
+    );
+    return porGrupo.flatMap(respuesta => respuesta.data);
+  },
+
+  async create(datos) {
+    const respuesta = await apiClient('/group-subjects', { method: 'POST', body: datos });
+    return respuesta.data;
+  },
+
+  async end(id) {
+    const respuesta = await apiClient(`/group-subjects/${id}/active`, {
+      method: 'PATCH',
+      body: { isActive: false }
+    });
+    return respuesta.data;
+  }
+
+};

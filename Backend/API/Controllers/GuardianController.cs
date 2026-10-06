@@ -21,7 +21,7 @@ namespace API.Controllers
         }
 
         [HttpGet("me")]
-        [Authorize(Roles = "TUTOR")]
+        [Authorize(Roles = "GUARDIAN")]
         public async Task<IActionResult> GetMyProfile()
         {
             var result = await _guardianService.GetMyProfileAsync(GetCurrentUserId());
@@ -29,7 +29,7 @@ namespace API.Controllers
         }
 
         [HttpPatch("me")]
-        [Authorize(Roles = "TUTOR")]
+        [Authorize(Roles = "GUARDIAN")]
         public async Task<IActionResult> UpdateMyProfile([FromBody] UpdateGuardianProfileDto request)
         {
             var result = await _guardianService.UpdateMyProfileAsync(GetCurrentUserId(), request);
@@ -38,7 +38,7 @@ namespace API.Controllers
 
         //Lista todos los tutores 
         [HttpGet]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "INSTITUTION")]
         public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? status = null)
         {
             var result = await _guardianService.GetAllAsync(pageNumber, pageSize, status);
@@ -47,7 +47,7 @@ namespace API.Controllers
 
         // de baja a un tutor cierra tambien su acceso al login  
         [HttpPatch("{id:int}/deactivate")]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "INSTITUTION")]
         public async Task<IActionResult> Deactivate(int id, [FromBody] DeactivateRequestDto request)
         {
             var result = await _guardianService.DeactivateAsync(id, request.Reason);

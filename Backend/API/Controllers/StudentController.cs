@@ -20,7 +20,7 @@ namespace API.Controllers
         }
 
         [HttpGet("by-group/{groupId:int}")]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "INSTITUTION")]
         public async Task<IActionResult> GetByGroup(int groupId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] bool onlyActive = true)
         {
             var result = await _studentService.GetByGroupAsync(groupId, pageNumber, pageSize, onlyActive);
@@ -28,7 +28,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id:int}")]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "INSTITUTION")]
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _studentService.GetByIdAsync(id);
@@ -36,7 +36,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "INSTITUTION")]
         public async Task<IActionResult> Create([FromBody] CreateStudentDto request)
         {
             var result = await _studentService.CreateAsync(request);
@@ -44,7 +44,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id:int}")]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "INSTITUTION")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateStudentDto request)
         {
             var result = await _studentService.UpdateAsync(id, request);
@@ -52,7 +52,7 @@ namespace API.Controllers
         }
 
         [HttpPatch("{id:int}/active")]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "INSTITUTION")]
         public async Task<IActionResult> SetActive(int id, [FromBody] SetActiveDto request)
         {
             var result = await _studentService.SetActiveAsync(id, request.IsActive);

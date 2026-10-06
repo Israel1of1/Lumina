@@ -20,7 +20,7 @@ namespace API.Controllers
         }
 
         [HttpGet("by-group/{groupId:int}")]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "INSTITUTION")]
         public async Task<IActionResult> GetByGroup(int groupId)
         {
             var result = await _groupSubjectService.GetByGroupAsync(groupId);
@@ -28,7 +28,7 @@ namespace API.Controllers
         }
 
         [HttpGet("by-teacher/{teacherId:int}")]
-        [Authorize(Roles = "INSTITUCION,DOCENTE")]
+        [Authorize(Roles = "INSTITUTION,TEACHER")]
         public async Task<IActionResult> GetByTeacher(int teacherId)
         {
             var result = await _groupSubjectService.GetByTeacherAsync(teacherId);
@@ -36,7 +36,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "INSTITUTION")]
         public async Task<IActionResult> Create([FromBody] CreateGroupSubjectDto request)
         {
             var result = await _groupSubjectService.CreateAsync(request);
@@ -44,7 +44,7 @@ namespace API.Controllers
         }
 
         [HttpPatch("{id:int}/active")]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "INSTITUTION")]
         public async Task<IActionResult> SetActive(int id, [FromBody] SetActiveDto request)
         {
             var result = await _groupSubjectService.SetActiveAsync(id, request.IsActive);
