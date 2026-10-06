@@ -21,13 +21,32 @@ namespace Business.Services
                 _teacherRepository = teacherRepository;
             }
 
-            public async Task<ServiceResponse<TeacherProfileDto>> GetMyProfileAsync(int userId)
+        public async Task<ServiceResponse<TeacherProfileDto>> CreateAsync(CreateTeacherDto request)
+        {
+            var teacher = new Teacher
             {
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                NationalId = request.NationalId,
+                PersonalEmail = request.PersonalEmail,
+                Phone = request.Phone,
+                Address = request.Address,
+                City = request.City,
+                Specialty = request.Specialty,
+                Degree = request.Degree
+            };
+
+            var repoResponse = await _teacherRepository.CreateAsync(teacher);
+            return MapProfileResponse(repoResponse.OperationStatusCode, repoResponse.Data, "registrado");
+        }
+
+        public async Task<ServiceResponse<TeacherProfileDto>> GetMyProfileAsync(int userId)
+        {
                 var repoResponse = await _teacherRepository.GetByUserIdAsync(userId);
                 return MapProfileResponse(repoResponse.OperationStatusCode, repoResponse.Data, "consultado");
-            }
+         }
 
-            public async Task<ServiceResponse<TeacherProfileDto>> UpdateMyProfileAsync(int userId, UpdateTeacherProfileDto request)
+        public async Task<ServiceResponse<TeacherProfileDto>> UpdateMyProfileAsync(int userId, UpdateTeacherProfileDto request)
             {
                 var profile = new Teacher
                 {
@@ -110,7 +129,7 @@ namespace Business.Services
                 };
             }
 
-            public async Task<ServiceResponse<EntityStatusDto>> DeactivateAsync(int teacherId, string? reason)
+        public async Task<ServiceResponse<EntityStatusDto>> DeactivateAsync(int teacherId, string? reason)
             {
                 var repoResponse = await _teacherRepository.DeactivateAsync(teacherId, reason);
 
@@ -162,7 +181,42 @@ namespace Business.Services
                 }
             }
 
-            private static ServiceResponse<TeacherProfileDto> MapProfileResponse(int statusCode, Teacher? data, string action)
+
+        public async Task<ServiceResponse<EntityStatusDto>> ReactivateAsync(int id)
+        {
+            var repoResponse = await _teacherRepository.ReactivateAsync(id);
+
+            switch (repoResponse.OperationStatusCode)
+            {
+                case 0:
+                    return new ServiceResponse<EntityStatusDto>
+                    {
+                        Data = new EntityStatusDto
+                        {
+                            Id = repoResponse.Data!.Id,
+                            FirstName = repoResponse.Data.FirstName,
+                            LastName = repoResponse.Data.LastName,
+                            EntityStatus = repoResponse.Data.EntityStatus,
+                            DismissalDate = repoResponse.Data.DismissalDate,
+                            DismissalReason = repoResponse.Data.DismissalReason
+                        },
+                        IsSuccess = true,
+                        MessageCodes = MessageCodes.Success,
+                        Message = "Docente reactivado correctamente."
+                    };
+
+                case 5090:
+                    return new ServiceResponse<EntityStatusDto> { Data = null, IsSuccess = false, MessageCodes = MessageCodes.NotFound, Message = "No se encontro el docente indicado." };
+
+                case 5101:
+                    return new ServiceResponse<EntityStatusDto> { Data = null, IsSuccess = false, MessageCodes = MessageCodes.Conflict, Message = "Este docente ya se encuentra activo." };
+
+                default:
+                    return new ServiceResponse<EntityStatusDto> { Data = null, IsSuccess = false, MessageCodes = MessageCodes.ErrorDataBase, Message = "Ocurrio un error inesperado al reactivar al docente." };
+            }
+        }
+
+        private static ServiceResponse<TeacherProfileDto> MapProfileResponse(int statusCode, Teacher? data, string action)
             {
                 switch (statusCode)
                 {
