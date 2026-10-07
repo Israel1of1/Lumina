@@ -10,11 +10,14 @@ namespace DataAccess.Interfaces
 {
     public interface ITeacherRepository
     {
+        Task<RepositoryResponse<Teacher>> CreateAsync(Teacher teacher);
+
         Task<RepositoryResponse<Teacher>> GetByUserIdAsync(int userId);
         Task<RepositoryResponse<Teacher>> UpdateProfileAsync(int userId, Teacher profile);
         Task<RepositoryResponse<Teacher>> PatchProfileAsync(int userId, Teacher profile);
 
         Task<RepositoryResponse<(List<TeacherWithAccount> Items, int TotalRecords)>> GetAllAsync(int pageNumber, int pageSize, string? status);
         Task<RepositoryResponse<Teacher>> DeactivateAsync(int teacherId, string? reason);
+        Task<RepositoryResponse<Teacher>> ReactivateAsync(int id);
     }
 }

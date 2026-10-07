@@ -20,6 +20,15 @@ namespace API.Controllers
             _teacherService = teacherService;
         }
 
+        [HttpPost]
+        [Authorize(Roles = "INSTITUTION")]
+        public async Task<IActionResult> Create([FromBody] CreateTeacherDto request)
+        {
+            var result = await _teacherService.CreateAsync(request);
+            return MapResponse(result);
+        }
+
+
         [HttpGet("me")]
         [Authorize(Roles = "TEACHER")]
         public async Task<IActionResult> GetMyProfile()
@@ -59,6 +68,15 @@ namespace API.Controllers
         public async Task<IActionResult> Deactivate(int id, [FromBody] DeactivateTeacherDto request)
         {
             var result = await _teacherService.DeactivateAsync(id, request.Reason);
+            return MapResponse(result);
+        }
+
+
+        [HttpPatch("{id:int}/reactivate")]
+        [Authorize(Roles = "INSTITUTION")]
+        public async Task<IActionResult> Reactivate(int id)
+        {
+            var result = await _teacherService.ReactivateAsync(id);
             return MapResponse(result);
         }
 

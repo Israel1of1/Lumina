@@ -3,6 +3,7 @@ using Business.Interfaces;
 using Core.Common;
 using Core.Entities;
 using DataAccess.Interfaces;
+using DataAccess.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,24 @@ namespace Business.Services
             _guardianRepository = guardianRepository;
         }
 
+        public async Task<ServiceResponse<GuardianProfileDto>> CreateAsync(CreateGuardianDto request)
+        {
+            var guardian = new Guardian
+            {
+                UserId = request.userId,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                NationalId = request.NationalId,
+                PersonalEmail = request.PersonalEmail,
+                Phone = request.Phone,
+                Address = request.Address,
+                City = request.City,
+                RelationShip = request.RelationShip,
+            };
+
+            var repoResponse = await _guardianRepository.CreateAsync(guardian);
+            return MapResponse(repoResponse.OperationStatusCode, repoResponse.Data, "registrado");
+        }
         public async Task<ServiceResponse<GuardianProfileDto>> GetMyProfileAsync(int userId)
         {
             var repoResponse = await _guardianRepository.GetByUserIdAsync(userId);
@@ -42,6 +61,27 @@ namespace Business.Services
             };
 
             var repoResponse = await _guardianRepository.UpdateProfileAsync(userId, profile);
+            return MapResponse(repoResponse.OperationStatusCode, repoResponse.Data, "actualizado");
+        }
+
+        public async Task<ServiceResponse<GuardianProfileDto>> PatchMyProfileAsync(int Id, PatchGuardianProfileDto request)
+        {
+            var profile = new Guardian
+            {
+               
+                UserId = request.UserId,
+                FirstName = request.FirstName!,
+                LastName = request.LastName!,
+                NationalId = request.NationalId,
+                PersonalEmail = request.PersonalEmail,
+                Phone = request.Phone,
+                Address = request.Address,
+                City = request.City,
+                Photo = request.Photo,
+                RelationShip = request.RelationShip,
+            };
+
+            var repoResponse = await _guardianRepository.PatchByIdAsync(Id, profile);
             return MapResponse(repoResponse.OperationStatusCode, repoResponse.Data, "actualizado");
         }
 
@@ -204,6 +244,40 @@ namespace Business.Services
                         MessageCodes = MessageCodes.ErrorDataBase,
                         Message = "Ocurrio un error inesperado al dar de baja al tutor."
                     };
+            }
+        }
+
+        public async Task<ServiceResponse<EntityStatusDto>> ReactivateAsync(int id)
+        {
+            var repoResponse = await _guardianRepository.ReactivateAsync(id);
+
+            switch (repoResponse.OperationStatusCode)
+            {
+                case 0:
+                    return new ServiceResponse<EntityStatusDto>
+                    {
+                        Data = new EntityStatusDto
+                        {
+                            Id = repoResponse.Data!.Id,
+                            FirstName = repoResponse.Data.FirstName,
+                            LastName = repoResponse.Data.LastName,
+                            EntityStatus = repoResponse.Data.EntityStatus,
+                            DismissalDate = repoResponse.Data.DismissalDate,
+                            DismissalReason = repoResponse.Data.DismissalReason
+                        },
+                        IsSuccess = true,
+                        MessageCodes = MessageCodes.Success,
+                        Message = "Docente reactivado correctamente."
+                    };
+
+                case 5090:
+                    return new ServiceResponse<EntityStatusDto> { Data = null, IsSuccess = false, MessageCodes = MessageCodes.NotFound, Message = "No se encontro el docente indicado." };
+
+                case 5101:
+                    return new ServiceResponse<EntityStatusDto> { Data = null, IsSuccess = false, MessageCodes = MessageCodes.Conflict, Message = "Este docente ya se encuentra activo." };
+
+                default:
+                    return new ServiceResponse<EntityStatusDto> { Data = null, IsSuccess = false, MessageCodes = MessageCodes.ErrorDataBase, Message = "Ocurrio un error inesperado al reactivar al docente." };
             }
         }
     }

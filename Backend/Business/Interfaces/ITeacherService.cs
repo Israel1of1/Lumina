@@ -10,11 +10,13 @@ namespace Business.Interfaces
 {
     public interface ITeacherService
     {
+        Task<ServiceResponse<TeacherProfileDto>> CreateAsync(CreateTeacherDto request);
 
         Task<ServiceResponse<TeacherProfileDto>> GetMyProfileAsync(int userId);
         Task<ServiceResponse<TeacherProfileDto>> UpdateMyProfileAsync(int userId, UpdateTeacherProfileDto request);
         Task<ServiceResponse<TeacherProfileDto>> PatchMyProfileAsync(int userId, PatchTeacherProfileDto request);
         Task<ServiceResponse<PagedResultDto<TeacherProfileDto>>> GetAllAsync(int pageNumber, int pageSize, string? status);
         Task<ServiceResponse<EntityStatusDto>> DeactivateAsync(int teacherId, string? reason);
+        Task<ServiceResponse<EntityStatusDto>> ReactivateAsync(int id);
     }
 }
