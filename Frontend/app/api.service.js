@@ -113,6 +113,10 @@ const TeacherService = {
       body: { reason: motivo }
     });
     return respuesta.data;
+  },
+  async getMyProfile() {
+    const respuesta = await apiClient('/teachers/me');
+    return respuesta.data;
   }
 };
 
@@ -154,6 +158,11 @@ const StudentService = {
       body: { isActive: activar }
     });
     return respuesta.data;
+  },
+  
+  async getByGroup(groupId) {
+    const respuesta = await apiClient(`/students/by-group/${groupId}?pageNumber=1&pageSize=1000&onlyActive=false`);
+    return respuesta.data.items;
   }
 
 };
@@ -183,6 +192,11 @@ const GroupSubjectService = {
       body: { isActive: false }
     });
     return respuesta.data;
-  }
+  },
 
+  async getByTeacher(teacherId) {
+    const respuesta = await apiClient(`/group-subjects/by-teacher/${teacherId}`);
+    return respuesta.data;
+  }
 };
+
