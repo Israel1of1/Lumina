@@ -1,72 +1,54 @@
-let grupos = [
-  {
-    id: 1,
-    nombre: "Grupo A",
-    grado: "3.er grado",
-    turno: "Mañana",
-    descripcion: "Grupo alegre, participativo y creativo."
-  },
-  {
-    id: 2,
-    nombre: "Grupo B",
-    grado: "3.er grado",
-    turno: "Tarde",
-    descripcion: "Estudiantes con gran interés por las actividades artísticas."
-  },
-  {
-    id: 3,
-    nombre: "Grupo C",
-    grado: "4.to grado",
-    turno: "Mañana",
-    descripcion: "Grupo colaborativo y muy comprometido."
-  }
-];
-
-let estudiantes = [
-  {
-    id: 1,
-    nombre: "Mateo García",
-    edad: 8,
-    grupo: 1,
-    grado: "3.er grado",
-    tea: "Nivel 1 · Requiere apoyo",
-    juguete: "Bloques de construcción",
-    color: "Azul",
-    responsable: "Laura García",
-    observaciones: "Le gustan las actividades con bloques y rompecabezas.",
-    foto: ""
-  },
-  {
-    id: 2,
-    nombre: "Sofía López",
-    edad: 8,
-    grupo: 1,
-    grado: "3.er grado",
-    tea: "No aplica",
-    juguete: "Muñecas",
-    color: "Morado",
-    responsable: "Elena López",
-    observaciones: "Le gusta dibujar y escuchar cuentos.",
-    foto: ""
-  },
-  {
-    id: 3,
-    nombre: "Daniel Martínez",
-    edad: 9,
-    grupo: 2,
-    grado: "3.er grado",
-    tea: "Nivel 2 · Apoyo moderado",
-    juguete: "Carritos",
-    color: "Rojo",
-    responsable: "Carlos Martínez",
-    observaciones: "Responde mejor a instrucciones cortas y visuales.",
-    foto: ""
-  }
-];
-
 let grupoActual = null;
 let grupoEditando = null;
 let estudianteEditando = null;
+let grupos = [];
+let estudiantes = [];
+
+async function cargarDatosReales() {
+  const perfil = await TeacherService.getMyProfile();
+  const asignaciones = await GroupSubjectService.getByTeacher(perfil.id);
+
+  const idsGruposUnicos = [...new Set(asignaciones.map(a => a.groupId))];
+
+  const gruposCompletos = await Promise.all(
+    idsGruposUnicos.map(id => ClassGroupService.getById(id))
+  );
+
+  grupos = gruposCompletos.map(g => ({
+    id: g.id,
+    nombre: g.name,
+    grado: g.gradeLevel || "",
+    descripcion: g.description || ""
+  }));
+
+  const estudiantesPorGrupo = await Promise.all(
+    idsGruposUnicos.map(id => StudentService.getByGroup(id))
+  );
+
+  estudiantes = estudiantesPorGrupo.flat().map(e => ({
+    id: e.id,
+    nombre: `${e.firstName} ${e.lastName || ""}`.trim(),
+    edad: calcularEdad(e.birthDate),
+    grupo: e.groupId,
+    grado: grupos.find(g => g.id === e.groupId)?.grado || "",
+    tea: e.clinicalInfo || "No registrado",
+    juguete: "",
+    color: "",
+    responsable: "",
+    observaciones: e.observations || "",
+    foto: ""
+  }));
+}
+
+function calcularEdad(fechaNacimiento) {
+  if (!fechaNacimiento) return "—";
+  const nacimiento = new Date(fechaNacimiento);
+  const hoy = new Date();
+  let edad = hoy.getFullYear() - nacimiento.getFullYear();
+  const mesActual = hoy.getMonth() - nacimiento.getMonth();
+  if (mesActual < 0 || (mesActual === 0 && hoy.getDate() < nacimiento.getDate())) edad--;
+  return edad;
+}
 
 const $ = selector => document.querySelector(selector);
 
@@ -105,7 +87,7 @@ function renderizarGrupos() {
       <h3>${grupo.nombre}</h3>
 
       <p class="meta">
-        ${grupo.grado} · ${grupo.turno}<br>
+        ${grupo.grado}<br>
         ${cantidadEstudiantes(grupo.id)} estudiantes
       </p>
 
@@ -148,8 +130,7 @@ function abrirGrupo(id) {
   $("#titulo-estudiantes").textContent = grupo.nombre;
 
   $("#subtitulo-estudiantes").textContent =
-    `${grupo.grado} · ${grupo.turno} · ${cantidadEstudiantes(id)} estudiantes`;
-
+  `${grupo.grado} · ${cantidadEstudiantes(id)} estudiantes`;
   mostrarVista("vista-estudiantes");
   renderizarEstudiantes();
 }
@@ -506,5 +487,8 @@ $("#btn-cerrar-sesion").addEventListener("click", () => {
   }
 });
 
-renderizarGrupos();
+$("#btn-agregar-grupo").style.display = "none";
+$("#btn-agregar-estudiante").style.display = "none";
+
+cargarDatosReales().then(renderizarGrupos);
 renderizarEstudiantes();
