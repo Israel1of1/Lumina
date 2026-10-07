@@ -1,5 +1,4 @@
-﻿using Core.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Business.DTOs
 {
-    public class CreateTeacherDto
+    public class CreateGuardianDto
     {
-
         [Required]
         public int userId { get; set; }
 
@@ -25,7 +23,8 @@ namespace Business.DTOs
         public string? Phone { get; set; }
         public string? Address { get; set; }
         public string? City { get; set; }
-        public string? Specialty { get; set; }
-        public string? Degree { get; set; }
+        
+        public string? photo { get; set; }
+        public string? RelationShip {get; set; }
     }
 }

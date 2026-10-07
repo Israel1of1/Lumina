@@ -20,7 +20,7 @@ namespace API.Controllers
         }
 
         [HttpGet("by-group/{groupId:int}")]
-        [Authorize(Roles = "INSTITUTION")]
+        [Authorize(Roles = "TEACHER")]
         public async Task<IActionResult> GetByGroup(int groupId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] bool onlyActive = true)
         {
             var result = await _studentService.GetByGroupAsync(groupId, pageNumber, pageSize, onlyActive);
@@ -28,7 +28,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id:int}")]
-        [Authorize(Roles = "INSTITUTION")]
+        [Authorize(Roles = "TEACHER")]
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _studentService.GetByIdAsync(id);

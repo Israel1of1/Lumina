@@ -10,10 +10,16 @@ namespace Business.Interfaces
 {
     public interface IGuardianService
     {
+        Task<ServiceResponse<GuardianProfileDto>> CreateAsync(CreateGuardianDto request);
+
         Task<ServiceResponse<GuardianProfileDto>> GetMyProfileAsync(int userId);
         Task<ServiceResponse<GuardianProfileDto>> UpdateMyProfileAsync(int userId, UpdateGuardianProfileDto request);
-        
+        Task<ServiceResponse<GuardianProfileDto>> PatchMyProfileAsync(int Id, PatchGuardianProfileDto request);
+
+
         Task<ServiceResponse<PagedResultDto<GuardianProfileDto>>> GetAllAsync(int pageNumber, int pageSize, string? status);
         Task<ServiceResponse<EntityStatusDto>> DeactivateAsync(int guardianId, string? reason);
+        Task<ServiceResponse<EntityStatusDto>> ReactivateAsync(int id);
+
     }
 }

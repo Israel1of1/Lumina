@@ -1,5 +1,6 @@
 ﻿using Business.DTOs;
 using Business.Interfaces;
+using Business.Services;
 using Core.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -20,6 +21,14 @@ namespace API.Controllers
             _guardianService = guardianService;
         }
 
+        [HttpPost]
+        [Authorize(Roles = "INSTITUTION")]
+        public async Task<IActionResult> Create([FromBody] CreateGuardianDto request)
+        {
+            var result = await _guardianService.CreateAsync(request);
+            return MapResponse(result);
+        }
+
         [HttpGet("me")]
         [Authorize(Roles = "GUARDIAN")]
         public async Task<IActionResult> GetMyProfile()
@@ -28,13 +37,23 @@ namespace API.Controllers
             return MapResponse(result);
         }
 
-        [HttpPatch("me")]
+        [HttpPut("me")]
         [Authorize(Roles = "GUARDIAN")]
         public async Task<IActionResult> UpdateMyProfile([FromBody] UpdateGuardianProfileDto request)
         {
             var result = await _guardianService.UpdateMyProfileAsync(GetCurrentUserId(), request);
             return MapResponse(result);
         }
+
+
+        [HttpPatch("me")]
+        [Authorize(Roles = "INSTITUTION")]
+        public async Task<IActionResult> PatchProfile(int Id,[FromBody] PatchGuardianProfileDto request)
+        {
+            var result = await _guardianService.PatchMyProfileAsync(Id, request);
+            return MapResponse(result);
+        }
+
 
         //Lista todos los tutores 
         [HttpGet]
@@ -51,6 +70,16 @@ namespace API.Controllers
         public async Task<IActionResult> Deactivate(int id, [FromBody] DeactivateRequestDto request)
         {
             var result = await _guardianService.DeactivateAsync(id, request.Reason);
+            return MapResponse(result);
+        }
+
+
+
+        [HttpPatch("{id:int}/reactivate")]
+        [Authorize(Roles = "INSTITUTION")]
+        public async Task<IActionResult> Reactivate(int id)
+        {
+            var result = await _guardianService.ReactivateAsync(id);
             return MapResponse(result);
         }
 

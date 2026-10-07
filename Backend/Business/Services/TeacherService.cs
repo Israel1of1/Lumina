@@ -14,9 +14,9 @@ namespace Business.Services
 
     public class TeacherService : ITeacherService
      {
-            private readonly ITeacherRepository _teacherRepository;
+        private readonly ITeacherRepository _teacherRepository;
 
-            public TeacherService(ITeacherRepository teacherRepository)
+        public TeacherService(ITeacherRepository teacherRepository)
             {
                 _teacherRepository = teacherRepository;
             }
@@ -25,6 +25,7 @@ namespace Business.Services
         {
             var teacher = new Teacher
             {
+                UserId = request.userId,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 NationalId = request.NationalId,

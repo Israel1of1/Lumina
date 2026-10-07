@@ -35,6 +35,7 @@ namespace DataAccess.Repositories
 
                     SqlCommand cmd = new SqlCommand("USP_CreateTeacher", connection);
                     cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@userId", (object?)teacher.UserId ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@FirstName", teacher.FirstName);
                     cmd.Parameters.AddWithValue("@LastName", teacher.LastName);
                     cmd.Parameters.AddWithValue("@NationalId", (object?)teacher.NationalId ?? DBNull.Value);

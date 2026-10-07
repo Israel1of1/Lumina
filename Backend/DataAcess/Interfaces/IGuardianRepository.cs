@@ -10,10 +10,15 @@ namespace DataAccess.Interfaces
 {
     public interface IGuardianRepository
     {
+        Task<RepositoryResponse<Guardian>> CreateAsync(Guardian guardian);
+
         Task<RepositoryResponse<Guardian>> GetByUserIdAsync(int userId);
         Task<RepositoryResponse<Guardian>> UpdateProfileAsync(int userId, Guardian profile);
+        Task<RepositoryResponse<Guardian>> PatchByIdAsync(int id, Guardian guardian);
+
         Task<RepositoryResponse<(List<Guardian> Items, int TotalRecords)>> GetAllAsync(int pageNumber, int pageSize, string? status);
         Task<RepositoryResponse<EntityStatusResult>> DeactivateAsync(int guardianId, string? reason);
+        Task<RepositoryResponse<Guardian>> ReactivateAsync(int id);
     }
 }
 

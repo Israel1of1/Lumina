@@ -9,6 +9,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DataAccess.Repositories
 {
@@ -20,6 +21,57 @@ namespace DataAccess.Repositories
         public GuardianRepository(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection")!;
+        }
+
+
+        public async Task<RepositoryResponse<Guardian>> CreateAsync(Guardian guardian)
+        {
+            var GuardianReturned = new Guardian();
+            var response = new RepositoryResponse<Guardian>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    SqlCommand cmd = new SqlCommand("USP_CreateGuardian", connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@userId", (object?)guardian.UserId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@FirstName", guardian.FirstName);
+                    cmd.Parameters.AddWithValue("@LastName", guardian.LastName);
+                    cmd.Parameters.AddWithValue("@NationalId", (object?)guardian.NationalId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@PersonalEmail", (object?)guardian.PersonalEmail ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Phone", (object?)guardian.Phone ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Address", (object?)guardian.Address ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@City", (object?)guardian.City ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Photo", (object?)guardian.Photo ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Relationship", (object?)guardian.RelationShip ?? DBNull.Value);
+                    cmd.Parameters.Add("@ReturnValue", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
+
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                            GuardianReturned = MapGuardianProfile(reader);
+                    }
+
+                    var returnedValue = Convert.ToInt32(cmd.Parameters["@ReturnValue"].Value);
+                    response.Data = GuardianReturned;
+                    response.OperationStatusCode = returnedValue;
+                    return response;
+                }
+            }
+            catch (SqlException ex)
+            {
+                response.Data = null;
+                response.OperationStatusCode = ex.Number;
+                response.Message = ex.Message;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return new RepositoryResponse<Guardian> { Data = null, OperationStatusCode = -1, Message = ex.Message };
+            }
         }
 
         public async Task<RepositoryResponse<Guardian>> GetByUserIdAsync(int userId)
@@ -128,6 +180,60 @@ namespace DataAccess.Repositories
                     OperationStatusCode = -1,
                     Message = ex.Message
                 };
+            }
+        }
+
+
+        public async Task<RepositoryResponse<Guardian>> PatchByIdAsync(int id, Guardian profile)
+        {
+            var guardianReturned = new Guardian();
+            var response = new RepositoryResponse<Guardian>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    SqlCommand cmd = new SqlCommand("USP_PatchGuardianById", connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.Parameters.AddWithValue("@userId", (object?)profile.UserId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@FirstName", (object?)profile.FirstName ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@LastName", (object?)profile.LastName ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@NationalId", (object?)profile.NationalId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@PersonalEmail", (object?)profile.PersonalEmail ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Phone", (object?)profile.Phone ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Address", (object?)profile.Address ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@City", (object?)profile.City ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Photo", (object?)profile.Photo ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Relationship", (object?)profile.RelationShip ?? DBNull.Value);
+                    cmd.Parameters.Add("@ReturnValue", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
+
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                            guardianReturned = MapGuardianProfile(reader);
+                    }
+
+                    var returnedValue = Convert.ToInt32(cmd.Parameters["@ReturnValue"].Value);
+
+                    response.Data = guardianReturned;
+                    response.OperationStatusCode = returnedValue;
+
+                    return response;
+                }
+            }
+            catch (SqlException ex)
+            {
+                response.Data = null;
+                response.OperationStatusCode = ex.Number;
+                response.Message = ex.Message;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return new RepositoryResponse<Guardian> { Data = null, OperationStatusCode = -1, Message = ex.Message };
             }
         }
 
@@ -284,5 +390,48 @@ namespace DataAccess.Repositories
                 };
             }
         }
+
+
+        public async Task<RepositoryResponse<Guardian>> ReactivateAsync(int id)
+        {
+            var GuardianReturned = new Guardian();
+            var response = new RepositoryResponse<Guardian>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    SqlCommand cmd = new SqlCommand("USP_ReactivateGuardian", connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@TeacherId", id);
+                    cmd.Parameters.Add("@ReturnValue", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
+
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                            GuardianReturned = MapGuardianProfile(reader);
+                    }
+
+                    var returnedValue = Convert.ToInt32(cmd.Parameters["@ReturnValue"].Value);
+                    response.Data = GuardianReturned;
+                    response.OperationStatusCode = returnedValue;
+                    return response;
+                }
+            }
+            catch (SqlException ex)
+            {
+                response.Data = null;
+                response.OperationStatusCode = ex.Number;
+                response.Message = ex.Message;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return new RepositoryResponse<Guardian> { Data = null, OperationStatusCode = -1, Message = ex.Message };
+            }
+        }
+
     }
 }
