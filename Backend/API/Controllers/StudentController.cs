@@ -64,7 +64,7 @@ namespace API.Controllers
         }
 
         [HttpPatch("{id:int}/active")]
-        [Authorize(Roles = "INSTITUTION")]
+        [Authorize(Roles = "INSTITUTION, TEACHER")]
         public async Task<IActionResult> SetActive(int id, [FromBody] SetActiveDto request)
         {
             var result = await _studentService.SetActiveAsync(id, request.IsActive);

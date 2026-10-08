@@ -18,7 +18,7 @@ namespace Backend.API.Controllers
             _lessonService = lessonService;
         }
 
-        [Authorize(Roles = "INSTITUTION, DOCENTE")]
+        [Authorize(Roles = "INSTITUTION, TEACHER")]
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] PaginationParams pagination)
         {
@@ -71,7 +71,7 @@ namespace Backend.API.Controllers
             }
         }
 
-        [Authorize(Roles = "INSTITUTION, DOCENTE")]
+        [Authorize(Roles = "INSTITUTION, TEACHER")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -126,7 +126,7 @@ namespace Backend.API.Controllers
             }
         }
 
-        [Authorize(Roles = "INSTITUTION, DOCENTE")]
+        [Authorize(Roles = "INSTITUTION, TEACHER")]
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateLessonDto lessonDto)
         {
@@ -166,7 +166,7 @@ namespace Backend.API.Controllers
             }
         }
 
-        [Authorize(Roles = "INSTITUTION, DOCENTE")]
+        [Authorize(Roles = "INSTITUTION, TEACHER")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateLessonDto lessonDto)
         {
