@@ -18,7 +18,21 @@ namespace DataAccess.Repositories
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection")!;
         }
+        public async Task<bool> HasTeacherGroupAccessAsync(int teacherId, int groupId)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
 
+                SqlCommand cmd = new SqlCommand("USP_CheckTeacherGroupAccess", connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@TeacherId", teacherId);
+                cmd.Parameters.AddWithValue("@GroupId", groupId);
+
+                var result = await cmd.ExecuteScalarAsync();
+                return result != null && (bool)result;
+            }
+        }
         public async Task<bool> HasStudentAccessAsync(int userId, int studentId)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))

@@ -12,7 +12,7 @@ namespace Business.Interfaces
     {
         Task<ServiceResponse<PagedResultDto<StudentDto>>> GetByGroupAsync(int groupId, int pageNumber, int pageSize, bool onlyActive);
         Task<ServiceResponse<StudentDto>> GetByIdAsync(int id);
-        Task<ServiceResponse<StudentDto>> CreateAsync(CreateStudentDto request);
+        Task<ServiceResponse<StudentDto>> CreateAsync(CreateStudentDto request, int? requestingTeacherId);
         Task<ServiceResponse<StudentDto>> UpdateAsync(int id, UpdateStudentDto request);
         Task<ServiceResponse<StudentDto>> SetActiveAsync(int id, bool isActive);
     }

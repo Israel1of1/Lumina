@@ -4,6 +4,7 @@ using Core.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -36,10 +37,21 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "INSTITUTION")]
-        public async Task<IActionResult> Create([FromBody] CreateStudentDto request)
+        [Authorize(Roles = "INSTITUTION,TEACHER")]
+        public async Task<IActionResult> Create([FromBody] CreateStudentDto request, [FromServices] Business.Interfaces.ITeacherService teacherService)
         {
-            var result = await _studentService.CreateAsync(request);
+            int? requestingTeacherId = null;
+
+            if (User.IsInRole("DOCENTE") && !User.IsInRole("INSTITUCION"))
+            {
+                var profile = await teacherService.GetMyProfileAsync(GetCurrentUserId());
+                if (!profile.IsSuccess)
+                    return NotFound(profile);
+
+                requestingTeacherId = profile.Data!.Id;
+            }
+
+            var result = await _studentService.CreateAsync(request, requestingTeacherId);
             return MapResponse(result);
         }
 
@@ -72,6 +84,11 @@ namespace API.Controllers
                 MessageCodes.Conflict => Conflict(result),
                 _ => StatusCode(500, result)
             };
+        }
+        private int GetCurrentUserId()
+        {
+            var subject = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub");
+            return int.Parse(subject!);
         }
     }
 }

@@ -8,6 +8,7 @@ namespace DataAccess.Interfaces
 {
     public interface IAccessControlRepository
     {
+        Task<bool> HasTeacherGroupAccessAsync(int teacherId, int groupId);
         Task<bool> HasStudentAccessAsync(int userId, int studentId);
     }
 }

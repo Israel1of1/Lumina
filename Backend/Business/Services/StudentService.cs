@@ -14,10 +14,46 @@ namespace Business.Services
     public class StudentService : IStudentService
     {
         private readonly IStudentRepository _studentRepository;
+        private readonly IAccessControlRepository _accessControlRepository;
 
-        public StudentService(IStudentRepository studentRepository)
+        public StudentService(IStudentRepository studentRepository, IAccessControlRepository accessControlRepository)
         {
             _studentRepository = studentRepository;
+            _accessControlRepository = accessControlRepository;
+        }
+
+        public async Task<ServiceResponse<StudentDto>> CreateAsync(CreateStudentDto request, int? requestingTeacherId)
+        {
+            if (requestingTeacherId.HasValue)
+            {
+                var hasAccess = await _accessControlRepository.HasTeacherGroupAccessAsync(requestingTeacherId.Value, request.GroupId);
+                if (!hasAccess)
+                {
+                    return new ServiceResponse<StudentDto>
+                    {
+                        Data = null,
+                        IsSuccess = false,
+                        MessageCodes = MessageCodes.Unauthorized,
+                        Message = "No tienes una materia asignada activa en ese grupo, no puedes matricular estudiantes ahi."
+                    };
+                }
+            }
+
+            var student = new Student
+            {
+                GroupId = request.GroupId,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                UniqueNumber = request.UniqueNumber,
+                LanguageLevel = request.LanguageLevel,
+                ClinicalInfo= request.ClinicalInfo,
+                Observations = request.Observations,
+                BirthDate = request.BirthDate,
+                Gender = request.Gender
+            };
+
+            var repoResponse = await _studentRepository.CreateAsync(student);
+            return MapResponse(repoResponse.OperationStatusCode, repoResponse.Data, "matriculado");
         }
 
         public async Task<ServiceResponse<PagedResultDto<StudentDto>>> GetByGroupAsync(int groupId, int pageNumber, int pageSize, bool onlyActive)
@@ -57,22 +93,7 @@ namespace Business.Services
             return MapResponse(repoResponse.OperationStatusCode, repoResponse.Data, "consultado");
         }
 
-        public async Task<ServiceResponse<StudentDto>> CreateAsync(CreateStudentDto request)
-        {
-            var student = new Student
-            {
-                GroupId = request.GroupId,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                UniqueNumber = request.UniqueNumber,
-                BirthDate = request.BirthDate,
-                Gender = request.Gender
-            };
-
-            var repoResponse = await _studentRepository.CreateAsync(student);
-            return MapResponse(repoResponse.OperationStatusCode, repoResponse.Data, "matriculado");
-        }
-
+      
         public async Task<ServiceResponse<StudentDto>> UpdateAsync(int id, UpdateStudentDto request)
         {
             var student = new Student
