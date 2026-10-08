@@ -29,13 +29,13 @@
 
 ## 1. Descripción General del Proyecto
 
-**Lúmina** es una aplicación web/móvil que gestiona el seguimiento de clases y asignaciones mediante la colaboración entre **Institución**, **Docente** y **Tutor**, orientada a estudiantes diagnosticados con **Trastorno del Espectro Autista (TEA)**.
+**Lúmina** es una aplicación web que gestiona el seguimiento de clases, asignaciones y rutinas mediante la colaboración entre **Institución**, **Docente** y **Tutor**, orientada a estudiantes diagnosticados con **Trastorno del Espectro Autista (TEA)**.
 
-Proyecto desarrollado para **Hackathon Nicaragua KronoX 2026** (10ª edición, INATEC), categoría **Aficionado**. Esta entrega corresponde a la **Fase Prototipo**, que cubre los 27 módulos/tablas mínimos necesarios para demostrar el flujo completo: **Institución → Docente → Tutor → Progreso del estudiante**.
+Proyecto desarrollado para **Hackathon Nicaragua KronoX 2026** (10ª edición, INATEC), categoría **Aficionado**. Esta entrega cubre los 27 módulos/tablas mínimos necesarios para demostrar el flujo completo: **Institución → Docente → Tutor → Progreso del estudiante**.
 
 ### Problema que resuelve
 
-El acompañamiento educativo de un estudiante con TEA requiere comunicación cercana y constante entre la institución, el docente y el tutor. Sin una herramienta estructurada, el tutor desconoce qué se trabaja en clase, el docente no conoce los gustos y rutinas del estudiante para adaptar su enseñanza, y la institución no puede monitorear el progreso de forma uniforme. Lúmina centraliza esta información para que cada actor cumpla su rol con visibilidad y trazabilidad.
+El acompañamiento educativo de un estudiante con TEA requiere comunicación cercana y constante entre la institución, el docente y el tutor. Sin una herramienta estructurada, el tutor desconoce qué se trabaja en clase, el docente no conoce los gustos y rutinas del estudiante para adaptar su enseñanza a su vez no tiene los recursos necesarios para la regulación de emociones del niño en momentos de sobreestimulo, y la institución no puede monitorear el progreso de forma uniforme. Lúmina centraliza esta información para que cada actor cumpla su rol con visibilidad y trazabilidad.
 
 ### Funcionalidades principales
 
@@ -60,13 +60,18 @@ El acompañamiento educativo de un estudiante con TEA requiere comunicación cer
 
 ### Estado actual del proyecto
 
-Lúmina se está entregando por fases. Para este **primer entregable**, el **Frontend funciona de forma standalone**, con una base de datos simulada en `localStorage` del navegador — no depende del Backend para poder probarse. En paralelo, el equipo de Backend avanza en la API real (.NET 8 + SQL Server, ver secciones 3 a 5), que se irá conectando al Frontend en los siguientes entregables, reemplazando `localStorage` por las llamadas a la API.
+LÚMINA se está desarrollando y entregando por fases. En este primer entregable, el sistema ya cuenta con la integración entre el Frontend, el Backend y la base de datos, permitiendo avanzar desde una interfaz inicialmente independiente hacia una aplicación funcional y conectada.
+
+El Frontend se encarga de la interfaz y la interacción con el usuario, mientras que el Backend, desarrollado con .NET 8, gestiona la lógica de negocio y la comunicación con la base de datos SQL Server. Actualmente, se está realizando la conexión entre estos componentes mediante las APIs correspondientes, sustituyendo progresivamente el uso de datos simulados almacenados en localStorage por datos reales provenientes de la base de datos.
+
+De esta manera, LÚMINA avanza hacia una arquitectura integrada, donde el Frontend consume los servicios del Backend y este, a su vez, procesa y almacena la información en SQL Server. Esta integración permitirá que los datos registrados desde la aplicación sean persistentes y puedan ser gestionados de manera centralizada.
 
 | Componente | Estado en este entregable |
 |---|---|
-| Frontend (HTML/CSS/JS + `localStorage`) | ✅ Funcional de forma independiente |
-| Backend (.NET 8 + SQL Server) | 🔄 En desarrollo, aún no integrado al Frontend |
-| Integración Frontend ↔ Backend | ⬜ Planificada para el siguiente entregable |
+| Frontend (HTML/CSS/JS) | ✅ Funcional |
+| Backend (.NET 8/ C#) | ✅ Implementado |
+| Base de datos (SQL Server)| ✅Implementada |
+| Integración Frontend ↔ Backend | ⬜En desarrollo y prueba|
 
 ---
 
@@ -77,7 +82,7 @@ Lúmina se está entregando por fases. Para este **primer entregable**, el **Fro
 | Herramienta | Versión mínima | Enlace |
 |---|---|---|
 | .NET SDK | 8.0 | https://dotnet.microsoft.com/download/dotnet/8.0 |
-| SQL Server | 2016+ (o Azure SQL) | https://www.microsoft.com/sql-server |
+| SQL Server | 2016+ (o Azure SQL)| https://www.microsoft.com/sql-server |
 | SQL Server Management Studio / Azure Data Studio | — | https://learn.microsoft.com/sql/ssms/ |
 | Visual Studio 2022 | 17.x | https://visualstudio.microsoft.com/ |
 | Git | 2.x | https://git-scm.com/ |
@@ -99,7 +104,7 @@ Lúmina se está entregando por fases. Para este **primer entregable**, el **Fro
 
 - Instancia de SQL Server accesible (local o Azure SQL) para ejecutar los scripts del Prototipo
 - Navegador moderno para el Frontend
-- No requiere Docker ni servicios en la nube en esta fase (ver [Manual de Despliegue](#8-manual-de-despliegue) para el estado actual y planes futuros)
+- No requiere Docker ni servicios en la nube en esta fase.
 
 ---
 
@@ -160,7 +165,7 @@ El Backend sigue una **arquitectura en capas** (layered architecture) clásica d
 | Materias | `SubjectController` | ✅ Implementado |
 | Módulos de contenido | `ModulesController` | ✅ Implementado |
 | Estudiantes | `StudentsController` | ✅ Implementado (CRUD completo) |
-| Docentes, Tutores, Grupos, Planificación, PECS, Rutinas, Progreso, Base de Conocimientos | — | ⬜ Planificado (ver `Lumina_Roadmap_Entidades.md`) |
+| Docentes, Tutores, Grupos, Planificación, PECS, Rutinas, Progreso, Base de Conocimientos | — | ✅ Implementado  |
 
 El repositorio base (acceso a datos) para el resto de las 27 entidades del Prototipo ya existe; la capa de negocio y los controladores se están completando siguiendo siempre el mismo patrón de 4 capas descrito en la sección anterior.
 
@@ -227,9 +232,9 @@ POST /api/auth/login
 
 ## 5. Base de Datos
 
-**Motor actual:** SQL Server 2016+ / Azure SQL
+**Motor actual:** SQL Server 2016+ 
 **Acceso a datos:** ADO.NET puro (`Microsoft.Data.SqlClient`) contra **stored procedures**, sin ORM
-**Alcance de esta fase:** 27 tablas (Fase Prototipo), documentadas en detalle en [`Database/README.md`](Database/README.md)
+**Alcance de esta fase:** 27 tablas 
 
 ### Convenciones del modelo
 
@@ -269,11 +274,9 @@ Subject  ──< Module ──< Lesson ──< LessonStep
 Lesson  ──< LearningContent ──< ContentKeyword >── Keyword
 ```
 
-> El detalle campo por campo de cada tabla, el orden de creación por dependencias FK y el seed de datos demo se documentan en [`Database/README.md`](Database/README.md).
-
 ### Planes futuros — Migración a MySQL
 
-El equipo ya cuenta con un script equivalente para **MySQL 8.0+** (`Database/LUMINA_Prototipo_MySQL.sql`), con el mismo modelo de 27 tablas adaptado a `AUTO_INCREMENT`, `TINYINT(1)` para booleanos y motor `InnoDB`. Actualmente el Backend está acoplado a SQL Server mediante `Microsoft.Data.SqlClient`; se planea migrar el acceso a datos a un proveedor compatible con MySQL (por ejemplo `MySqlConnector`) en una fase posterior, ya que **facilita el despliegue** al existir más opciones de hosting gratuito/económico para MySQL que para SQL Server.
+El equipo migrara la base de datos de SQL Server a **MySQL 8.0+** (`Database/LUMINA_Prototipo_MySQL.sql`), con el mismo modelo de 27 tablas adaptado a `AUTO_INCREMENT`, `TINYINT(1)` para booleanos y motor `InnoDB`. Actualmente el Backend está acoplado a SQL Server mediante `Microsoft.Data.SqlClient`; se planea migrar el acceso a datos a un proveedor compatible con MySQL (por ejemplo `MySqlConnector`) en una fase posterior, ya que **facilita el despliegue** al existir más opciones de hosting gratuito/económico para MySQL que para SQL Server.
 
 ---
 
@@ -305,13 +308,13 @@ Lumina/
 │       ├── Repositories/         # ADO.NET + stored procedures
 │       └── DataAccess.csproj
 ├── Frontend/
-│   ├── pages/                     # Vistas HTML (login, dashboard, docentes, grupos, ...)
-│   ├── styles/                    # Hojas de estilo CSS por módulo
-│   ├── core/                      # Lógica de cada página + servicio de datos local (localStorage)
-│   ├── app/                       # Configuración global y router de la app
-│   └── img/                       # Recursos gráficos (logo, íconos)
+│   ├── App/                       # Conexión con la API 
+│   ├── Assets/                    # Logos
+│   ├── core/                      # Todos los Java script
+│   ├── img/                       # Imagenes
+│   └── src/                       # Vistas HTML (login, dashboard, docentes, grupos, ...)
+│   └── styles/                    # CSS globales     
 └── Database/
-    ├── README.md                 # Guía del modelado (DDL, seed, diagrama ER)
     ├── LUMINA_Prototipo_SQLServer.sql
     └── LUMINA_Prototipo_MySQL.sql
 ```
@@ -328,11 +331,12 @@ Lumina/
 
 ## 7. Instalación y Configuración
 
-Para este entregable, el **Frontend se instala y prueba de forma independiente** (sin necesidad de Backend ni base de datos). El **Backend** se documenta por separado, ya que su avance corre en paralelo y aún no está integrado al Frontend.
+Para este entregable, el **Frontend puede instalarse**, actualmente integración con el **Backend**. El **Backend**, desarrollado en **.NET 8**, se conecta con la base de datos **SQL Server** y proporciona los servicios que consume el Frontend.
 
-### 7.1 Frontend (entregable actual — standalone)
+En esta etapa, el equipo se encuentra realizando pruebas de comunicación entre los tres componentes (**Frontend ↔ Backend ↔ SQL Server**), con el objetivo de reemplazar progresivamente los datos locales utilizados durante el desarrollo inicial por información gestionada mediante la API y almacenada en la base de datos.
 
-No requiere instalación de dependencias, backend, ni base de datos externa. Todo funciona directamente en el navegador, usando `localStorage` como base de datos simulada.
+
+### 7.1 Frontend (entregable actual)
 
 **Pasos**
 
@@ -351,28 +355,12 @@ No requiere instalación de dependencias, backend, ni base de datos externa. Tod
 
    | Campo | Valor |
    |---|---|
-   | Correo | `institucion@lumina.com` |
-   | Contraseña | `Admin123!` |
+   | Correo | `admin@lumina.edu` |
+   | Contraseña | `InstitucionLumina!` |
 
 5. **Explorar el sistema:** al iniciar sesión verás el Dashboard con acceso al menú lateral: Docentes, Estudiantes, Grupos, Materias, Asignaciones y Códigos.
 
-**Reiniciar los datos de prueba**
-
-El proyecto genera automáticamente datos de ejemplo (10 docentes, 10 estudiantes, 10 grupos, etc.) la primera vez que se ejecuta. Para restablecer todo a su estado inicial:
-
-1. Abre la consola del navegador (F12 → pestaña "Console").
-2. Ejecuta:
-   ```js
-   reiniciarBaseLocal()
-   ```
-3. Recarga la página.
-
-> **Nota:** los datos se guardan en el `localStorage` del navegador. Si limpias el caché o usas otro navegador/dispositivo, los datos no se comparten entre sesiones. No requiere conexión a internet, excepto para cargar las fuentes de Google Fonts.
-
-### 7.2 Backend (en desarrollo — aún no integrado)
-
-Estos pasos son para quien quiera correr la API que se está construyendo en paralelo; no son necesarios para probar el Frontend de este entregable.
-
+### 7.2 Backend 
 **Prerrequisitos:** .NET 8 SDK, SQL Server (o Azure SQL), SSMS/Azure Data Studio, y Git.
 
 1. **Clonar y ubicarse en Backend**
@@ -382,7 +370,7 @@ Estos pasos son para quien quiera correr la API que se está construyendo en par
    dotnet restore
    ```
 
-2. **Base de datos:** en SSMS o Azure Data Studio, ejecutar `Database/LUMINA_Prototipo_SQLServer.sql`. Esto crea la base de datos `LUMINA`, sus 27 tablas y el seed de catálogos (roles, materias, keywords). Detalle completo en [`Database/README.md`](Database/README.md).
+2. **Base de datos:** en SSMS o Azure Data Studio, ejecutar `Database/LUMINA_Prototipo_SQLServer.sql`. Esto crea la base de datos `LUMINA`, sus 27 tablas y el seed de catálogos (roles, materias, keywords).
 
 3. **Configurar `API/appsettings.json`:**
    ```json
@@ -406,22 +394,14 @@ Estos pasos son para quien quiera correr la API que se está construyendo en par
    ```
    También puede abrirse `Backend.sln` en Visual Studio 2022 y ejecutar con `F5`. Swagger UI queda disponible en `https://localhost:<puerto>/swagger`.
 
-Cuando el Backend esté listo para integrarse, el Frontend dejará de usar `reiniciarBaseLocal()` / `localStorage` y pasará a consumir estos endpoints vía CORS (ver plan en la sección 8).
+Cuando el Backend esté 100% listo con el Frontend (ver plan en la sección 8).
 
 ---
 
 ## 8. Manual de Despliegue
-
-### Estado actual
-
-Este entregable se ejecuta en **entorno local, solo Frontend**: el Frontend corre en el navegador (doble clic o Live Server) con `localStorage` como base de datos simulada, sin ningún servicio corriendo detrás. El Backend, en paralelo, se ejecuta también en local de desarrollo con Kestrel (`dotnet run` o Visual Studio) contra SQL Server, pero **todavía no está conectado al Frontend**.
-
 ### Plan de integración y despliegue futuro
 
 | Paso | Descripción |
-|---|---|
-| Completar módulos del Backend | Terminar controladores/servicios pendientes (Docentes, Tutores, Grupos, Planificación, PECS, Rutinas, Progreso, Base de Conocimientos) sobre el patrón de 4 capas |
-| Conectar Frontend ↔ Backend | Reemplazar el servicio de datos local (`localStorage`) por llamadas a la API vía `fetch`, sirviendo el Frontend con Live Server en `http://127.0.0.1:5500` para que el Backend lo acepte por CORS |
 | Migración a MySQL | Adoptar `Database/LUMINA_Prototipo_MySQL.sql` y un proveedor ADO.NET compatible (`MySqlConnector`), para ampliar las opciones de hosting económico |
 | Contenerización | Empaquetar el Backend en una imagen Docker (SDK .NET 8 → runtime ASP.NET 8) |
 | Hosting | Evaluar proveedores con soporte MySQL gratuito/económico (Railway, Render, PlanetScale, etc.) una vez completada la migración |
