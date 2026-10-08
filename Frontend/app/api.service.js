@@ -200,3 +200,73 @@ const GroupSubjectService = {
   }
 };
 
+// LESSON SERVICE conecta la pantalla de Planes de Clase con el Backend.
+
+const LessonService = {
+
+  async getAll() {
+    const respuesta = await apiClient('/lessons?pageNumber=1&pageSize=1000');
+    return respuesta.data;
+  },
+
+  async create(datos) {
+    return await apiClient('/lessons', { method: 'POST', body: datos });
+  },
+
+  async update(id, datos) {
+    return await apiClient(`/lessons/${id}`, { method: 'PUT', body: datos });
+  }
+
+};
+
+
+
+// GUARDIAN SERVICE — conecta el perfil del Guardian con el Backend.
+
+const GuardianService = {
+
+  async getMyProfile() {
+    const respuesta = await apiClient('/guardians/me');
+    return respuesta.data;
+  },
+
+  async updateMyProfile(datos) {
+    const respuesta = await apiClient('/guardians/me', {
+      method: 'PUT',
+      body: datos
+    });
+
+    return respuesta.data;
+  },
+
+  async getMyWards() {
+      const respuesta = await apiClient('/student-relations/my-wards');
+      return respuesta.data;
+  }
+
+};
+
+
+const PecsBoardService = {
+  async getByStudent(studentId) {
+    const respuesta = await apiClient(`/pecs-boards/by-student/${studentId}`);
+    return respuesta.data;
+  },
+
+  async create(datos) {
+    const respuesta = await apiClient('/pecs-boards', { method: 'POST', body: datos });
+    return respuesta.data;
+  }
+};
+
+const PecsCardService = {
+  async getByBoard(boardId) {
+    const respuesta = await apiClient(`/pecs-cards/by-board/${boardId}`);
+    return respuesta.data;
+  },
+  async create(datos) {
+    const respuesta = await apiClient('/pecs-cards', { method: 'POST', body: datos });
+    return respuesta.data;
+  }
+};
+

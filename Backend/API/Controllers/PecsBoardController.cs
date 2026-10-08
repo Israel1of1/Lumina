@@ -21,6 +21,8 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "TEACHER")]
+
         public async Task<IActionResult> Create([FromBody] CreatePecsBoardDto request)
         {
             var result = await _boardService.CreateAsync(GetCurrentUserId(), request);
@@ -28,6 +30,8 @@ namespace API.Controllers
         }
 
         [HttpGet("by-student/{studentId:int}")]
+        [Authorize(Roles = "TEACHER")]
+
         public async Task<IActionResult> GetByStudent(int studentId)
         {
             var result = await _boardService.GetByStudentAsync(GetCurrentUserId(), studentId);
@@ -35,6 +39,8 @@ namespace API.Controllers
         }
 
         [HttpPatch("{id:int}")]
+        [Authorize(Roles = "TEACHER")]
+
         public async Task<IActionResult> Update(int id, [FromBody] UpdatePecsBoardDto request)
         {
             var result = await _boardService.UpdateAsync(GetCurrentUserId(), id, request);
@@ -42,6 +48,8 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "TEACHER")]
+
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _boardService.DeleteAsync(GetCurrentUserId(), id);

@@ -1,5 +1,8 @@
+// ============================================================
+// RECURSOS FIJOS (locales): solo videos y música.
+// Los PECS ya NO van acá, vienen del Backend por estudiante.
+// ============================================================
 const recursos = [
- 
   {
     id: 1,
     categoria: "videos",
@@ -49,7 +52,7 @@ const recursos = [
     youtube: "ZToicYcHIOU"
   },
 
-  /* MÚSICA: recursos distintos */
+  /* MÚSICA */
   {
     id: 7,
     categoria: "musica",
@@ -97,107 +100,93 @@ const recursos = [
     descripcion: "Melodía para pintar, leer o descansar.",
     icono: "✨",
     audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3"
-  },
-
-  /* PECS: seis tableros */
-  {
-    id: 13,
-    categoria: "pecs",
-    titulo: "Necesidades básicas",
-    descripcion: "Apoya la comunicación de necesidades cotidianas.",
-    icono: "💧",
-    tarjetas: [
-      ["🙋", "Yo quiero", "Yo quiero"],
-      ["💧", "Agua", "Quiero agua"],
-      ["🍎", "Comer", "Quiero comer"],
-      ["🧸", "Jugar", "Quiero jugar"],
-      ["😴", "Descansar", "Quiero descansar"],
-      ["❓", "Ayuda", "Necesito ayuda"]
-    ]
-  },
-  {
-    id: 14,
-    categoria: "pecs",
-    titulo: "Emociones",
-    descripcion: "Ayuda a reconocer y comunicar emociones.",
-    icono: "😊",
-    tarjetas: [
-      ["😊", "Feliz", "Me siento feliz"],
-      ["😢", "Triste", "Me siento triste"],
-      ["😡", "Enojado", "Me siento enojado"],
-      ["😨", "Asustado", "Tengo miedo"],
-      ["😌", "Tranquilo", "Me siento tranquilo"],
-      ["🤗", "Abrazo", "Quiero un abrazo"]
-    ]
-  },
-  {
-    id: 15,
-    categoria: "pecs",
-    titulo: "Lavarse las manos",
-    descripcion: "Rutina visual paso a paso de higiene.",
-    icono: "🧼",
-    tarjetas: [
-      ["💧", "Mojar manos", "Abre la llave y moja tus manos."],
-      ["🧴", "Aplicar jabón", "Coloca jabón en tus manos."],
-      ["🫧", "Frotar", "Frota las palmas y los dedos."],
-      ["🚿", "Enjuagar", "Enjuaga tus manos con agua."],
-      ["🧻", "Secar", "Seca tus manos con una toalla."],
-      ["✨", "Listo", "Tus manos están limpias. ¡Muy bien!"]
-    ]
-  },
-  {
-    id: 16,
-    categoria: "pecs",
-    titulo: "Rutina de clase",
-    descripcion: "Secuencia de acciones dentro del aula.",
-    icono: "🏫",
-    tarjetas: [
-      ["🎒", "Llegar", "Llegué a la clase."],
-      ["🪑", "Sentarse", "Me siento en mi silla."],
-      ["👂", "Escuchar", "Escucho a mi docente."],
-      ["✏️", "Trabajar", "Realizo mi actividad."],
-      ["🙋", "Participar", "Levanto mi mano."],
-      ["🧹", "Ordenar", "Guardo mis materiales."]
-    ]
-  },
-  {
-    id: 17,
-    categoria: "pecs",
-    titulo: "Rutina de comida",
-    descripcion: "Pasos para la hora de la merienda.",
-    icono: "🍽️",
-    tarjetas: [
-      ["🧼", "Lavar manos", "Primero lavo mis manos."],
-      ["🪑", "Sentarse", "Me siento en mi lugar."],
-      ["🍎", "Comer", "Como mi merienda."],
-      ["🥤", "Beber", "Bebo agua."],
-      ["🧻", "Limpiar", "Limpio mi espacio."],
-      ["🙌", "Terminé", "Terminé de comer."]
-    ]
-  },
-  {
-    id: 18,
-    categoria: "pecs",
-    titulo: "Pedir ayuda",
-    descripcion: "Tarjetas para expresar necesidades en clase.",
-    icono: "🆘",
-    tarjetas: [
-      ["🙋", "Yo necesito", "Yo necesito"],
-      ["❓", "Ayuda", "Necesito ayuda"],
-      ["🔁", "Otra vez", "Quiero intentarlo otra vez"],
-      ["⏸️", "Pausa", "Necesito una pausa"],
-      ["🔇", "Silencio", "Necesito silencio"],
-      ["🤗", "Acompañamiento", "Quiero que me acompañes"]
-    ]
   }
 ];
 
+// ============================================================
+// ESTADO DE LA PANTALLA
+// ============================================================
 let categoriaActual = "todos";
 let pecsActual = null;
 let pasoActual = 0;
 
+// PECS reales del estudiante elegido, ya "disfrazados" con la forma de recursos
+let pecsReales = [];
+
 const $ = selector => document.querySelector(selector);
 
+// ============================================================
+// PECS REALES (conexión con el Backend)
+// ============================================================
+
+// Une los recursos fijos con los PECS reales en una sola lista
+function todosLosRecursos() {
+  return [...recursos, ...pecsReales];
+}
+
+// Si el valor es un link de imagen la muestra; si es un emoji lo deja como texto
+function iconoOImagen(valor) {
+  if (valor && valor.startsWith("http")) {
+    return `<img src="${valor}" alt="" style="max-width:100%;max-height:100%;object-fit:contain">`;
+  }
+  return valor;
+}
+
+// Mismo patrón que docente-grupos.js para traer "mis estudiantes"
+async function cargarEstudiantesDocente() {
+  try {
+    const perfil = await TeacherService.getMyProfile();
+    const asignaciones = await GroupSubjectService.getByTeacher(perfil.id);
+    const idsGrupos = [...new Set(asignaciones.map(a => a.groupId))];
+    const porGrupo = await Promise.all(idsGrupos.map(id => StudentService.getByGroup(id)));
+
+    $("#selector-estudiante").innerHTML =
+      '<option value="">Selecciona un estudiante...</option>' +
+      porGrupo.flat().map(e =>
+        `<option value="${e.id}">${e.firstName} ${e.lastName || ""}</option>`
+      ).join("");
+  } catch (error) {
+    console.error("No se pudieron cargar los estudiantes:", error.message);
+  }
+}
+
+// Trae los tableros del estudiante y los convierte a la forma de "recursos"
+async function cargarPecsDelEstudiante(studentId) {
+  if (!studentId) {
+    pecsReales = [];
+    renderizarRecursos();
+    return;
+  }
+
+  try {
+    const tableros = await PecsBoardService.getByStudent(studentId);
+
+    pecsReales = await Promise.all(tableros.map(async board => {
+      const tarjetas = await PecsCardService.getByBoard(board.id);
+      const ordenadas = [...tarjetas].sort(
+        (a, b) => (a.orderNumber ?? 9999) - (b.orderNumber ?? 9999)
+      );
+
+      return {
+        id: 100000 + board.id,   // evita chocar con los ids de video/música
+        categoria: "pecs",
+        titulo: board.name || "Sin nombre",
+        descripcion: board.description || "",
+        icono: "📋",
+        tarjetas: ordenadas.map(t => [t.imageUrl || "🖼️", t.title || "", t.title || ""])
+      };
+    }));
+  } catch (error) {
+    pecsReales = [];
+    alert("No se pudieron cargar los tableros: " + error.message);
+  }
+
+  renderizarRecursos();
+}
+
+// ============================================================
+// DIBUJAR LA CUADRÍCULA
+// ============================================================
 function nombreCategoria(categoria) {
   return {
     videos: "VIDEO",
@@ -213,7 +202,7 @@ function renderizarRecursos() {
     ? $("#filtro-categoria").value
     : categoriaActual;
 
-  const lista = recursos.filter(recurso => {
+  const lista = todosLosRecursos().filter(recurso => {
     const categoriaCorrecta =
       categoria === "todos" || recurso.categoria === categoria;
 
@@ -255,8 +244,11 @@ function renderizarRecursos() {
   `).join("");
 }
 
+// ============================================================
+// ABRIR UN RECURSO
+// ============================================================
 function abrirRecurso(id) {
-  const recurso = recursos.find(item => item.id === id);
+  const recurso = todosLosRecursos().find(item => item.id === id);
 
   if (recurso.categoria === "pecs") {
     abrirPecs(recurso);
@@ -300,7 +292,15 @@ function abrirReproductor(recurso) {
   $("#modal-reproductor").showModal();
 }
 
+// ============================================================
+// PASO A PASO DE UN PECS
+// ============================================================
 function abrirPecs(recurso) {
+  if (!recurso.tarjetas.length) {
+    alert("Este tablero todavía no tiene tarjetas.");
+    return;
+  }
+
   pecsActual = recurso;
   pasoActual = 0;
 
@@ -320,7 +320,7 @@ function actualizarPasoPecs() {
   $("#progreso-pecs").style.width =
     `${((pasoActual + 1) / tarjetas.length) * 100}%`;
 
-  $("#imagen-paso-pecs").textContent = paso[0];
+  $("#imagen-paso-pecs").innerHTML = iconoOImagen(paso[0]);
   $("#titulo-paso-pecs").textContent = paso[1];
   $("#texto-paso-pecs").textContent = paso[2];
 
@@ -335,7 +335,7 @@ function actualizarPasoPecs() {
       type="button"
       onclick="irPasoPecs(${indice})"
     >
-      <span>${tarjeta[0]}</span>
+      <span>${iconoOImagen(tarjeta[0])}</span>
       ${tarjeta[1]}
     </button>
   `).join("");
@@ -361,6 +361,9 @@ function hablarPaso() {
   window.speechSynthesis.speak(mensaje);
 }
 
+// ============================================================
+// AGREGAR UN RECURSO
+// ============================================================
 function obtenerIdYoutube(enlace) {
   if (!enlace) return "";
 
@@ -375,41 +378,60 @@ function obtenerIdYoutube(enlace) {
   return enlace;
 }
 
-function agregarRecurso(event) {
+async function agregarRecurso(event) {
   event.preventDefault();
 
   const form = event.target;
   const categoria = form.categoria.value;
   const enlace = form.enlace.value.trim();
 
-  const nuevo = {
-    id: Date.now(),
-    categoria,
-    titulo: form.titulo.value,
-    descripcion: form.descripcion.value || "Recurso agregado por la docente.",
-    icono: form.icono.value || "🌈"
-  };
-
-  if (categoria === "videos") {
-    nuevo.youtube = obtenerIdYoutube(enlace);
-  }
-
-  if (categoria === "musica") {
-    nuevo.audio = enlace;
-  }
-
   if (categoria === "pecs") {
-    nuevo.tarjetas = [
-      ["1️⃣", "Primer paso", "Realiza el primer paso."],
-      ["2️⃣", "Segundo paso", "Ahora realiza el segundo paso."],
-      ["3️⃣", "Tercer paso", "Continúa con el tercer paso."],
-      ["4️⃣", "Cuarto paso", "Realiza el cuarto paso."],
-      ["5️⃣", "Quinto paso", "Completa el quinto paso."],
-      ["✅", "Listo", "Terminaste la rutina. ¡Muy bien!"]
-    ];
-  }
+    const studentId = $("#selector-estudiante").value;
 
-  recursos.push(nuevo);
+    if (!studentId) {
+      alert("Primero selecciona un estudiante para crear su tablero PECS.");
+      return;
+    }
+
+    try {
+      const board = await PecsBoardService.create({
+        studentId: Number(studentId),
+        name: form.titulo.value,
+        description: form.descripcion.value || "Tablero creado por la docente."
+      });
+
+      const pasos = ["Primer paso", "Segundo paso", "Tercer paso", "Cuarto paso", "Quinto paso", "Listo"];
+
+      for (let i = 0; i < pasos.length; i++) {
+        await PecsCardService.create({
+          boardId: board.id,
+          title: pasos[i],
+          imageUrl: null,
+          audioUrl: null,
+          category: null,
+          orderNumber: i + 1
+        });
+      }
+
+      await cargarPecsDelEstudiante(studentId);
+    } catch (error) {
+      alert("No se pudo crear el tablero: " + error.message);
+      return;
+    }
+  } else {
+    const nuevo = {
+      id: Date.now(),
+      categoria,
+      titulo: form.titulo.value,
+      descripcion: form.descripcion.value || "Recurso agregado por la docente.",
+      icono: form.icono.value || "🌈"
+    };
+
+    if (categoria === "videos") nuevo.youtube = obtenerIdYoutube(enlace);
+    if (categoria === "musica") nuevo.audio = enlace;
+
+    recursos.push(nuevo);
+  }
 
   $("#modal-agregar-recurso").close();
   form.reset();
@@ -424,6 +446,9 @@ function agregarRecurso(event) {
   renderizarRecursos();
 }
 
+// ============================================================
+// EVENTOS
+// ============================================================
 $("#btn-menu").addEventListener("click", () => {
   $("#menu-docente").classList.toggle("colapsado");
 
@@ -502,4 +527,13 @@ $("#btn-cerrar-sesion").addEventListener("click", () => {
   }
 });
 
+// Selector de estudiante: al cambiar, trae sus PECS reales
+$("#selector-estudiante").addEventListener("change", evento => {
+  cargarPecsDelEstudiante(evento.target.value);
+});
+
+// ============================================================
+// ARRANQUE
+// ============================================================
 renderizarRecursos();
+cargarEstudiantesDocente();
