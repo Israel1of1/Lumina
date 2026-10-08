@@ -17,6 +17,9 @@ namespace Business.DTOs
 
         public string? LastName { get; set; }
         public string? UniqueNumber { get; set; }
+        public string? LanguageLevel { get; set; }
+        public string?  ClinicalInfo { get; set; }
+        public string? Observations { get; set; }
         public DateTime? BirthDate { get; set; }
         public string? Gender { get; set; }
     }

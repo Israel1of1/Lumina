@@ -37,6 +37,7 @@ builder.Services.AddScoped<IPecsCardService, PecsCardService>();
 
 builder.Services.AddScoped<IAccessControlRepository, AccessControlRepository>();
 
+
 builder.Services.AddScoped<IRoutineRepository, RoutineRepository>();
 builder.Services.AddScoped<IRoutineService, RoutineService>();
 
