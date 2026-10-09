@@ -26,30 +26,66 @@ const ICON_SVGS = {
 };
 
 
-// AppRouter — sesión + protección de rutas + render del sidebar
 
 const AppRouter = {
   // Sesión
   guardarSesion(token, usuario) {
-    localStorage.setItem(APP_CONFIG.STORAGE_KEYS.TOKEN, token);
-    localStorage.setItem(APP_CONFIG.STORAGE_KEYS.USER, JSON.stringify(usuario));
+     if (token) {
+      localStorage.setItem(APP_CONFIG.STORAGE_KEYS.TOKEN, token);
+      sessionStorage.setItem(APP_CONFIG.STORAGE_KEYS.TOKEN, token);
+      localStorage.setItem('lumina_token', token);
+      sessionStorage.setItem('lumina_token', token);
+    }
+    if (usuario) {
+      const serialized = JSON.stringify(usuario);
+      localStorage.setItem(APP_CONFIG.STORAGE_KEYS.USER, serialized);
+      sessionStorage.setItem(APP_CONFIG.STORAGE_KEYS.USER, serialized);
+      localStorage.setItem('lumina_user', serialized);
+      sessionStorage.setItem('lumina_user', serialized);
+    }
   },
 
   getToken() {
-    return localStorage.getItem(APP_CONFIG.STORAGE_KEYS.TOKEN);
+    return localStorage.getItem(APP_CONFIG.STORAGE_KEYS.TOKEN) ||
+           sessionStorage.getItem(APP_CONFIG.STORAGE_KEYS.TOKEN) ||
+           localStorage.getItem('lumina_token') ||
+           sessionStorage.getItem('lumina_token') ||
+           null;  
   },
 
   getUsuario() {
-    const raw = localStorage.getItem(APP_CONFIG.STORAGE_KEYS.USER);
-    return raw ? JSON.parse(raw) : null;
+    const raw = localStorage.getItem(APP_CONFIG.STORAGE_KEYS.USER) ||
+                sessionStorage.getItem(APP_CONFIG.STORAGE_KEYS.USER) ||
+                localStorage.getItem('lumina_user') ||
+                sessionStorage.getItem('lumina_user');
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
   },
 
   decodificarToken(token) {
     try {
-      const payload = token.split('.')[1];
-      const decoded = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
-      return JSON.parse(decoded);
-    } catch {
+     if (!token || typeof token !== 'string') return null;
+      const partes = token.split('.');
+      if (partes.length < 2) return null;
+      let base64 = partes[1].replace(/-/g, '+').replace(/_/g, '/');
+      while (base64.length % 4 !== 0) {
+        base64 += '=';
+      }
+      const decodedStr = atob(base64);
+      try {
+        const jsonPayload = decodeURIComponent(
+          decodedStr.split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')
+        );
+        return JSON.parse(jsonPayload);
+      } catch {
+        return JSON.parse(decodedStr);
+      }
+    } catch (e) {
+      console.warn('Error al decodificar token JWT:', e);
       return null;
     }
   },
@@ -59,19 +95,32 @@ const AppRouter = {
     if (!token) return false;
 
     const payload = this.decodificarToken(token);
-    if (!payload || !payload.exp) return false;
+    if (!payload || !payload.exp) {
+      return token.split('.').length === 3;
+    }
 
     const ahoraEnSegundos = Math.floor(Date.now() / 1000);
     return payload.exp > ahoraEnSegundos;
   },
 
+  normalizarRol(rol) {
+    if (!rol) return '';
+    const r = String(rol).trim().toUpperCase();
+    if (r === 'DOCENTE' || r === 'TEACHER') return 'TEACHER';
+    if (r === 'TUTOR' || r === 'GUARDIAN') return 'GUARDIAN';
+    if (r === 'INSTITUCION' || r === 'INSTITUTION') return 'INSTITUTION';
+    return r;
+  },
+
+
+
 
 obtenerRutaPorRol(roles) {
     if (!Array.isArray(roles)) roles = roles ? [roles] : [];
-    const rolesNormalizados = roles.map(r => String(r).trim().toUpperCase());
-    if (rolesNormalizados.includes('INSTITUTION')) return APP_CONFIG.ROUTES.DASHBOARD;
-    if (rolesNormalizados.includes('TEACHER')) return APP_CONFIG.ROUTES.TEACHER_HOME || 'inicio-docente.html';
-    if (rolesNormalizados.includes('GUARDIAN') || rolesNormalizados.includes('TUTOR')) return APP_CONFIG.ROUTES.TUTOR_DASHBOARD;
+    const rolesCanonicos = roles.map(r => this.normalizarRol(r));
+    if (rolesCanonicos.includes('INSTITUTION')) return APP_CONFIG.ROUTES.DASHBOARD;
+    if (rolesCanonicos.includes('TEACHER')) return APP_CONFIG.ROUTES.TEACHER_HOME || 'inicio-docente.html';
+    if (rolesCanonicos.includes('GUARDIAN')) return APP_CONFIG.ROUTES.TUTOR_DASHBOARD;
     return APP_CONFIG.ROUTES.LOGIN;
   },
 
@@ -86,7 +135,7 @@ obtenerRutaPorRol(roles) {
        nombreArchivo === 'inicio-docente.html') &&
       nombreArchivo !== 'docentes.html'
     ) {
-      return ['TEACHER'];
+      return ['TEACHER', ['Docente']];
     }
 
     // Páginas de Tutor / Guardian
@@ -116,32 +165,59 @@ obtenerRutaPorRol(roles) {
   */
   protegerPagina(rolesPermitidos = null) {
     if (!this.estaAutenticado()) {
+      console.warn('[Guardia] Usuario no autenticado. Redirigiendo al login.');
       window.location.href = APP_CONFIG.ROUTES.LOGIN;
       return false;
-    }   const usuario = this.getUsuario();
-    const rolesUsuario = (usuario?.roles || []).map(r => String(r).trim().toUpperCase());
+    }   
+    const usuario = this.getUsuario();
+    const tokenPayload = this.decodificarToken(this.getToken());
+    // Extraer roles de usuario o de los claims del JWT si usuario no los tiene
+    let rolesRaw = usuario?.roles || [];
+    if (!rolesRaw || rolesRaw.length === 0) {
+      const claimRoles = tokenPayload?.['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] ||
+                         tokenPayload?.role ||
+                         tokenPayload?.roles;
+      if (claimRoles) {
+        rolesRaw = Array.isArray(claimRoles) ? claimRoles : [claimRoles];
+      }
+    }
+    const rolesUsuarioCanonicos = (Array.isArray(rolesRaw) ? rolesRaw : [rolesRaw])
+      .map(r => this.normalizarRol(r))
+      .filter(Boolean);
 
-    const permitidos = rolesPermitidos || this.obtenerRolesPermitidosPorPagina();
+    const permitidosRaw = rolesPermitidos || this.obtenerRolesPermitidosPorPagina();
+    const permitidosCanonicos = (permitidosRaw || [])
+      .map(r => this.normalizarRol(r))
+      .filter(Boolean);
 
-    if (permitidos && permitidos.length > 0) {
-      const tieneRolPermitido = permitidos.some(rol =>
-        rolesUsuario.includes(rol.toUpperCase())
+    if (permitidosCanonicos.length > 0) {
+      const tieneRolPermitido = permitidosCanonicos.some(rol =>
+        rolesUsuarioCanonicos.includes(rol)
       );
       if (!tieneRolPermitido) {
-        const vistaCorrecta = this.obtenerRutaPorRol(rolesUsuario);
+        console.warn('[Guardia] Acceso denegado. Roles usuario:', rolesUsuarioCanonicos, 'Permitidos:', permitidosCanonicos);
+        const vistaCorrecta = this.obtenerRutaPorRol(rolesUsuarioCanonicos);
         window.location.href = vistaCorrecta;
         return false;
       }
     }
+
     return true;
   },
 
-  cerrarSesion() {
+    cerrarSesion() {
     localStorage.removeItem(APP_CONFIG.STORAGE_KEYS.TOKEN);
     localStorage.removeItem(APP_CONFIG.STORAGE_KEYS.USER);
+    localStorage.removeItem('lumina_token');
+    localStorage.removeItem('lumina_user');
+    localStorage.removeItem('lumina_local_db');
+    localStorage.removeItem('lumina_tutor_active_student_id');
+    localStorage.removeItem('lumina-planes-extra');
     sessionStorage.clear();
     window.location.href = APP_CONFIG.ROUTES.LOGIN;
   },
+
+
 
   //  Sidebar dinámico 
    renderSidebar(idActivo) {
