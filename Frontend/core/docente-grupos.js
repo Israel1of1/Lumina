@@ -1,3 +1,4 @@
+console.log("Se esta ejecutando correctamente")
 if (!AppRouter.protegerPagina(['TEACHER', 'DOCENTE'])) {
   throw new Error('Acceso no autorizado');
 }
@@ -297,9 +298,30 @@ if (usuarioActual) {
   }
 }
 
-cargarDatosReales().then(() => {
-  renderizarGrupos();
-  renderizarEstudiantes();
-}).catch(err => {
-  console.error("Error al cargar grupos y estudiantes reales:", err);
-});
+async function iniciarVistaGrupos() {
+  console.log("1. Iniciando vista de grupos");
+
+  try {
+    console.log("2. Buscando perfil del maestro...");
+    const perfil = await TeacherService.getMyProfile();
+    console.log("Perfil obtenido:", perfil);
+
+    console.log("3. Buscando asignaciones...");
+    const asignaciones = await GroupSubjectService.getByTeacher(perfil.id);
+    console.log("Asignaciones obtenidas:", asignaciones);
+
+    await cargarDatosReales();
+
+    console.log("4. Grupos:", grupos);
+    console.log("5. Estudiantes:", estudiantes);
+
+    renderizarGrupos();
+    renderizarEstudiantes();
+
+    console.log("6. Vista cargada correctamente");
+  } catch (error) {
+    console.error("ERROR AL CARGAR LA VISTA:", error);
+  }
+}
+
+iniciarVistaGrupos();
