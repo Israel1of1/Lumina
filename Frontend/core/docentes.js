@@ -53,7 +53,6 @@ function renderTabla(lista) {
             <td><span class="badge ${claseBadgeEstado(d.entityStatus)}">${etiquetaEstado(d.entityStatus)}</span></td>
             <td class="acciones-fila">
               <button class="btn-icono" onclick="abrirDetalle(${d.id})">Ver</button>
-              <button class="btn-icono" onclick="abrirEditarDocente(${d.id})">Editar</button>
               <button class="btn-icono" onclick="abrirCambiarEstado(${d.id})">Estado</button>
             </td>
           </tr>
@@ -191,18 +190,20 @@ async function guardarEstado(evento) {
   const nuevoEstado = document.getElementById('estado-valor').value;
   const motivo = document.getElementById('estado-motivo').value.trim();
 
-  if (nuevoEstado !== 'INACTIVE') {
-    mostrarError('estado-error', 'Por ahora solo se puede desactivar. Activar o poner en licencia se agrega después.');
-    return;
-  }
-
-  if (!motivo) {
-    mostrarError('estado-error', 'Debes indicar el motivo de la baja');
-    return;
-  }
-
   try {
-    await TeacherService.deactivate(id, motivo);
+    if (nuevoEstado === 'ACTIVE') {
+      await TeacherService.reactivate(id);
+    } else if (nuevoEstado === 'INACTIVE') {
+      if (!motivo) {
+        mostrarError('estado-error', 'Debes indicar el motivo de la baja');
+        return;
+      }
+      await TeacherService.deactivate(id, motivo);
+    } else {
+      mostrarError('estado-error', 'Por ahora solo se puede activar o dar de baja.');
+      return;
+    }
+    
     cerrarModal('modal-estado');
     await cargarDocentes();
   } catch (error) {

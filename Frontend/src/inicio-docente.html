@@ -210,20 +210,31 @@
       </main>
     </div>
   </div>
-
+  
+  <script src="../app/app.config.js"></script>
+  <script src="../app/app.routers.js"></script>
+  <script src="../app/api.client.js"></script>
+  <script src="../app/api.service.js"></script>
   <script>
-    const menu = document.getElementById('menu-docente');
-    const botonMenu = document.getElementById('btn-menu');
+    
+    if (AppRouter.protegerPagina(['TEACHER'])) {
+      const menu = document.getElementById('menu-docente');
+      const botonMenu = document.getElementById('btn-menu');
 
-    botonMenu.addEventListener('click', () => {
-      menu.classList.toggle('colapsado');
-      botonMenu.textContent = menu.classList.contains('colapsado') ? '›' : '‹';
-    });
 
-    document.getElementById('btn-cerrar-sesion').addEventListener('click', () => {
-      sessionStorage.clear();
-      window.location.href = 'login.html';
-    });
+      if (botonMenu && menu) {
+        botonMenu.addEventListener('click', () => {
+          menu.classList.toggle('colapsado');
+          botonMenu.textContent = menu.classList.contains('colapsado') ? '›' : '‹';
+        });
+      }
+      const btnCerrar = document.getElementById('btn-cerrar-sesion');
+      if (btnCerrar) {
+        btnCerrar.addEventListener('click', () => {
+          AuthService.logout();
+        });
+      }
+    }
   </script>
 </body>
 </html>

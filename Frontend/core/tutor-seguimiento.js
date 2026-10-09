@@ -1,13 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const usuario = AppRouter.getUsuario();
-  const tieneSesionValida = AppRouter.estaAutenticado();
-  const esTutor = usuario?.roles?.includes('GUARDIAN');
 
-  if (!tieneSesionValida || !esTutor) {
-    window.location.href = APP_CONFIG.ROUTES.LOGIN;
-    return;
-  }
-
+  if (!AppRouter.protegerPagina(['GUARDIAN', 'TUTOR'])) return;
   const toast = document.getElementById('guardian-toast');
   let temporizadorToast;
 

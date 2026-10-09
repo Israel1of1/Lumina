@@ -15,6 +15,7 @@ const APP_CONFIG = {
     LOGIN: 'login.html',
     DASHBOARD: 'dashboard.html',
     TUTOR_DASHBOARD: 'tutor-dashboard.html',
+    TEACHER_HOME: 'inicio-docente.html',
     TEACHERS: 'docentes.html',
     STUDENTS: 'estudiantes.html',
     GROUPS: 'grupos.html',

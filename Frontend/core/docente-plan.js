@@ -37,6 +37,48 @@ const estructuraPlan = {
 
 const MODULE_ID_TEMPORAL = 1;
 
+let materiasCache = [];
+
+async function cargarMateriasYModulos() {
+  try {
+    materiasCache = await SubjectService.getAll() || [];
+    const selectMateria = document.querySelector("#selector-materia");
+    if (selectMateria) {
+      selectMateria.innerHTML = '<option value="">Selecciona materia...</option>' +
+        materiasCache.map(m => `<option value="${m.id}">${m.name}</option>`).join("");
+
+      selectMateria.addEventListener("change", async (e) => {
+        const subjectId = e.target.value;
+        await actualizarModulosPorMateria(subjectId);
+      });
+    }
+  } catch (err) {
+    console.error("Error al cargar materias:", err);
+  }
+}
+async function actualizarModulosPorMateria(subjectId) {
+  const selectModulo = document.querySelector("#selector-modulo");
+  if (!selectModulo) return;
+
+  if (!subjectId) {
+    selectModulo.innerHTML = '<option value="">Selecciona primero una materia...</option>';
+    return;
+  }
+
+  selectModulo.innerHTML = '<option value="">Cargando módulos...</option>';
+  try {
+    const modulos = await ModuleService.getBySubject(subjectId);
+    if (!modulos || modulos.length === 0) {
+      selectModulo.innerHTML = '<option value="1">Módulo General (por defecto)</option>';
+    } else {
+      selectModulo.innerHTML = modulos.map(m => `<option value="${m.id}">${m.name}</option>`).join("");
+    }
+  } catch (err) {
+    console.error("Error al cargar módulos:", err);
+    selectModulo.innerHTML = '<option value="1">Módulo 1 (temporal)</option>';
+  }
+}
+
 function leerExtras() {
   return JSON.parse(localStorage.getItem("lumina-planes-extra") || "{}");
 }
@@ -50,8 +92,8 @@ function guardarExtra(id, datosExtra) {
 let planes = [];
 
 async function cargarPlanesReales() {
-  const lecciones = (await LessonService.getAll()) || [];  const extras = leerExtras();
-
+  const lecciones = (await LessonService.getAll()) || [];
+  const extras = leerExtras();
   planes = lecciones.map((l) => ({
     ...estructuraPlan,
     ...(extras[l.id] || {}),
@@ -447,8 +489,7 @@ document.querySelector("#btn-menu").addEventListener("click", () => {
 });
 
 document.querySelector("#btn-cerrar-sesion").addEventListener("click", () => {
-  sessionStorage.clear();
-  window.location.href = "login.html";
+  AuthService.logout();
 });
 
 cargarPlanesReales().then(mostrarPlanes);
