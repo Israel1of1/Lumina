@@ -11,8 +11,7 @@ namespace Business.DTOs
     public class CreateTeacherDto
     {
 
-        [Required]
-        public int userId { get; set; }
+        public int? userId { get; set; }
 
         [Required]
         public string FirstName { get; set; } = string.Empty;
