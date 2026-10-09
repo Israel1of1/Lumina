@@ -11,14 +11,29 @@ const AuthService = {
             token,
             user: {id: userId, email: correoUsuario, roles}
         };
+    
+
     },
-        
+      async validateLinkCode(code) {
+        const respuesta = await apiClient(`/auth/link-code/${encodeURIComponent(code)}`);
+        return respuesta.data;
+    },
+
+    async register(datos) {
+        const respuesta = await apiClient('/auth/register', {
+            method: 'POST',
+            body: datos
+        });
+        return respuesta.data;
+    },
+
+    getUser() {
+        return AppRouter.getUsuario();
+    },
         logout() {
-            localStorage.removeItem(APP_CONFIG.STORAGE_KEYS.TOKEN);
-            localStorage.removeItem(APP_CONFIG.STORAGE_KEYS.USER);
-            window.location.href = APP_CONFIG.ROUTES.LOGIN;
-            AppRouter.cerrarSesion();
-        }
+        AppRouter.cerrarSesion();
+    }
+        
 };
 
 

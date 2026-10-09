@@ -12,7 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const VISTAS_POR_ROL = {
     INSTITUTION: 'dashboard.html',
+    INSTITUCION: 'dashboard.html',
     TEACHER: 'inicio-docente.html',
+    DOCENTE: 'inicio-docente.html',
     TUTOR: 'tutor-dashboard.html',
     GUARDIAN: 'tutor-dashboard.html'
   };
@@ -73,7 +75,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      // Guardar en ambos almacenamientos para máxima compatibilidad
       AppRouter.guardarSesion(respuesta.token, respuesta.user);
+      sessionStorage.setItem('lumina_token', respuesta.token);
+      sessionStorage.setItem('lumina_user', JSON.stringify(respuesta.user));
 
       const roles = Array.isArray(respuesta.user.roles)
         ? respuesta.user.roles
@@ -101,6 +106,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (!vista) {
+        vista = AppRouter.obtenerRutaPorRol(roles);
+      }
+
+      if (!vista || vista === 'login.html') {
         console.error('Roles recibidos:', roles);
         mostrarError('Tu rol no tiene una vista asignada.');
         return;
