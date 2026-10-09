@@ -21,7 +21,7 @@ namespace API.Controllers
         }
 
         [HttpGet("by-student/{studentId:int}")]
-        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
+        [Authorize(Roles = "TEACHER, DOCENTE, INSTITUTION, INSTITUCION")]
         public async Task<IActionResult> GetByStudent(int studentId, [FromQuery] bool onlyActive = true)
         {
             var result = await _relationService.GetByStudentAsync(studentId, onlyActive);

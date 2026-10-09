@@ -19,7 +19,7 @@ namespace API.Controllers
         }
 
         [HttpGet("by-habit/{habitId:int}")]
-        [Authorize(Roles = "INSTITUTION,GUARDIAN")]
+        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
         public async Task<IActionResult> GetByHabit(int habitId)
         {
             var result = await _habitComplianceService.GetByHabitAsync(habitId);
@@ -27,7 +27,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id:int}")]
-        [Authorize(Roles = "INSTITUTION,GUARDIAN")]
+        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _habitComplianceService.GetByIdAsync(id);
@@ -35,7 +35,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "INSTITUTION,GUARDIAN")]
+        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
         public async Task<IActionResult> Create([FromBody] CreateHabitComplianceDto request)
         {
             var result = await _habitComplianceService.CreateAsync(request);
@@ -43,7 +43,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id:int}")]
-        [Authorize(Roles = "INSTITUTION,GUARDIAN")]
+        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateHabitComplianceDto request)
         {
             var result = await _habitComplianceService.UpdateAsync(id, request);
@@ -51,7 +51,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        [Authorize(Roles = "INSTITUTION,GUARDIAN")]
+        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _habitComplianceService.DeleteAsync(id);

@@ -414,9 +414,13 @@ document.querySelector("#form-plan").addEventListener("submit", async (event) =>
   const formulario = event.currentTarget;
   const datos = new FormData(formulario);
   const minutos = parseInt(datos.get("duracion")) || null;
+  const moduleId = parseInt(datos.get("moduleId")) || MODULE_ID_TEMPORAL;
+  const subjectId = datos.get("subjectId");
+  const materiaObj = materiasCache.find(m => String(m.id) === String(subjectId));
+  const materiaNombre = materiaObj ? materiaObj.name : (datos.get("materia") || "General");
 
   const leccionCreada = await LessonService.create({
-    moduleId: MODULE_ID_TEMPORAL,
+    moduleid: moduleId,
     title: datos.get("titulo"),
     description: datos.get("descripcion"),
     durationMinutes: minutos
@@ -425,7 +429,6 @@ document.querySelector("#form-plan").addEventListener("submit", async (event) =>
   const datosExtra = {
     nivel: datos.get("nivel"),
     aula: datos.get("aula"),
-    materia: datos.get("materia"),
     objetivo: datos.get("objetivo"),
     actividades: datos.get("actividades"),
     materiales: datos.get("materiales"),
