@@ -1,9 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
 
-  // ============================================================
-  // 1. VALIDAR SESIÓN
-  // ============================================================
-
   const usuario = AppRouter.getUsuario();
   const tieneSesionValida = AppRouter.estaAutenticado();
   const esGuardian = usuario?.roles?.includes("GUARDIAN");
@@ -13,10 +9,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-
-  // ============================================================
-  // 2. ELEMENTOS DEL HTML
-  // ============================================================
 
   const toast = document.getElementById("guardian-toast");
   const sidebar = document.querySelector(".guardian-sidebar");
@@ -38,22 +30,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     "btn-cancelar-perfil-nino"
   );
 
-
-  // ============================================================
-  // 3. VARIABLES
-  // ============================================================
-
   let temporizadorToast;
 
   let valoresOriginales = {};
 
-  // Aquí guardaremos el ID del niño
   let estudianteId = null;
-
-
-  // ============================================================
-  // 4. MOSTRAR MENSAJES
-  // ============================================================
 
   function mostrarMensaje(mensaje) {
 
@@ -75,10 +56,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 
-  // ============================================================
-  // 5. GUARDAR VALORES ORIGINALES
-  // ============================================================
-
   function guardarValoresOriginales() {
 
     valoresOriginales = {};
@@ -91,10 +68,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-
-  // ============================================================
-  // 6. ACTIVAR EDICIÓN
-  // ============================================================
 
   function activarEdicion() {
 
@@ -118,9 +91,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 
-  // ============================================================
-  // 7. CANCELAR EDICIÓN
-  // ============================================================
 
   function cancelarEdicion() {
 
@@ -144,11 +114,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     );
   }
 
-
-  // ============================================================
-  // 8. FINALIZAR EDICIÓN
-  // ============================================================
-
   function finalizarEdicion() {
 
     camposPerfil.forEach((campo) => {
@@ -165,10 +130,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 
-  // ============================================================
-  // 9. CARGAR PERFIL DEL NIÑO
-  // ============================================================
-
   async function cargarPerfilNino() {
 
     try {
@@ -178,10 +139,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
 
 
-      // --------------------------------------------------------
-      // Pedimos al backend los niños relacionados
-      // --------------------------------------------------------
-
+     
       const respuesta =
         await GuardianService.getMyWards();
 
@@ -192,9 +150,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
 
 
-      // --------------------------------------------------------
-      // Verificamos que exista información
-      // --------------------------------------------------------
+      
 
       if (
         !respuesta ||
@@ -210,9 +166,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
 
-      // --------------------------------------------------------
-      // Obtenemos el primer niño relacionado
-      // --------------------------------------------------------
 
       const nino =
         respuesta.data[0];
@@ -224,9 +177,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
 
 
-      // --------------------------------------------------------
-      // Guardamos el ID del estudiante
-      // --------------------------------------------------------
 
       estudianteId =
         nino.id;
@@ -238,9 +188,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
 
 
-      // ========================================================
-      // DATOS DEL FORMULARIO
-      // ========================================================
 
       const campoNombre =
         document.getElementById(
@@ -268,9 +215,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         );
 
 
-      // --------------------------------------------------------
-      // Nombre
-      // --------------------------------------------------------
+      
 
       if (campoNombre) {
 
@@ -279,10 +224,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
 
-      // --------------------------------------------------------
-      // Apellido
-      // --------------------------------------------------------
-
       if (campoApellido) {
 
         campoApellido.value =
@@ -290,9 +231,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
 
-      // --------------------------------------------------------
-      // Fecha de nacimiento
-      // --------------------------------------------------------
+  
 
       if (campoFechaNacimiento) {
 
@@ -303,9 +242,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
 
-      // --------------------------------------------------------
-      // Grupo
-      // --------------------------------------------------------
 
       if (campoGrupo) {
 
@@ -316,9 +252,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
 
-      // --------------------------------------------------------
-      // Nivel de comunicación
-      // --------------------------------------------------------
 
       if (campoNivelComunicacion) {
 
@@ -345,18 +278,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
 
-      // ========================================================
-      // NOMBRE COMPLETO
-      // ========================================================
 
       const nombreCompleto =
         `${nino.firstName ?? ""} ${nino.lastName ?? ""}`
           .trim();
 
 
-      // ========================================================
-      // TOPBAR
-      // ========================================================
+    
 
       const descripcionTopbar =
         document.querySelector(
@@ -370,9 +298,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
 
-      // ========================================================
-      // TÍTULO DEL PERFIL
-      // ========================================================
 
       const tituloPerfil =
         document.querySelector(
@@ -386,9 +311,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
 
-      // ========================================================
-      // TÍTULO DE LOS DATOS
-      // ========================================================
+ 
 
       const tituloDatos =
         document.querySelector(
@@ -402,9 +325,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
 
-      // ========================================================
-      // TARJETA RESUMEN
-      // ========================================================
+      
 
       const nombreTarjeta =
         document.querySelector(
@@ -418,9 +339,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
 
-      // ========================================================
-      // EDAD Y FECHA DE NACIMIENTO
-      // ========================================================
 
       if (nino.birthDate) {
 
@@ -466,9 +384,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             detalles.querySelectorAll("p");
 
 
-          // ----------------------------------------------------
-          // Edad
-          // ----------------------------------------------------
+   
 
           if (parrafos[0]) {
 
@@ -477,9 +393,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
 
 
-          // ----------------------------------------------------
-          // Fecha
-          // ----------------------------------------------------
 
           if (parrafos[1]) {
 
@@ -492,9 +405,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
 
 
-          // ----------------------------------------------------
-          // Género
-          // ----------------------------------------------------
+         
 
           if (parrafos[2]) {
 
@@ -507,9 +418,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
 
-      // ========================================================
-      // PERFIL CARGADO
-      // ========================================================
+    
 
       mostrarMensaje(
         "Información del niño cargada correctamente."
@@ -530,9 +439,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 
-  // ============================================================
-  // 10. CERRAR SESIÓN
-  // ============================================================
+
 
   const btnCerrarSesion =
     document.getElementById(
@@ -553,9 +460,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 
-  // ============================================================
-  // 11. COLAPSAR MENÚ
-  // ============================================================
+
 
   const btnColapsarMenu =
     document.getElementById(
@@ -578,9 +483,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 
-  // ============================================================
-  // 12. BOTÓN EDITAR
-  // ============================================================
+
 
   btnEditar.addEventListener(
     "click",
@@ -588,9 +491,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   );
 
 
-  // ============================================================
-  // 13. BOTÓN CANCELAR
-  // ============================================================
+  
 
   btnCancelar.addEventListener(
     "click",
@@ -598,9 +499,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   );
 
 
-  // ============================================================
-  // 14. GUARDAR CAMBIOS
-  // ============================================================
+
 
   formulario.addEventListener(
     "submit",
@@ -630,10 +529,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   );
 
 
-  // ============================================================
-  // 15. EDITAR CONTACTO
-  // ============================================================
-
   const btnEditarContacto =
     document.getElementById(
       "btn-editar-contacto"
@@ -655,9 +550,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 
-  // ============================================================
-  // 16. RECURSOS
-  // ============================================================
+
 
   const navRecursos =
     document.getElementById(
@@ -682,9 +575,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 
-  // ============================================================
-  // 17. ACTIVIDADES
-  // ============================================================
 
   const navActividades =
     document.getElementById(
@@ -709,9 +599,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 
-  // ============================================================
-  // 18. CARGAR INFORMACIÓN AL ENTRAR
-  // ============================================================
+
 
   await cargarPerfilNino();
 

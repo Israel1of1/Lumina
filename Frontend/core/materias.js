@@ -1,8 +1,4 @@
-// ============================================================
-// Lógica del módulo Materias — LUMINA
-// Nota: Subject no tiene isActive en el modelo (según el SQL),
-// así que este módulo solo permite crear y editar, sin dar de baja.
-// ============================================================
+
 
 let materiasCache = [];
 
@@ -65,7 +61,6 @@ function actualizarVistaColor() {
   document.getElementById('vista-color-hex').textContent = document.getElementById('materia-color').value;
 }
 
-// ===== Crear =====
 function abrirNuevaMateria() {
   document.getElementById('modal-materia-titulo').textContent = 'Nueva materia';
   document.getElementById('form-materia').reset();
@@ -76,7 +71,6 @@ function abrirNuevaMateria() {
   abrirModal('modal-materia');
 }
 
-// ===== Editar =====
 function abrirEditarMateria(id) {
   const materia = materiasCache.find(m => m.id === id);
   if (!materia) return;
@@ -119,7 +113,7 @@ async function guardarMateria(evento) {
   }
 }
 
-// ===== Utilidades =====
+
 function abrirModal(id) { document.getElementById(id).classList.remove('oculto'); }
 function cerrarModal(id) { document.getElementById(id).classList.add('oculto'); }
 function mostrarError(id, texto) {

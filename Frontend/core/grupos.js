@@ -1,6 +1,4 @@
-// ============================================================
-// Lógica del módulo Grupos — LUMINA
-// ============================================================
+
 
 let gruposCache = [];
 let estudiantesCache = [];
@@ -94,7 +92,7 @@ function filtrarGrupos() {
   renderGrupos(filtrados);
 }
 
-// ===== Crear =====
+
 function abrirNuevoGrupo() {
   document.getElementById('modal-grupo-titulo').textContent = 'Nuevo grupo';
   document.getElementById('form-grupo').reset();
@@ -103,7 +101,6 @@ function abrirNuevoGrupo() {
   abrirModal('modal-grupo');
 }
 
-// ===== Editar =====
 function abrirEditarGrupo(id) {
   const grupo = gruposCache.find(g => g.id === id);
   if (!grupo) return;
@@ -143,7 +140,6 @@ async function guardarGrupo(evento) {
   }
 }
 
-// ===== Activar / Desactivar =====
 async function alternarEstado(id, activar) {
   try {
     await ClassGroupService.setActive(id, activar);
@@ -153,7 +149,6 @@ async function alternarEstado(id, activar) {
   }
 }
 
-// ===== Ver estudiantes del grupo =====
 function verEstudiantes(id) {
   const grupo = gruposCache.find(g => g.id === id);
   if (!grupo) return;
@@ -178,7 +173,6 @@ function verEstudiantes(id) {
   abrirModal('modal-estudiantes-grupo');
 }
 
-// ===== Utilidades =====
 function abrirModal(id) { document.getElementById(id).classList.remove('oculto'); }
 function cerrarModal(id) { document.getElementById(id).classList.add('oculto'); }
 function mostrarError(id, texto) {

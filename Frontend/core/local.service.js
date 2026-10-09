@@ -1,6 +1,5 @@
 const DB_KEY = 'lumina_local_db';
 
-// ===== Utilidades internas =====
 function _leerDB() {
   const raw = localStorage.getItem(DB_KEY);
   return raw ? JSON.parse(raw) : null;
@@ -26,7 +25,6 @@ function _delay(valor, ms = 150) {
   return new Promise(resolve => setTimeout(() => resolve(valor), ms));
 }
 
-// ===== Semilla de datos (se genera solo la primera vez) =====
 function _generarSemilla() {
 
   const roles = [
@@ -108,7 +106,6 @@ const userRoles = [
   }
 ];
 
-  // ===== Materias (10) =====
   const nombresMaterias = [
     'Comunicación funcional',
     'Habilidades sociales',
@@ -157,7 +154,6 @@ const userRoles = [
     createdAt: _hoy(-30 + i)
   }));
 
-  // ===== Grupos (10) =====
   const nombresGrupos = [
     'Grupo A - Mañana',
     'Grupo B - Mañana',
@@ -193,7 +189,6 @@ const userRoles = [
     createdAt: _hoy(-60 + i)
   }));
 
-  // ===== Docentes (10) =====
   const nombresDocentes = [
     ['Ana', 'Martínez'],
     ['Carlos', 'López'],
@@ -239,7 +234,6 @@ const userRoles = [
     createdAt: _hoy(-90 + i)
   }));
 
-  // ===== Estudiantes (10) — repartidos entre los primeros 5 grupos =====
   const nombresEstudiantes = [
     ['Mateo', 'Rivas'],
     ['Emma', 'Ortega'],
@@ -277,7 +271,7 @@ const userRoles = [
     createdAt: _hoy(-45 + i)
   }));
 
-  // ===== Asignaciones (10) =====
+
   const groupSubjects = Array.from({ length: 10 }, (_, i) => ({
     id: i + 1,
     groupId: (i % 5) + 1,
@@ -289,7 +283,7 @@ const userRoles = [
     createdAt: _hoy(-30 + i)
   }));
 
-  // ===== Códigos de vinculación (10) =====
+
   const propositos = [
     'ENROLLMENT',
     'TEACHER_CONTRACT'
@@ -364,7 +358,7 @@ function _inicializarDB() {
 
 _inicializarDB();
 
-// ===== Usuario temporal para probar las vistas de tutor =====
+
 function crearTutorDePrueba() {
 
   const db = _leerDB();
@@ -405,9 +399,8 @@ function crearTutorDePrueba() {
 
 crearTutorDePrueba();
 
-// ============================================================
-// AuthService
-// ============================================================
+
+
 const AuthService = {
 
   async login(email, password) {
@@ -458,9 +451,7 @@ const AuthService = {
   }
 };
 
-// ============================================================
-// TeacherService
-// ============================================================
+
 const TeacherService = {
 
   getAll: () =>
@@ -546,9 +537,7 @@ const TeacherService = {
   }
 };
 
-// ============================================================
-// StudentService
-// ============================================================
+
 const StudentService = {
 
   getAll: () =>
@@ -632,9 +621,7 @@ const StudentService = {
   }
 };
 
-// ============================================================
-// ClassGroupService
-// ============================================================
+
 const ClassGroupService = {
 
   getAll: () =>
@@ -707,9 +694,7 @@ const ClassGroupService = {
   }
 };
 
-// ============================================================
-// SubjectService
-// ============================================================
+
 const SubjectService = {
 
   getAll: () =>
@@ -762,9 +747,6 @@ const SubjectService = {
   }
 };
 
-// ============================================================
-// GroupSubjectService
-// ============================================================
 const GroupSubjectService = {
 
   getAll: () =>
@@ -817,9 +799,7 @@ const GroupSubjectService = {
   }
 };
 
-// ============================================================
-// LinkCodeService
-// ============================================================
+
 const LinkCodeService = {
 
   getAll: () =>
@@ -887,7 +867,7 @@ const LinkCodeService = {
   }
 };
 
-// ===== Utilidad de consola: reiniciar la base local a la semilla =====
+
 function reiniciarBaseLocal() {
   localStorage.removeItem(DB_KEY);
   _inicializarDB();

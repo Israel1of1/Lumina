@@ -1,7 +1,4 @@
-// ============================================================
-// RECURSOS FIJOS (locales): solo videos y música.
-// Los PECS ya NO van acá, vienen del Backend por estudiante.
-// ============================================================
+
 const recursos = [
   {
     id: 1,
@@ -103,28 +100,20 @@ const recursos = [
   }
 ];
 
-// ============================================================
-// ESTADO DE LA PANTALLA
-// ============================================================
+
 let categoriaActual = "todos";
 let pecsActual = null;
 let pasoActual = 0;
 
-// PECS reales del estudiante elegido, ya "disfrazados" con la forma de recursos
 let pecsReales = [];
 
 const $ = selector => document.querySelector(selector);
 
-// ============================================================
-// PECS REALES (conexión con el Backend)
-// ============================================================
 
-// Une los recursos fijos con los PECS reales en una sola lista
 function todosLosRecursos() {
   return [...recursos, ...pecsReales];
 }
 
-// Si el valor es un link de imagen la muestra; si es un emoji lo deja como texto
 function iconoOImagen(valor) {
   if (valor && valor.startsWith("http")) {
     return `<img src="${valor}" alt="" style="max-width:100%;max-height:100%;object-fit:contain">`;
@@ -132,7 +121,6 @@ function iconoOImagen(valor) {
   return valor;
 }
 
-// Mismo patrón que docente-grupos.js para traer "mis estudiantes"
 async function cargarEstudiantesDocente() {
   try {
     const perfil = await TeacherService.getMyProfile();
@@ -150,7 +138,6 @@ async function cargarEstudiantesDocente() {
   }
 }
 
-// Trae los tableros del estudiante y los convierte a la forma de "recursos"
 async function cargarPecsDelEstudiante(studentId) {
   if (!studentId) {
     pecsReales = [];
@@ -168,7 +155,7 @@ async function cargarPecsDelEstudiante(studentId) {
       );
 
       return {
-        id: 100000 + board.id,   // evita chocar con los ids de video/música
+        id: 100000 + board.id,   
         categoria: "pecs",
         titulo: board.name || "Sin nombre",
         descripcion: board.description || "",
@@ -184,9 +171,7 @@ async function cargarPecsDelEstudiante(studentId) {
   renderizarRecursos();
 }
 
-// ============================================================
-// DIBUJAR LA CUADRÍCULA
-// ============================================================
+
 function nombreCategoria(categoria) {
   return {
     videos: "VIDEO",
@@ -244,9 +229,7 @@ function renderizarRecursos() {
   `).join("");
 }
 
-// ============================================================
-// ABRIR UN RECURSO
-// ============================================================
+
 function abrirRecurso(id) {
   const recurso = todosLosRecursos().find(item => item.id === id);
 
@@ -292,9 +275,7 @@ function abrirReproductor(recurso) {
   $("#modal-reproductor").showModal();
 }
 
-// ============================================================
-// PASO A PASO DE UN PECS
-// ============================================================
+
 function abrirPecs(recurso) {
   if (!recurso.tarjetas.length) {
     alert("Este tablero todavía no tiene tarjetas.");
@@ -361,9 +342,6 @@ function hablarPaso() {
   window.speechSynthesis.speak(mensaje);
 }
 
-// ============================================================
-// AGREGAR UN RECURSO
-// ============================================================
 function obtenerIdYoutube(enlace) {
   if (!enlace) return "";
 
@@ -446,9 +424,6 @@ async function agregarRecurso(event) {
   renderizarRecursos();
 }
 
-// ============================================================
-// EVENTOS
-// ============================================================
 $("#btn-menu").addEventListener("click", () => {
   $("#menu-docente").classList.toggle("colapsado");
 
@@ -527,13 +502,10 @@ $("#btn-cerrar-sesion").addEventListener("click", () => {
   }
 });
 
-// Selector de estudiante: al cambiar, trae sus PECS reales
 $("#selector-estudiante").addEventListener("change", evento => {
   cargarPecsDelEstudiante(evento.target.value);
 });
 
-// ============================================================
-// ARRANQUE
-// ============================================================
+
 renderizarRecursos();
 cargarEstudiantesDocente();

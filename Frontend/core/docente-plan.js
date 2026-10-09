@@ -35,7 +35,6 @@ const estructuraPlan = {
   recursos: []
 };
 
-// ⚠️ Cambia este número por el id real del Module que creaste por SQL
 const MODULE_ID_TEMPORAL = 1;
 
 function leerExtras() {

@@ -1,13 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ============================================================
-  // 1. VALIDAR SESIÓN
-  // ============================================================
 
   const usuario = AppRouter.getUsuario();
   const tieneSesionValida = AppRouter.estaAutenticado();
 
-  // El Guardian utiliza el rol GUARDIAN.
+
   const esGuardian = usuario?.roles?.includes('GUARDIAN');
 
   if (!tieneSesionValida || !esGuardian) {
@@ -15,10 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-
-  // ============================================================
-  // 2. ELEMENTOS DE LA PANTALLA
-  // ============================================================
 
   const toast = document.getElementById('guardian-toast');
 
@@ -41,20 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
     formulario.querySelectorAll('input, select');
 
 
-  // ============================================================
-  // 3. VARIABLES
-  // ============================================================
-
   let temporizadorToast;
 
   let datosIniciales = {};
 
   let perfilActual = null;
-
-
-  // ============================================================
-  // 4. MOSTRAR MENSAJES
-  // ============================================================
 
   function mostrarMensaje(mensaje) {
 
@@ -69,10 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3000);
   }
 
-
-  // ============================================================
-  // 5. OBTENER DATOS DEL FORMULARIO
-  // ============================================================
 
   function obtenerDatosFormulario() {
 
@@ -99,10 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // ============================================================
-  // 6. MOSTRAR LOS DATOS DEL BACKEND EN LA PANTALLA
-  // ============================================================
-
   function mostrarPerfil(perfil) {
 
     perfilActual = perfil;
@@ -127,11 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
       perfil.relationship || '';
 
 
-    // ==========================================================
-    // Actualizar información que aparece en la tarjeta
-    // lateral del perfil.
-    // ==========================================================
-
     const nombreCompleto =
       `${perfil.firstName || ''} ${perfil.lastName || ''}`.trim();
 
@@ -145,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // Iniciales
+
     const iniciales =
       obtenerIniciales(
         perfil.firstName,
@@ -163,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // Información de la tarjeta
+
     const detalles =
       document.querySelectorAll(
         '.profile-summary-card__details p'
@@ -189,10 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // ============================================================
-  // 7. OBTENER INICIALES
-  // ============================================================
-
+  
   function obtenerIniciales(nombre, apellido) {
 
     const primeraLetra =
@@ -205,9 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // ============================================================
-  // 8. CARGAR PERFIL DESDE EL BACKEND
-  // ============================================================
 
   async function cargarPerfil() {
 
@@ -249,14 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // ============================================================
-  // 9. ACTIVAR EDICIÓN
-  // ============================================================
-
   function activarEdicion() {
-
-    // Guardamos los datos actuales
-    // por si el usuario cancela.
 
     datosIniciales =
       obtenerDatosFormulario();
@@ -280,10 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // ============================================================
-  // 10. CANCELAR EDICIÓN
-  // ============================================================
-
+  
   function cancelarEdicion() {
 
     document.getElementById('perfil-nombre').value =
@@ -323,10 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // ============================================================
-  // 11. GUARDAR PERFIL EN EL BACKEND
-  // ============================================================
-
+  
   async function guardarPerfil(evento) {
 
     evento.preventDefault();
@@ -336,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
       obtenerDatosFormulario();
 
 
-    // Validación básica
+   
     if (
       !datosFormulario.firstName ||
       !datosFormulario.lastName ||
@@ -411,18 +363,18 @@ document.addEventListener('DOMContentLoaded', () => {
         await GuardianService.updateMyProfile(datos);
 
 
-      // Guardamos el nuevo perfil en memoria
+    
       perfilActual =
         perfilActualizado;
 
 
-      // Mostramos nuevamente la información
+   
       mostrarPerfil(
         perfilActualizado
       );
 
 
-      // Bloquear campos
+    
       campos.forEach((campo) => {
         campo.disabled = true;
       });
@@ -454,10 +406,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // ============================================================
-  // 12. CERRAR SESIÓN
-  // ============================================================
-
   document
     .getElementById('btn-cerrar-sesion')
     .addEventListener('click', () => {
@@ -467,10 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-  // ============================================================
-  // 13. COLAPSAR MENÚ
-  // ============================================================
-
+ 
   document
     .getElementById('btn-colapsar-menu')
     .addEventListener('click', () => {
@@ -482,10 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-  // ============================================================
-  // 14. EDITAR / CANCELAR / GUARDAR
-  // ============================================================
-
+ 
   botonEditar.addEventListener(
     'click',
     activarEdicion
@@ -502,10 +444,6 @@ document.addEventListener('DOMContentLoaded', () => {
   );
 
 
-  // ============================================================
-  // 15. CAMBIAR CONTRASEÑA
-  // ============================================================
-
   document
     .getElementById('btn-cambiar-password')
     .addEventListener('click', () => {
@@ -517,10 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-  // ============================================================
-  // 16. NAVEGACIÓN DEL MENÚ
-  // ============================================================
-
+  
   const opcionesMenu = {
 
     'nav-recursos':
@@ -556,9 +491,6 @@ document.addEventListener('DOMContentLoaded', () => {
   );
 
 
-  // ============================================================
-  // 17. CARGAR EL PERFIL
-  // ============================================================
 
   cargarPerfil();
 

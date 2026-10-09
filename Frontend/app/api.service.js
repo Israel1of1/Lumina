@@ -103,6 +103,11 @@ const ClassGroupService = {
 
 //TEACHER SERVICE conecta la pantalla de Docentes con el Backend.
 const TeacherService = {
+
+  async create(datos) {
+    const respuesta = await apiClient('/teachers', { method: 'POST', body: datos });
+    return respuesta.data;
+  },
   async getAll() {
     const respuesta = await apiClient('/teachers?pageNumber=1&pageSize=1000');
     return ordenarPorIdDesc(respuesta.data.items);
@@ -117,7 +122,8 @@ const TeacherService = {
   async getMyProfile() {
     const respuesta = await apiClient('/teachers/me');
     return respuesta.data;
-  }
+  },
+  
 };
 
 
