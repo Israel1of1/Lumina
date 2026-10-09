@@ -498,7 +498,7 @@ document.querySelectorAll("[data-cerrar]").forEach(boton => {
 
 $("#btn-cerrar-sesion").addEventListener("click", () => {
   if (confirm("¿Deseas cerrar sesión?")) {
-    window.location.href = "login.html";
+    AuthService.logout();
   }
 });
 
@@ -507,5 +507,7 @@ $("#selector-estudiante").addEventListener("change", evento => {
 });
 
 
-renderizarRecursos();
-cargarEstudiantesDocente();
+f (AppRouter.protegerPagina(['TEACHER'])) {
+  renderizarRecursos();
+  cargarEstudiantesDocente();
+}

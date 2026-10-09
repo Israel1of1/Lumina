@@ -1,5 +1,3 @@
-
-
 let materiasCache = [];
 
 function iniciarPagina() {

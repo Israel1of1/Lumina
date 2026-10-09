@@ -483,7 +483,7 @@ $("#form-estudiante").addEventListener("submit", event => {
 
 $("#btn-cerrar-sesion").addEventListener("click", () => {
   if (confirm("¿Deseas cerrar sesión?")) {
-    window.location.href = "login.html";
+    authService.logout();
   }
 });
 

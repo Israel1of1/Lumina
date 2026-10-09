@@ -65,20 +65,82 @@ const AppRouter = {
     return payload.exp > ahoraEnSegundos;
   },
 
+
+obtenerRutaPorRol(roles) {
+    if (!Array.isArray(roles)) roles = roles ? [roles] : [];
+    const rolesNormalizados = roles.map(r => String(r).trim().toUpperCase());
+    if (rolesNormalizados.includes('INSTITUTION')) return APP_CONFIG.ROUTES.DASHBOARD;
+    if (rolesNormalizados.includes('TEACHER')) return APP_CONFIG.ROUTES.TEACHER_HOME || 'inicio-docente.html';
+    if (rolesNormalizados.includes('GUARDIAN') || rolesNormalizados.includes('TUTOR')) return APP_CONFIG.ROUTES.TUTOR_DASHBOARD;
+    return APP_CONFIG.ROUTES.LOGIN;
+  },
+
+  obtenerRolesPermitidosPorPagina() {
+    const path = window.location.pathname.toLowerCase();
+    const nombreArchivo = path.substring(path.lastIndexOf('/') + 1) || '';
+
+    // Páginas de Docente (excepto docentes.html que es del panel admin)
+    if (
+      (nombreArchivo.startsWith('docente-') ||
+       nombreArchivo.startsWith('docentes-') ||
+       nombreArchivo === 'inicio-docente.html') &&
+      nombreArchivo !== 'docentes.html'
+    ) {
+      return ['TEACHER'];
+    }
+
+    // Páginas de Tutor / Guardian
+    if (nombreArchivo.startsWith('tutor-')) {
+      return ['GUARDIAN', 'TUTOR'];
+    }
+
+    // Páginas de Institución / Admin
+    if (
+      nombreArchivo === 'dashboard.html' ||
+      nombreArchivo === 'docentes.html' ||
+      nombreArchivo === 'estudiantes.html' ||
+      nombreArchivo === 'grupos.html' ||
+      nombreArchivo === 'materias.html' ||
+      nombreArchivo === 'asignaciones.html' ||
+      nombreArchivo === 'codigos.html'
+    ) {
+      return ['INSTITUTION'];
+    }
+
+    return null;
+  },
+
   /**
-   * Debe llamarse al cargar cualquier página protegida (todas menos inicio.html).
-   * Redirige al login si no hay sesión válida. Devuelve true/false.
-   */
-  protegerPagina() {
+   * Valida sesión y roles permitidos para la pantalla actual.
+   * Redirige al login si no hay sesión válida o a la vista correspondiente si el rol no coincide.
+  */
+  protegerPagina(rolesPermitidos = null) {
     if (!this.estaAutenticado()) {
       window.location.href = APP_CONFIG.ROUTES.LOGIN;
       return false;
+    }   const usuario = this.getUsuario();
+    const rolesUsuario = (usuario?.roles || []).map(r => String(r).trim().toUpperCase());
+
+    const permitidos = rolesPermitidos || this.obtenerRolesPermitidosPorPagina();
+
+    if (permitidos && permitidos.length > 0) {
+      const tieneRolPermitido = permitidos.some(rol =>
+        rolesUsuario.includes(rol.toUpperCase())
+      );
+      if (!tieneRolPermitido) {
+        const vistaCorrecta = this.obtenerRutaPorRol(rolesUsuario);
+        window.location.href = vistaCorrecta;
+        return false;
+      }
     }
     return true;
   },
 
   cerrarSesion() {
-    AuthService.logout();
+    localStorage.removeItem(APP_CONFIG.STORAGE_KEYS.TOKEN);
+    localStorage.removeItem(APP_CONFIG.STORAGE_KEYS.USER);
+    sessionStorage.clear();
+    window.location.href = APP_CONFIG.ROUTES.LOGIN;
   },
 
   //  Sidebar dinámico 

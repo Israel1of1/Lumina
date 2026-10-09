@@ -57,7 +57,7 @@ function renderTabla(lista) {
             <td>${c.expiresAt ? c.expiresAt.substring(0,10) : 'Sin vencimiento'}</td>
             <td>${c.usedAt ? c.usedAt.substring(0,10) : '—'}</td>
             <td class="acciones-fila">
-              ${c.status === 'PENDING' ? `<button class="btn-icono" onclick="revocarCodigo(${c.id})">Revocar</button>` : ''}
+             ${c.status === 'PENDING' ? `<button class="btn-icono" onclick="revocarCodigo('${c.code}')">Revocar</button>` : ''}            
             </td>
           </tr>
         `).join('')}
