@@ -1,6 +1,4 @@
-/**
- * LÚMINA - Portal Docente (Lógica de Inicio)
- */
+
 const DocenteData = {
   usuario: {
     nombre: "María González",
@@ -48,7 +46,6 @@ function iniciarPagina() {
   const usuario = DocenteData.usuario;
   const primerNombre = usuario.nombre.split(" ")[0];
 
-  // 1. Saludo y perfil
   const saludoElem = document.getElementById("saludo");
   if (saludoElem) saludoElem.textContent = `¡Hola, ${primerNombre}!`;
 
@@ -58,7 +55,6 @@ function iniciarPagina() {
   const nombreDocenteElem = document.getElementById("topbar-docente-nombre");
   if (nombreDocenteElem) nombreDocenteElem.textContent = usuario.nombre;
 
-  // 2. Tarjetas de Estadísticas
   const statEstudiantes = document.getElementById("stat-estudiantes");
   if (statEstudiantes) statEstudiantes.textContent = DocenteData.estudiantes.length;
 
@@ -75,10 +71,8 @@ function iniciarPagina() {
   const statRecursos = document.getElementById("stat-recursos");
   if (statRecursos) statRecursos.textContent = DocenteData.recursos.length;
 
-  // 3. Renderizar Ocupación de Grupos (barras con estilo idéntico al mockup)
   renderizarOcupacionGrupos();
 
-  // 4. Renderizar Planes Recientes
   renderizarPlanesRecientes();
 }
 

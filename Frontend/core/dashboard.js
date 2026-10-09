@@ -1,7 +1,3 @@
-// ============================================================
-// Lógica del Dashboard — LUMINA
-// Se ejecuta desde app.js vía window.iniciarPagina()
-// ============================================================
 
 function iniciarPagina() {
   cargarEstadisticas();
@@ -135,7 +131,6 @@ async function cargarDocentesRecientes() {
   }
 }
 
-// ===== Helpers compartidos (también los usarán docentes.js, codigos.js, etc.) =====
 function etiquetaProposito(purpose) {
   return purpose === 'ENROLLMENT' ? 'Matrícula' : 'Contratación docente';
 }
