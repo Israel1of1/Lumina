@@ -416,7 +416,7 @@ const StudentInterestService = {
     return respuesta.data;
   }
 };
-/ STUDENT RELATION SERVICE
+// STUDENT RELATION SERVICE
 const StudentRelationService = {
   async getByStudent(studentId, onlyActive = true) {
     const respuesta = await apiClient(`/student-relations/by-student/${studentId}?onlyActive=${onlyActive}`);
