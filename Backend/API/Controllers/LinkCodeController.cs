@@ -18,16 +18,15 @@ namespace API.Controllers
                 _linkCodeService = linkCodeService;
             }
 
-            /// <summary>Genera el codigo de vinculacion para que un Docente cree su cuenta.</summary>
+            //Genera el codigo de vinculacion para que un Docente cree su cuenta
             [HttpPost("teacher")]
             public async Task<IActionResult> CreateForTeacher([FromBody] CreateTeacherLinkCodeDto request)
             {
-                // issuedById quedaria en null mientras no exista el login de Institucion.
                 var result = await _linkCodeService.CreateForTeacherAsync(request, issuedById: null);
                 return MapResponse(result);
             }
 
-            /// <summary>Genera el codigo de vinculacion para que un Tutor cree su cuenta.</summary>
+            //Genera el codigo de vinculacion para que un Tutor cree su cuenta.
             [HttpPost("guardian")]
             public async Task<IActionResult> CreateForGuardian([FromBody] CreateGuardianLinkCodeDto request)
             {
@@ -35,7 +34,7 @@ namespace API.Controllers
                 return MapResponse(result);
             }
 
-            /// <summary>Revoca un codigo que aun no ha sido usado (por ejemplo, si se filtro).</summary>
+            //Revoca un codigo que aun no ha sido usado (por ejemplo, si se filtro).
             [HttpPost("{code}/revoke")]
             public async Task<IActionResult> Revoke(string code)
             {

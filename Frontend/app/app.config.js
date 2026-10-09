@@ -1,10 +1,7 @@
-// ============================================================
 // Configuración global de la aplicación LUMINA — Panel de Administración
-// ============================================================
 
 const APP_CONFIG = {
-  // Ajusta esto cuando el backend esté listo (ej. 'https://localhost:7050/api')
-  API_BASE_URL: 'http://localhost:5000/api',
+  API_BASE_URL: 'http://localhost:5005/api',
 
   // Claves de almacenamiento de sesión
   STORAGE_KEYS: {
@@ -18,6 +15,7 @@ const APP_CONFIG = {
     LOGIN: 'login.html',
     DASHBOARD: 'dashboard.html',
     TUTOR_DASHBOARD: 'tutor-dashboard.html',
+    TEACHER_HOME: 'inicio-docente.html',
     TEACHERS: 'docentes.html',
     STUDENTS: 'estudiantes.html',
     GROUPS: 'grupos.html',

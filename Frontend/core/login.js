@@ -73,12 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      sessionStorage.setItem('lumina_token', respuesta.token);
-
-      sessionStorage.setItem(
-        'lumina_user',
-        JSON.stringify(respuesta.user)
-      );
+      AppRouter.guardarSesion(respuesta.token, respuesta.user);
 
       const roles = Array.isArray(respuesta.user.roles)
         ? respuesta.user.roles

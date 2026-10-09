@@ -21,16 +21,15 @@ namespace API.Controllers
         }
 
         [HttpGet("by-student/{studentId:int}")]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
         public async Task<IActionResult> GetByStudent(int studentId, [FromQuery] bool onlyActive = true)
         {
             var result = await _relationService.GetByStudentAsync(studentId, onlyActive);
             return MapResponse(result);
         }
 
-        /// <summary>Estudiantes activos vinculados al docente autenticado.</summary>
         [HttpGet("my-students")]
-        [Authorize(Roles = "DOCENTE")]
+        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
         public async Task<IActionResult> GetMyStudentsAsTeacher([FromServices] Business.Interfaces.ITeacherService teacherService)
         {
             var profile = await teacherService.GetMyProfileAsync(GetCurrentUserId());
@@ -41,9 +40,8 @@ namespace API.Controllers
             return MapResponse(result);
         }
 
-        /// <summary>Estudiantes activos vinculados al tutor autenticado.</summary>
         [HttpGet("my-wards")]
-        [Authorize(Roles = "TUTOR")]
+        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
         public async Task<IActionResult> GetMyStudentsAsGuardian([FromServices] Business.Interfaces.IGuardianService guardianService)
         {
             var profile = await guardianService.GetMyProfileAsync(GetCurrentUserId());
@@ -55,7 +53,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
         public async Task<IActionResult> Create([FromBody] CreateStudentRelationDto request)
         {
             var result = await _relationService.CreateAsync(request);
@@ -63,7 +61,7 @@ namespace API.Controllers
         }
 
         [HttpPatch("{id:int}/end")]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
         public async Task<IActionResult> End(int id)
         {
             var result = await _relationService.EndAsync(id);

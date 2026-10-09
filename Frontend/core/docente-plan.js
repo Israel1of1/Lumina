@@ -35,13 +35,74 @@ const estructuraPlan = {
   recursos: []
 };
 
-const guardados = JSON.parse(localStorage.getItem("lumina-planes") || "null");
+const MODULE_ID_TEMPORAL = 1;
 
-let planes = (guardados || datosIniciales).map((plan) => ({
-  ...estructuraPlan,
-  ...plan,
-  recursos: Array.isArray(plan.recursos) ? plan.recursos : []
-}));
+let materiasCache = [];
+
+async function cargarMateriasYModulos() {
+  try {
+    materiasCache = await SubjectService.getAll() || [];
+    const selectMateria = document.querySelector("#selector-materia");
+    if (selectMateria) {
+      selectMateria.innerHTML = '<option value="">Selecciona materia...</option>' +
+        materiasCache.map(m => `<option value="${m.id}">${m.name}</option>`).join("");
+
+      selectMateria.addEventListener("change", async (e) => {
+        const subjectId = e.target.value;
+        await actualizarModulosPorMateria(subjectId);
+      });
+    }
+  } catch (err) {
+    console.error("Error al cargar materias:", err);
+  }
+}
+async function actualizarModulosPorMateria(subjectId) {
+  const selectModulo = document.querySelector("#selector-modulo");
+  if (!selectModulo) return;
+
+  if (!subjectId) {
+    selectModulo.innerHTML = '<option value="">Selecciona primero una materia...</option>';
+    return;
+  }
+
+  selectModulo.innerHTML = '<option value="">Cargando módulos...</option>';
+  try {
+    const modulos = await ModuleService.getBySubject(subjectId);
+    if (!modulos || modulos.length === 0) {
+      selectModulo.innerHTML = '<option value="1">Módulo General (por defecto)</option>';
+    } else {
+      selectModulo.innerHTML = modulos.map(m => `<option value="${m.id}">${m.name}</option>`).join("");
+    }
+  } catch (err) {
+    console.error("Error al cargar módulos:", err);
+    selectModulo.innerHTML = '<option value="1">Módulo 1 (temporal)</option>';
+  }
+}
+
+function leerExtras() {
+  return JSON.parse(localStorage.getItem("lumina-planes-extra") || "{}");
+}
+
+function guardarExtra(id, datosExtra) {
+  const extras = leerExtras();
+  extras[id] = datosExtra;
+  localStorage.setItem("lumina-planes-extra", JSON.stringify(extras));
+}
+
+let planes = [];
+
+async function cargarPlanesReales() {
+  const lecciones = (await LessonService.getAll()) || [];
+  const extras = leerExtras();
+  planes = lecciones.map((l) => ({
+    ...estructuraPlan,
+    ...(extras[l.id] || {}),
+    id: l.id,
+    titulo: l.title,
+    descripcion: l.description || "",
+    duracion: l.durationMinutes ? `${l.durationMinutes} minutos` : ""
+  }));
+}
 
 let filtroActual = "todos";
 let portadaNueva = "";
@@ -347,19 +408,23 @@ document.querySelector("#lista-recursos-nuevos").addEventListener("click", (even
   mostrarRecursosNuevos();
 });
 
-document.querySelector("#form-plan").addEventListener("submit", (event) => {
+document.querySelector("#form-plan").addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const datos = new FormData(event.currentTarget);
+  const formulario = event.currentTarget;
+  const datos = new FormData(formulario);
+  const minutos = parseInt(datos.get("duracion")) || null;
 
-  const nuevoPlan = {
-    ...estructuraPlan,
-    id: Date.now(),
-    titulo: datos.get("titulo"),
+  const leccionCreada = await LessonService.create({
+    moduleId: MODULE_ID_TEMPORAL,
+    title: datos.get("titulo"),
+    description: datos.get("descripcion"),
+    durationMinutes: minutos
+  });
+
+  const datosExtra = {
     nivel: datos.get("nivel"),
     aula: datos.get("aula"),
-    descripcion: datos.get("descripcion"),
-    duracion: datos.get("duracion"),
     materia: datos.get("materia"),
     objetivo: datos.get("objetivo"),
     actividades: datos.get("actividades"),
@@ -370,11 +435,20 @@ document.querySelector("#form-plan").addEventListener("submit", (event) => {
     recursos: recursosNuevos
   };
 
+  guardarExtra(leccionCreada.id, datosExtra);
+
+  const nuevoPlan = {
+    ...estructuraPlan,
+    ...datosExtra,
+    id: leccionCreada.id,
+    titulo: leccionCreada.title,
+    descripcion: leccionCreada.description || "",
+    duracion: leccionCreada.durationMinutes ? `${leccionCreada.durationMinutes} minutos` : ""
+  };
+
   planes.unshift(nuevoPlan);
 
-  guardar();
-
-  event.currentTarget.reset();
+  formulario.reset();
   modalFormulario.close();
 
   filtroActual = "todos";
@@ -415,9 +489,7 @@ document.querySelector("#btn-menu").addEventListener("click", () => {
 });
 
 document.querySelector("#btn-cerrar-sesion").addEventListener("click", () => {
-  sessionStorage.clear();
-  window.location.href = "login.html";
+  AuthService.logout();
 });
 
-guardar();
-mostrarPlanes();
+cargarPlanesReales().then(mostrarPlanes);

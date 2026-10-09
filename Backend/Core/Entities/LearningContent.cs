@@ -11,14 +11,18 @@ namespace Core.Entities
         public int Id { get; set; }
         public int LessonId { get; set; }
         public string? Title { get; set; }
+        public string? LessonTitle { get; set; }
         public string? Description { get; set; }
         public string? Type { get; set; }
         public bool IsDictionary { get; set; }
         public bool IsRoutine { get; set; }
         public bool IsException { get; set; }
         public int? SubjectId { get; set; }
+        public string? SubjectName { get; set; }
         public string? Level { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
+        public List<string> Keywords { get; set; } = new();
+
     }
 }

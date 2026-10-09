@@ -11,5 +11,6 @@ namespace Core.Entities
         public int Id { get; set; }
         public int ContentId { get; set; }
         public int KeywordId { get; set; }
+        public string? KeywordName { get; set; }
     }
 }

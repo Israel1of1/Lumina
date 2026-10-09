@@ -1,6 +1,4 @@
-// ============================================================
 // Lógica del módulo Códigos de vinculación (LinkCode) — LUMINA
-// ============================================================
 
 let codigosCache = [];
 
@@ -59,7 +57,7 @@ function renderTabla(lista) {
             <td>${c.expiresAt ? c.expiresAt.substring(0,10) : 'Sin vencimiento'}</td>
             <td>${c.usedAt ? c.usedAt.substring(0,10) : '—'}</td>
             <td class="acciones-fila">
-              ${c.status === 'PENDING' ? `<button class="btn-icono" onclick="revocarCodigo(${c.id})">Revocar</button>` : ''}
+             ${c.status === 'PENDING' ? `<button class="btn-icono" onclick="revocarCodigo('${c.code}')">Revocar</button>` : ''}            
             </td>
           </tr>
         `).join('')}
@@ -80,7 +78,7 @@ function aplicarFiltros() {
   renderTabla(filtrados);
 }
 
-// ===== Generar =====
+
 function abrirGenerarCodigo() {
   document.getElementById('form-generar').reset();
   ocultarError('generar-error');
@@ -123,7 +121,6 @@ async function copiarCodigo() {
   }
 }
 
-// ===== Revocar =====
 async function revocarCodigo(id) {
   if (!confirm('¿Seguro que quieres revocar este código? Ya no podrá usarse.')) return;
 
@@ -135,7 +132,6 @@ async function revocarCodigo(id) {
   }
 }
 
-// ===== Helpers =====
 function etiquetaProposito(purpose) {
   return purpose === 'ENROLLMENT' ? 'Matrícula' : 'Contratación docente';
 }

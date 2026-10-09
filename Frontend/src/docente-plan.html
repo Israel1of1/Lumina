@@ -145,16 +145,24 @@
 
       <div class="campos-dobles">
         <label>
-          Duración
-          <input name="duracion" required placeholder="Ej. 45 minutos">
-        </label>
+           Duración (minutos)
+          <input name="duracion" type="number" min="1" required placeholder="Ej. 45">
 
         <label>
-          Área o materia
-          <input name="materia" required placeholder="Ej. Lenguaje">
+          Materia
+          <select name="subjectId" id="selector-materia" required>
+            <option value="">Selecciona materia...</option>
+          </select>
         </label>
       </div>
 
+      <label>
+        Módulo
+        <select name="moduleId" id="selector-modulo" required>
+          <option value="">Selecciona primero una materia...</option>
+        </select>
+      </label>
+      
       <label>
         Objetivo de aprendizaje
         <textarea name="objetivo" required></textarea>
@@ -217,6 +225,12 @@
     </form>
   </dialog>
 
+  <script src="../app/app.config.js"></script>
+  <script src="../app/app.routers.js"></script>
+  <script src="../app/api.client.js"></script>
+  <script src="../app/api.service.js"></script>
+  <script src="../app/app.js"></script>
   <script src="../core/docente-plan.js"></script>
+  
 </body>
 </html>

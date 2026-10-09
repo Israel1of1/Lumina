@@ -1,6 +1,3 @@
-// ============================================================
-// Lógica del módulo Docentes — LUMINA
-// ============================================================
 
 let docentesCache = [];
 
@@ -56,7 +53,6 @@ function renderTabla(lista) {
             <td><span class="badge ${claseBadgeEstado(d.entityStatus)}">${etiquetaEstado(d.entityStatus)}</span></td>
             <td class="acciones-fila">
               <button class="btn-icono" onclick="abrirDetalle(${d.id})">Ver</button>
-              <button class="btn-icono" onclick="abrirEditarDocente(${d.id})">Editar</button>
               <button class="btn-icono" onclick="abrirCambiarEstado(${d.id})">Estado</button>
             </td>
           </tr>
@@ -82,7 +78,7 @@ function filtrarTabla() {
   renderTabla(filtrados);
 }
 
-// ===== Crear =====
+
 function abrirNuevoDocente() {
   document.getElementById('modal-docente-titulo').textContent = 'Nuevo docente';
   document.getElementById('form-docente').reset();
@@ -91,7 +87,6 @@ function abrirNuevoDocente() {
   abrirModal('modal-docente');
 }
 
-// ===== Editar =====
 function abrirEditarDocente(id) {
   const docente = docentesCache.find(d => d.id === id);
   if (!docente) return;
@@ -120,13 +115,13 @@ async function guardarDocente(evento) {
   const datos = {
     firstName: document.getElementById('docente-nombre').value.trim(),
     lastName: document.getElementById('docente-apellido').value.trim(),
-    nationalId: document.getElementById('docente-cedula').value.trim() || null,
-    specialty: document.getElementById('docente-especialidad').value.trim() || null,
-    degree: document.getElementById('docente-titulo').value.trim() || null,
-    personalEmail: document.getElementById('docente-correo').value.trim() || null,
-    phone: document.getElementById('docente-telefono').value.trim() || null,
-    city: document.getElementById('docente-ciudad').value.trim() || null,
-    address: document.getElementById('docente-direccion').value.trim() || null
+    nationalId: document.getElementById('docente-cedula').value.trim(),
+    specialty: document.getElementById('docente-especialidad').value.trim(),
+    degree: document.getElementById('docente-titulo').value.trim(),
+    personalEmail: document.getElementById('docente-correo').value.trim(),
+    phone: document.getElementById('docente-telefono').value.trim(),
+    city: document.getElementById('docente-ciudad').value.trim(),
+    address: document.getElementById('docente-direccion').value.trim()
   };
 
   try {
@@ -143,7 +138,7 @@ async function guardarDocente(evento) {
   }
 }
 
-// ===== Ver detalle =====
+
 function abrirDetalle(id) {
   const d = docentesCache.find(t => t.id === id);
   if (!d) return;
@@ -169,7 +164,7 @@ function abrirDetalle(id) {
   abrirModal('modal-detalle');
 }
 
-// ===== Cambiar estado =====
+
 function abrirCambiarEstado(id) {
   const docente = docentesCache.find(d => d.id === id);
   if (!docente) return;
@@ -195,13 +190,20 @@ async function guardarEstado(evento) {
   const nuevoEstado = document.getElementById('estado-valor').value;
   const motivo = document.getElementById('estado-motivo').value.trim();
 
-  if (nuevoEstado === 'INACTIVE' && !motivo) {
-    mostrarError('estado-error', 'Debes indicar el motivo de la baja');
-    return;
-  }
-
   try {
-    await TeacherService.setStatus(id, nuevoEstado, nuevoEstado === 'INACTIVE' ? motivo : null);
+    if (nuevoEstado === 'ACTIVE') {
+      await TeacherService.reactivate(id);
+    } else if (nuevoEstado === 'INACTIVE') {
+      if (!motivo) {
+        mostrarError('estado-error', 'Debes indicar el motivo de la baja');
+        return;
+      }
+      await TeacherService.deactivate(id, motivo);
+    } else {
+      mostrarError('estado-error', 'Por ahora solo se puede activar o dar de baja.');
+      return;
+    }
+    
     cerrarModal('modal-estado');
     await cargarDocentes();
   } catch (error) {
@@ -209,7 +211,7 @@ async function guardarEstado(evento) {
   }
 }
 
-// ===== Helpers =====
+
 function etiquetaEstado(estado) {
   const mapa = { ACTIVE: 'Activo', ON_LEAVE: 'De permiso', INACTIVE: 'Inactivo' };
   return mapa[estado] || estado;

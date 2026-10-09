@@ -1,7 +1,3 @@
-// ============================================================
-// Lógica del módulo Estudiantes — LUMINA
-// ============================================================
-
 let estudiantesCache = [];
 let gruposCache = [];
 
@@ -114,7 +110,7 @@ function aplicarFiltros() {
   renderTabla(filtrados);
 }
 
-// ===== Crear =====
+
 function abrirNuevoEstudiante() {
   document.getElementById('modal-estudiante-titulo').textContent = 'Nuevo estudiante';
   document.getElementById('form-estudiante').reset();
@@ -125,7 +121,7 @@ function abrirNuevoEstudiante() {
   validarCupoGrupo();
 }
 
-// ===== Editar =====
+
 function abrirEditarEstudiante(id) {
   const estudiante = estudiantesCache.find(e => e.id === id);
   if (!estudiante) return;
@@ -146,7 +142,6 @@ function abrirEditarEstudiante(id) {
   validarCupoGrupo();
 }
 
-// ===== Validación visual del cupo (RN-01: máx. 10 por grupo) =====
 function validarCupoGrupo() {
   const groupId = parseInt(document.getElementById('estudiante-grupo').value);
   const idActual = document.getElementById('estudiante-id').value;
@@ -157,7 +152,6 @@ function validarCupoGrupo() {
     return;
   }
 
-  // Si estamos editando, no contar al propio estudiante en su grupo actual
   const cantidad = estudiantesCache.filter(e =>
     e.groupId === groupId && e.isActive && String(e.id) !== idActual
   ).length;
@@ -180,7 +174,7 @@ async function guardarEstudiante(evento) {
   const id = document.getElementById('estudiante-id').value;
   const groupId = parseInt(document.getElementById('estudiante-grupo').value);
 
-  // Validación de cupo antes de mandar al backend (el backend debe validarlo también)
+  // Validación de cupo antes de mandar al backend 
   const cantidadActual = estudiantesCache.filter(e =>
     e.groupId === groupId && e.isActive && String(e.id) !== id
   ).length;
@@ -206,7 +200,13 @@ async function guardarEstudiante(evento) {
     if (id) {
       await StudentService.update(id, datos);
     } else {
-      await StudentService.create(datos);
+      const creado = await StudentService.create(datos);
+
+      
+      const traeExtras = datos.languageLevel || datos.clinicalInfo || datos.observations;
+      if (traeExtras && creado?.id) {
+        await StudentService.update(creado.id, datos);
+      }
     }
 
     cerrarModal('modal-estudiante');
@@ -216,7 +216,6 @@ async function guardarEstudiante(evento) {
   }
 }
 
-// ===== Activar / Desactivar =====
 async function alternarEstado(id, activar) {
   try {
     await StudentService.setActive(id, activar);
@@ -241,14 +240,13 @@ function abrirDetalle(id) {
       <dt>Nivel de lenguaje</dt><dd>${e.languageLevel || '—'}</dd>
       <dt>Información clínica</dt><dd>${e.clinicalInfo || '—'}</dd>
       <dt>Observaciones</dt><dd>${e.observations || '—'}</dd>
-      <dt>Cuenta de acceso</dt><dd>${e.userId ? 'Vinculada' : 'Pendiente de canjear código'}</dd>
+      <dt>Cuenta de acceso</dt><dd>${e.hasAccount ? 'Vinculada' : 'Pendiente de canjear código'}</dd>
       <dt>Estado</dt><dd><span class="badge ${e.isActive ? 'badge-activo' : 'badge-inactivo'}">${e.isActive ? 'Activo' : 'Inactivo'}</span></dd>
     </dl>
   `;
   abrirModal('modal-detalle');
 }
 
-// ===== Utilidades =====
 function abrirModal(id) { document.getElementById(id).classList.remove('oculto'); }
 function cerrarModal(id) { document.getElementById(id).classList.add('oculto'); }
 function mostrarError(id, texto) {

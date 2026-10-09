@@ -1,10 +1,3 @@
-// ============================================================
-// Lógica del módulo Asignaciones (GroupSubject) — LUMINA
-// Cada asignación es un registro histórico: al "finalizar" una,
-// se marca isActive=false y se guarda endDate; se puede crear una
-// nueva asignación distinta para el mismo grupo/materia después.
-// ============================================================
-
 let asignacionesCache = [];
 let gruposCache = [];
 let materiasCache = [];
@@ -107,7 +100,7 @@ function renderTabla(lista) {
   `;
 }
 
-// ===== Crear asignación =====
+// Crear asignación
 function abrirNuevaAsignacion() {
   document.getElementById('form-asignacion').reset();
   document.getElementById('asig-fecha').value = new Date().toISOString().split('T')[0];
@@ -143,7 +136,7 @@ async function guardarAsignacion(evento) {
   }
 }
 
-// ===== Finalizar asignación =====
+//Finalizar asignación 
 function abrirFinalizar(id) {
   const asignacion = asignacionesCache.find(a => a.id === id);
   if (!asignacion) return;
@@ -164,7 +157,7 @@ async function guardarFinalizacion(evento) {
   const endDate = document.getElementById('finalizar-fecha').value;
 
   try {
-    await GroupSubjectService.end(id, endDate);
+    await GroupSubjectService.end(id);
     cerrarModal('modal-finalizar');
     await cargarDatos();
   } catch (error) {
@@ -172,7 +165,7 @@ async function guardarFinalizacion(evento) {
   }
 }
 
-// ===== Utilidades =====
+//Utilidades
 function abrirModal(id) { document.getElementById(id).classList.remove('oculto'); }
 function cerrarModal(id) { document.getElementById(id).classList.add('oculto'); }
 function mostrarError(id, texto) {

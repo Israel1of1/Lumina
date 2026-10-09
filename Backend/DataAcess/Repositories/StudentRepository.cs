@@ -80,6 +80,9 @@ namespace DataAccess.Repositories
                 cmd.Parameters.AddWithValue("@FirstName", student.FirstName);
                 cmd.Parameters.AddWithValue("@LastName", (object?)student.LastName ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@UniqueNumber", (object?)student.UniqueNumber ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@LanguageLevel", (object?)student.LanguageLevel ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@ClinicalInfo", (object?)student.ClinicalInfo ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@Observations", (object?)student.Observations ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@BirthDate", (object?)student.BirthDate ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@Gender", (object?)student.Gender ?? DBNull.Value);
             });

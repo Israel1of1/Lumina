@@ -4,6 +4,7 @@ using Core.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -20,7 +21,7 @@ namespace API.Controllers
         }
 
         [HttpGet("by-group/{groupId:int}")]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "TEACHER")]
         public async Task<IActionResult> GetByGroup(int groupId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] bool onlyActive = true)
         {
             var result = await _studentService.GetByGroupAsync(groupId, pageNumber, pageSize, onlyActive);
@@ -28,7 +29,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id:int}")]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "TEACHER")]
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _studentService.GetByIdAsync(id);
@@ -36,15 +37,26 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "INSTITUCION")]
-        public async Task<IActionResult> Create([FromBody] CreateStudentDto request)
+        [Authorize(Roles = "INSTITUTION,TEACHER")]
+        public async Task<IActionResult> Create([FromBody] CreateStudentDto request, [FromServices] Business.Interfaces.ITeacherService teacherService)
         {
-            var result = await _studentService.CreateAsync(request);
+            int? requestingTeacherId = null;
+
+            if (User.IsInRole("DOCENTE") && !User.IsInRole("INSTITUCION"))
+            {
+                var profile = await teacherService.GetMyProfileAsync(GetCurrentUserId());
+                if (!profile.IsSuccess)
+                    return NotFound(profile);
+
+                requestingTeacherId = profile.Data!.Id;
+            }
+
+            var result = await _studentService.CreateAsync(request, requestingTeacherId);
             return MapResponse(result);
         }
 
         [HttpPut("{id:int}")]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "INSTITUTION")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateStudentDto request)
         {
             var result = await _studentService.UpdateAsync(id, request);
@@ -52,7 +64,7 @@ namespace API.Controllers
         }
 
         [HttpPatch("{id:int}/active")]
-        [Authorize(Roles = "INSTITUCION")]
+        [Authorize(Roles = "INSTITUTION, TEACHER")]
         public async Task<IActionResult> SetActive(int id, [FromBody] SetActiveDto request)
         {
             var result = await _studentService.SetActiveAsync(id, request.IsActive);
@@ -72,6 +84,11 @@ namespace API.Controllers
                 MessageCodes.Conflict => Conflict(result),
                 _ => StatusCode(500, result)
             };
+        }
+        private int GetCurrentUserId()
+        {
+            var subject = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub");
+            return int.Parse(subject!);
         }
     }
 }

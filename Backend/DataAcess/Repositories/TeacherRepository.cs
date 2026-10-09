@@ -22,6 +22,56 @@ namespace DataAccess.Repositories
             _connectionString = configuration.GetConnectionString("DefaultConnection")!;
         }
 
+        public async Task<RepositoryResponse<Teacher>> CreateAsync(Teacher teacher)
+        {
+            var teacherReturned = new Teacher();
+            var response = new RepositoryResponse<Teacher>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    SqlCommand cmd = new SqlCommand("USP_CreateTeacher", connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@userId", (object?)teacher.UserId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@FirstName", teacher.FirstName);
+                    cmd.Parameters.AddWithValue("@LastName", teacher.LastName);
+                    cmd.Parameters.AddWithValue("@NationalId", (object?)teacher.NationalId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@PersonalEmail", (object?)teacher.PersonalEmail ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Phone", (object?)teacher.Phone ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Address", (object?)teacher.Address ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@City", (object?)teacher.City ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Specialty", (object?)teacher.Specialty ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Degree", (object?)teacher.Degree ?? DBNull.Value);
+                    cmd.Parameters.Add("@ReturnValue", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
+
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                            teacherReturned = MapTeacher(reader);
+                    }
+
+                    var returnedValue = Convert.ToInt32(cmd.Parameters["@ReturnValue"].Value);
+                    response.Data = teacherReturned;
+                    response.OperationStatusCode = returnedValue;
+                    return response;
+                }
+            }
+            catch (SqlException ex)
+            {
+                response.Data = null;
+                response.OperationStatusCode = ex.Number;
+                response.Message = ex.Message;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return new RepositoryResponse<Teacher> { Data = null, OperationStatusCode = -1, Message = ex.Message };
+            }
+        }
+
         public async Task<RepositoryResponse<Teacher>> GetByUserIdAsync(int userId)
         {
             var teacherReturned = new Teacher();
@@ -273,6 +323,48 @@ namespace DataAccess.Repositories
             }
         }
 
+
+        public async Task<RepositoryResponse<Teacher>> ReactivateAsync(int id)
+        {
+            var teacherReturned = new Teacher();
+            var response = new RepositoryResponse<Teacher>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    SqlCommand cmd = new SqlCommand("USP_ReactivateTeacher", connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@TeacherId", id);
+                    cmd.Parameters.Add("@ReturnValue", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
+
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                            teacherReturned = MapTeacher(reader);
+                    }
+
+                    var returnedValue = Convert.ToInt32(cmd.Parameters["@ReturnValue"].Value);
+                    response.Data = teacherReturned;
+                    response.OperationStatusCode = returnedValue;
+                    return response;
+                }
+            }
+            catch (SqlException ex)
+            {
+                response.Data = null;
+                response.OperationStatusCode = ex.Number;
+                response.Message = ex.Message;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return new RepositoryResponse<Teacher> { Data = null, OperationStatusCode = -1, Message = ex.Message };
+            }
+        }
+
         private static Teacher MapTeacher(SqlDataReader reader)
         {
             return new Teacher
@@ -296,5 +388,7 @@ namespace DataAccess.Repositories
                 UpdateAt = reader["UpdateAt"] == DBNull.Value ? null : (DateTime?)reader["UpdateAt"]
             };
         }
+
+
     }
 }
