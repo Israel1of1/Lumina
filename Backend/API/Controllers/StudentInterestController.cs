@@ -19,7 +19,7 @@ namespace API.Controllers
         }
 
         [HttpGet("by-student/{studentId:int}")]
-        [Authorize(Roles = "INSTITUCION,TUTOR")]
+        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
         public async Task<IActionResult> GetByStudent(int studentId)
         {
             var result = await _studentInterestService.GetByStudentAsync(studentId);
@@ -27,7 +27,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id:int}")]
-        [Authorize(Roles = "INSTITUCION,TUTOR")]
+        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _studentInterestService.GetByIdAsync(id);
@@ -35,7 +35,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "INSTITUCION,TUTOR")]
+        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
         public async Task<IActionResult> Create([FromBody] CreateStudentInterestDto request)
         {
             var result = await _studentInterestService.CreateAsync(request);
@@ -43,7 +43,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id:int}")]
-        [Authorize(Roles = "INSTITUCION,TUTOR")]
+        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateStudentInterestDto request)
         {
             var result = await _studentInterestService.UpdateAsync(id, request);
@@ -51,7 +51,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        [Authorize(Roles = "INSTITUCION,TUTOR")]
+        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _studentInterestService.DeleteAsync(id);

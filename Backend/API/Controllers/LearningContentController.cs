@@ -12,8 +12,7 @@ namespace API.Controllers
     [Authorize]
     public class LearningContentController : BaseApiController
     {
-        private const string ContentEditors = "INSTITUTION,TUTOR";
-
+        private const string ContentEditors = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR";
         private readonly ILearningContentService _contentService;
 
         public LearningContentController(ILearningContentService contentService)
@@ -21,12 +20,12 @@ namespace API.Controllers
             _contentService = contentService;
         }
 
-        // El Tutor solo consulta contenido activ Docente e Institucion pueden ver tambien los inactivos
-        private bool CanSeeInactive => User.IsInRole("INSTITUTION") || User.IsInRole("TUTOR");
+        // El Tutor solo consulta contenido activo; Docente e Institucion pueden ver tambien los inactivos
+        private bool CanSeeInactive => User.IsInRole("INSTITUTION") || User.IsInRole("INSTITUCION") || User.IsInRole("TEACHER") || User.IsInRole("DOCENTE");
 
         // Base de Conocimientos es decir lista y busca contenido filtros opcionales:
         // lessonId, subjectId, type, level, search (titulo/descripcion/palabras clave), isActive.
-        
+
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] LearningContentFilterDto filter)
         {

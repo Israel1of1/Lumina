@@ -21,7 +21,7 @@ namespace API.Controllers
         }
 
         [HttpGet("by-student/{studentId:int}")]
-        [Authorize(Roles = "INSTITUTION")]
+        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
         public async Task<IActionResult> GetByStudent(int studentId, [FromQuery] bool onlyActive = true)
         {
             var result = await _relationService.GetByStudentAsync(studentId, onlyActive);
@@ -29,7 +29,7 @@ namespace API.Controllers
         }
 
         [HttpGet("my-students")]
-        [Authorize(Roles = "TEACHER,INSTITUTION")]
+        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
         public async Task<IActionResult> GetMyStudentsAsTeacher([FromServices] Business.Interfaces.ITeacherService teacherService)
         {
             var profile = await teacherService.GetMyProfileAsync(GetCurrentUserId());
@@ -41,7 +41,7 @@ namespace API.Controllers
         }
 
         [HttpGet("my-wards")]
-        [Authorize(Roles = "TEACHER, INSTITUTION, GUARDIAN")]
+        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
         public async Task<IActionResult> GetMyStudentsAsGuardian([FromServices] Business.Interfaces.IGuardianService guardianService)
         {
             var profile = await guardianService.GetMyProfileAsync(GetCurrentUserId());
@@ -53,7 +53,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "INSTITUTION")]
+        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
         public async Task<IActionResult> Create([FromBody] CreateStudentRelationDto request)
         {
             var result = await _relationService.CreateAsync(request);
@@ -61,7 +61,7 @@ namespace API.Controllers
         }
 
         [HttpPatch("{id:int}/end")]
-        [Authorize(Roles = "INSTITUTION")]
+        [Authorize(Roles = "INSTITUTION,INSTITUCION,TEACHER,DOCENTE,GUARDIAN,TUTOR")]
         public async Task<IActionResult> End(int id)
         {
             var result = await _relationService.EndAsync(id);
