@@ -1,7 +1,9 @@
 // Configuración global de la aplicación LUMINA — Panel de Administración
 
 const APP_CONFIG = {
-  API_BASE_URL: 'http://localhost:5005/api',
+    API_BASE_URL: ['localhost', '127.0.0.1'].includes(window.location.hostname)
+    ? 'http://localhost:5005/api'
+    : `http://${window.location.hostname}:5005/api`,
 
   // Claves de almacenamiento de sesión
   STORAGE_KEYS: {
