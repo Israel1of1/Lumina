@@ -1,6 +1,8 @@
+if (!AppRouter.protegerPagina(['TEACHER', 'DOCENTE'])) {
+  throw new Error('Acceso no autorizado');
+}
+
 let grupoActual = null;
-let grupoEditando = null;
-let estudianteEditando = null;
 let grupos = [];
 let estudiantes = [];
 
@@ -25,18 +27,44 @@ async function cargarDatosReales() {
     idsGruposUnicos.map(id => StudentService.getByGroup(id))
   );
 
-  estudiantes = estudiantesPorGrupo.flat().map(e => ({
-    id: e.id,
-    nombre: `${e.firstName} ${e.lastName || ""}`.trim(),
-    edad: calcularEdad(e.birthDate),
-    grupo: e.groupId,
-    grado: grupos.find(g => g.id === e.groupId)?.grado || "",
-    tea: e.clinicalInfo || "No registrado",
-    juguete: "",
-    color: "",
-    responsable: "",
-    observaciones: e.observations || "",
-    foto: ""
+  const todosRaw = estudiantesPorGrupo.flat();
+
+  estudiantes = await Promise.all(todosRaw.map(async e => {
+    let gustos = "";
+    let responsable = "";
+
+    try {
+      const [intereses, relaciones] = await Promise.all([
+        StudentInterestService.getByStudent(e.id).catch(() => []),
+        StudentRelationService.getByStudent(e.id).catch(() => [])
+      ]);
+
+      if (Array.isArray(intereses) && intereses.length > 0) {
+        gustos = intereses.map(i => i.name || i.description).filter(Boolean).join(", ");
+      }
+
+      if (Array.isArray(relaciones) && relaciones.length > 0) {
+        const principal = relaciones.find(r => r.isActive) || relaciones[0];
+        const nom = [principal.entityFirstName, principal.entityLastName].filter(Boolean).join(" ");
+        responsable = nom ? `${nom} (${principal.relationType || "Tutor"})` : (principal.relationType || "");
+      }
+    } catch (err) {
+      console.warn("Error cargando detalles del estudiante:", err);
+    }
+
+    return {
+      id: e.id,
+      nombre: `${e.firstName} ${e.lastName || ""}`.trim(),
+      edad: calcularEdad(e.birthDate),
+      grupo: e.groupId,
+      grado: grupos.find(g => g.id === e.groupId)?.grado || "",
+      tea: e.clinicalInfo || "No registrado",
+      juguete: gustos || "",
+      color: "",
+      responsable: responsable || "",
+      observaciones: e.observations || "",
+      foto: ""
+    };
   }));
 }
 
@@ -99,24 +127,10 @@ function renderizarGrupos() {
           title="Ver estudiantes"
           onclick="abrirGrupo(${grupo.id})"
         >
-          ◉
+          ◉ ver estudiantes
         </button>
 
-        <button
-          class="boton-icono editar"
-          title="Editar grupo"
-          onclick="editarGrupo(${grupo.id})"
-        >
-          ✎
-        </button>
 
-        <button
-          class="boton-icono eliminar"
-          title="Eliminar grupo"
-          onclick="eliminarGrupo(${grupo.id})"
-        >
-          ⌫
-        </button>
       </div>
     </article>
   `).join("");
@@ -162,23 +176,8 @@ function renderizarEstudiantes() {
             class="boton-estudiante"
             onclick="verPerfil(${estudiante.id})"
           >
-            ◉ Ver
-          </button>
+            ◉ Ver perfil
 
-          <button
-            class="boton-estudiante editar"
-            onclick="editarEstudiante(${estudiante.id})"
-          >
-            ✎ Editar
-          </button>
-
-          <button
-            class="boton-estudiante eliminar"
-            title="Eliminar estudiante"
-            onclick="eliminarEstudiante(${estudiante.id})"
-          >
-            ⌫
-          </button>
         </div>
       </div>
     </article>
@@ -219,50 +218,27 @@ function verPerfil(id) {
             <p>${estudiante.edad} años · ${estudiante.grado} · ${grupo.nombre}</p>
           </div>
         </div>
-
-        <div class="acciones-tarjeta">
-          <button
-            class="boton-icono editar"
-            title="Editar estudiante"
-            onclick="editarEstudiante(${estudiante.id})"
-          >
-            ✎
-          </button>
-
-          <button
-            class="boton-icono eliminar"
-            title="Eliminar estudiante"
-            onclick="eliminarEstudiante(${estudiante.id})"
-          >
-            ⌫
-          </button>
-        </div>
       </div>
 
       <div class="datos-perfil">
         <div class="dato-perfil">
           <small>GRUPO</small>
-          <strong>${grupo.nombre}</strong>
+          <strong>${grupo? grupo.nombre : "Sin grupo"}</strong>
         </div>
 
         <div class="dato-perfil">
           <small>GRADO</small>
-          <strong>${estudiante.grado}</strong>
+            <strong>${estudiante.grado || "No registrado"}</strong>
         </div>
 
         <div class="dato-perfil">
           <small>NIVEL DE TEA</small>
-          <strong>${estudiante.tea}</strong>
+          <strong>${estudiante.tea || "No registrado"}</strong>
         </div>
 
         <div class="dato-perfil">
-          <small>JUGUETE FAVORITO</small>
-          <strong>${estudiante.juguete || "No registrado"}</strong>
-        </div>
-
-        <div class="dato-perfil">
-          <small>COLOR FAVORITO</small>
-          <strong>${estudiante.color || "No registrado"}</strong>
+          <small>GUSTOS / INTERESES</small>
+          <strong>${estudiante.gustos || "No registrado"}</strong>
         </div>
 
         <div class="dato-perfil">
@@ -281,105 +257,8 @@ function verPerfil(id) {
   mostrarVista("vista-perfil");
 }
 
-function llenarGrupos() {
-  $("#select-grupo").innerHTML = grupos.map(grupo => `
-    <option value="${grupo.id}">
-      ${grupo.nombre} · ${grupo.grado}
-    </option>
-  `).join("");
-}
 
-function abrirModalGrupo(grupo = null) {
-  grupoEditando = grupo;
-
-  const form = $("#form-grupo");
-
-  form.reset();
-
-  $("#titulo-modal-grupo").textContent = grupo
-    ? "Editar grupo"
-    : "Agregar grupo";
-
-  if (grupo) {
-    form.nombre.value = grupo.nombre;
-    form.grado.value = grupo.grado;
-    form.turno.value = grupo.turno;
-    form.descripcion.value = grupo.descripcion;
-  }
-
-  $("#modal-grupo").showModal();
-}
-
-function editarGrupo(id) {
-  const grupo = grupos.find(item => item.id === id);
-  abrirModalGrupo(grupo);
-}
-
-function eliminarGrupo(id) {
-  const grupo = grupos.find(item => item.id === id);
-
-  if (cantidadEstudiantes(id) > 0) {
-    alert(`No puedes eliminar ${grupo.nombre} porque tiene estudiantes.`);
-    return;
-  }
-
-  if (!confirm(`¿Deseas eliminar ${grupo.nombre}?`)) return;
-
-  grupos = grupos.filter(item => item.id !== id);
-
-  renderizarGrupos();
-}
-
-function abrirModalEstudiante(estudiante = null) {
-  estudianteEditando = estudiante;
-
-  const form = $("#form-estudiante");
-
-  form.reset();
-  llenarGrupos();
-
-  $("#titulo-modal-estudiante").textContent = estudiante
-    ? "Editar estudiante"
-    : "Agregar estudiante";
-
-  if (estudiante) {
-    form.nombre.value = estudiante.nombre;
-    form.edad.value = estudiante.edad;
-    form.grupo.value = estudiante.grupo;
-    form.grado.value = estudiante.grado;
-    form.tea.value = estudiante.tea;
-    form.juguete.value = estudiante.juguete;
-    form.color.value = estudiante.color;
-    form.responsable.value = estudiante.responsable;
-    form.observaciones.value = estudiante.observaciones;
-  } else if (grupoActual) {
-    const grupo = grupos.find(item => item.id === grupoActual);
-
-    form.grupo.value = grupo.id;
-    form.grado.value = grupo.grado;
-  }
-
-  $("#modal-estudiante").showModal();
-}
-
-function editarEstudiante(id) {
-  const estudiante = estudiantes.find(item => item.id === id);
-  abrirModalEstudiante(estudiante);
-}
-
-function eliminarEstudiante(id) {
-  const estudiante = estudiantes.find(item => item.id === id);
-
-  if (!confirm(`¿Deseas eliminar a ${estudiante.nombre}?`)) return;
-
-  estudiantes = estudiantes.filter(item => item.id !== id);
-
-  renderizarGrupos();
-  renderizarEstudiantes();
-  mostrarVista("vista-estudiantes");
-}
-
-$("#btn-menu").addEventListener("click", () => {
+$("#btn-menu")?.addEventListener("click", () => {
   $("#menu-docente").classList.toggle("colapsado");
 
   $("#btn-menu").textContent = $("#menu-docente").classList.contains("colapsado")
@@ -387,108 +266,40 @@ $("#btn-menu").addEventListener("click", () => {
     : "‹";
 });
 
-$("#btn-agregar-grupo").addEventListener("click", () => {
-  abrirModalGrupo();
-});
-
-$("#btn-agregar-estudiante").addEventListener("click", () => {
-  abrirModalEstudiante();
-});
-
-$("#volver-grupos").addEventListener("click", () => {
+$("#volver-grupos")?.addEventListener("click", () => {
   grupoActual = null;
   mostrarVista("vista-grupos");
 });
 
-$("#buscar-grupo").addEventListener("input", renderizarGrupos);
-$("#buscar-estudiante").addEventListener("input", renderizarEstudiantes);
+$("#buscar-grupo")?.addEventListener("input", renderizarGrupos);
+$("#buscar-estudiante")?.addEventListener("input", renderizarEstudiantes);
 
-document.querySelectorAll("[data-cerrar]").forEach(boton => {
-  boton.addEventListener("click", () => {
-    $("#" + boton.dataset.cerrar).close();
-  });
-});
-
-$("#form-grupo").addEventListener("submit", event => {
-  event.preventDefault();
-
-  const form = event.target;
-
-  const datos = {
-    id: grupoEditando ? grupoEditando.id : Date.now(),
-    nombre: form.nombre.value,
-    grado: form.grado.value,
-    turno: form.turno.value,
-    descripcion: form.descripcion.value
-  };
-
-  if (grupoEditando) {
-    const indice = grupos.findIndex(item => item.id === grupoEditando.id);
-    grupos[indice] = datos;
-  } else {
-    grupos.push(datos);
-  }
-
-  $("#modal-grupo").close();
-  renderizarGrupos();
-});
-
-$("#form-estudiante").addEventListener("submit", event => {
-  event.preventDefault();
-
-  const form = event.target;
-  const archivo = form.foto.files[0];
-
-  function guardar(fotoNueva = "") {
-    const datos = {
-      id: estudianteEditando ? estudianteEditando.id : Date.now(),
-      nombre: form.nombre.value,
-      edad: form.edad.value,
-      grupo: Number(form.grupo.value),
-      grado: form.grado.value,
-      tea: form.tea.value,
-      juguete: form.juguete.value,
-      color: form.color.value,
-      responsable: form.responsable.value,
-      observaciones: form.observaciones.value,
-      foto: fotoNueva || (estudianteEditando ? estudianteEditando.foto : "")
-    };
-
-    if (estudianteEditando) {
-      const indice = estudiantes.findIndex(item => item.id === estudianteEditando.id);
-      estudiantes[indice] = datos;
-    } else {
-      estudiantes.push(datos);
-    }
-
-    $("#modal-estudiante").close();
-
-    renderizarGrupos();
-    renderizarEstudiantes();
-
-    if (estudianteEditando) {
-      verPerfil(datos.id);
-    }
-  }
-
-  if (archivo) {
-    const lector = new FileReader();
-
-    lector.onload = () => guardar(lector.result);
-    lector.readAsDataURL(archivo);
-  } else {
-    guardar();
-  }
-});
-
-$("#btn-cerrar-sesion").addEventListener("click", () => {
+$("#btn-cerrar-sesion")?.addEventListener("click", () => {
   if (confirm("¿Deseas cerrar sesión?")) {
     authService.logout();
   }
 });
 
-$("#btn-agregar-grupo").style.display = "none";
-$("#btn-agregar-estudiante").style.display = "none";
+const btnAgregarGrupo = $("#btn-agregar-grupo");
+if (btnAgregarGrupo) btnAgregarGrupo.style.display = "none";
+const btnAgregarEstudiante = $("#btn-agregar-estudiante");
+if (btnAgregarEstudiante) btnAgregarEstudiante.style.display = "none";
 
-cargarDatosReales().then(renderizarGrupos);
-renderizarEstudiantes();
+// Actualizar usuario en topbar
+const usuarioActual = AuthService.getUser();
+if (usuarioActual) {
+  const nombreEl = document.querySelector(".topbar-docente__datos strong");
+  if (nombreEl) nombreEl.textContent = usuarioActual.fullName || usuarioActual.username || "Docente";
+  const avatarEl = document.querySelector(".topbar-docente__avatar");
+  if (avatarEl) {
+    const iniciales = (usuarioActual.fullName || usuarioActual.username || "D").split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+    avatarEl.textContent = iniciales;
+  }
+}
+
+cargarDatosReales().then(() => {
+  renderizarGrupos();
+  renderizarEstudiantes();
+}).catch(err => {
+  console.error("Error al cargar grupos y estudiantes reales:", err);
+});

@@ -253,11 +253,33 @@ const GuardianService = {
   },
 
   async getMyWards() {
-      const respuesta = await apiClient('/student-relations/my-wards');
-      return respuesta.data;
+    const respuesta = await apiClient('/student-relations/my-wards');
+    return respuesta.data || [];
+  },
+
+   getActiveWardId() {
+    return localStorage.getItem('lumina_tutor_active_student_id');
+  },
+
+  setActiveWardId(studentId) {
+    if (studentId) {
+      localStorage.setItem('lumina_tutor_active_student_id', String(studentId));
+    }
+  },
+
+  async getSelectedWard() {
+    const wards = await this.getMyWards();
+    if (!wards || wards.length === 0) return null;
+    const activeId = this.getActiveWardId();
+    let selected = wards.find(w => String(w.studentId || w.id) === String(activeId));
+    if (!selected) {
+      selected = wards[0];
+      this.setActiveWardId(selected.studentId || selected.id);
+    }
+    return selected;
   },
   
-   async getAll() {
+  async getAll() {
     const respuesta = await apiClient('/guardians?pageNumber=1&pageSize=1000');
     return respuesta.data?.items || [];
   },
@@ -534,4 +556,96 @@ const LessonStepService = {
   }
 };
 
+// ROUTINE SERVICE
+const RoutineService = {
+  async getByStudent(studentId, status = null) {
+    const query = status ? `?status=${encodeURIComponent(status)}` : '';
+    const respuesta = await apiClient(`/routines/by-student/${studentId}${query}`);
+    return respuesta.data || [];
+  },
+  async getById(id) {
+    const respuesta = await apiClient(`/routines/${id}`);
+    return respuesta.data;
+  },
+  async create(datos) {
+    const respuesta = await apiClient('/routines', { method: 'POST', body: datos });
+    return respuesta.data;
+  },
+    async update(id, datos) {
+    const respuesta = await apiClient(`/routines/${id}`, { method: 'PATCH', body: datos });
+    return respuesta.data;
+  },
+  async setStatus(id, status) {
+    const respuesta = await apiClient(`/routines/${id}/status`, {
+      method: 'PATCH',
+      body: { status }
+    });
+    return respuesta.data;
+  }
+};
+// ROUTINE DETAIL SERVICE
+const RoutineDetailService = {
+  async getByRoutine(routineId) {
+    const respuesta = await apiClient(`/routine-details/by-routine/${routineId}`);
+    return respuesta.data || [];
+  },
+  async create(datos) {
+    const respuesta = await apiClient('/routine-details', { method: 'POST', body: datos });
+    return respuesta.data;
+  },
+  async update(id, datos) {
+    const respuesta = await apiClient(`/routine-details/${id}`, { method: 'PATCH', body: datos });
+    return respuesta.data;
+  },
+  async delete(id) {
+    const respuesta = await apiClient(`/routine-details/${id}`, { method: 'DELETE' });
+    return respuesta.data;
+  }
+};
 
+// ROUTINE LOG SERVICE
+const RoutineLogService = {
+  async getByStudent(studentId, fromDate = null, toDate = null) {
+    const params = new URLSearchParams();
+    if (fromDate) params.append('fromDate', fromDate);
+    if (toDate) params.append('toDate', toDate);
+    const qs = params.toString() ? `?${params.toString()}` : '';
+    const respuesta = await apiClient(`/routine-logs/by-student/${studentId}${qs}`);
+    return respuesta.data || [];
+  },
+  async getByDetail(routineDetailId) {
+    const respuesta = await apiClient(`/routine-logs/by-detail/${routineDetailId}`);
+    return respuesta.data || [];
+  },
+  async create(datos) {
+    const respuesta = await apiClient('/routine-logs', { method: 'POST', body: datos });
+    return respuesta.data;
+  },
+  async update(id, datos) {
+    const respuesta = await apiClient(`/routine-logs/${id}`, { method: 'PATCH', body: datos });
+    return respuesta.data;
+  }
+};
+// HABIT COMPLIANCE SERVICE
+const HabitComplianceService = {
+  async getByHabit(habitId) {
+    const respuesta = await apiClient(`/habit-compliances/by-habit/${habitId}`);
+    return respuesta.data || [];
+  },
+  async getById(id) {
+    const respuesta = await apiClient(`/habit-compliances/${id}`);
+    return respuesta.data;
+  },
+  async create(datos) {
+    const respuesta = await apiClient('/habit-compliances', { method: 'POST', body: datos });
+    return respuesta.data;
+  },
+  async update(id, datos) {
+    const respuesta = await apiClient(`/habit-compliances/${id}`, { method: 'PUT', body: datos });
+    return respuesta.data;
+  },
+  async delete(id) {
+    const respuesta = await apiClient(`/habit-compliances/${id}`, { method: 'DELETE' });
+    return respuesta.data;
+  }
+};
